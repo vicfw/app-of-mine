@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    
+}
+
+.form {
+    background-color: var(--primary);
+    padding: 40px;
+    position: relative;
+    width: 490px;
+    z-index: 100;
+
+}
+
+.header {
+    position: absolute;
+    width: 130px;
+    height: 60px;
+    border-radius: 50%;
+    background-color:#ace5cf;
+    content: "";
+    top: -28px;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    border-radius: 150px 150px 0 0;
+
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
