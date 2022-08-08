@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { authValidation } from '../utils/authValidation';
 import { signIn } from 'next-auth/react';
 
@@ -10,6 +10,12 @@ export const useAuth = (whichPage: string) => {
   const [password, setPassword] = useState({ value: '', error: '' });
   const [loginError, setLoginError] = useState('');
   const [toast, setToast] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout();
+    };
+  }, []);
 
   const createUser = async () => {
     const canPass = authValidation(email, password, setEmail, setPassword);
