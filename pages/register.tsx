@@ -1,45 +1,19 @@
 import EmailIcon from '@mui/icons-material/Email';
 import HttpsIcon from '@mui/icons-material/Https';
 import PersonIcon from '@mui/icons-material/Person';
-import { Button, InputAdornment, Stack, TextField } from '@mui/material';
+import { InputAdornment, TextField } from '@mui/material';
 import { Box } from '@mui/system';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import CustomButton from '../src/components/ui-kit/Button/Button';
+import { useAuth } from '../src/pageHooks/auth';
 import style from '../src/styles/register.module.css';
 import { Colors } from '../src/utils/colors';
 
 const Register: FC<any> = ({}) => {
   const router = useRouter();
-  const [email, setEmail] = useState({ value: '', error: '' });
-  const [password, setPassword] = useState({ value: '', error: '' });
 
-  const createUser = async () => {
-    try {
-      const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email.value, password: password.value }),
-      });
-
-      const data = await res.json();
-
-      console.log(data, 'front');
-
-      if (!data.success) {
-        if (data.field.includes('email')) {
-          setEmail((perval) => ({ ...perval, error: data.error }));
-        } else {
-          setPassword((perval) => ({ ...perval, error: data.error }));
-        }
-      } else {
-        router.replace('/login');
-      }
-    } catch (error) {}
-  };
+  const { get, set, on } = useAuth('signup');
 
   return (
     <div className={style.wrapper}>
@@ -56,12 +30,12 @@ const Register: FC<any> = ({}) => {
           <TextField
             name="email"
             type="email"
-            label={email.value ? '' : 'Email ID'}
+            label={get.email.value ? '' : 'Email ID'}
             size="small"
-            onChange={(e) => setEmail({ error: '', value: e.target.value })}
-            value={email.value}
-            helperText={email.error}
-            error={!!email.error}
+            onChange={(e) => set.setEmail({ error: '', value: e.target.value })}
+            value={get.email.value}
+            helperText={get.email.error}
+            error={!!get.email.error}
             sx={{
               backgroundColor: '#fff',
               border: 'none',
@@ -89,10 +63,12 @@ const Register: FC<any> = ({}) => {
           <TextField
             name="password"
             type="password"
-            label={password.value ? '' : 'Password'}
+            label={get.password.value ? '' : 'Password'}
             size="small"
-            value={password.value}
-            onChange={(e) => setPassword({ error: '', value: e.target.value })}
+            value={get.password.value}
+            onChange={(e) =>
+              set.setPassword({ error: '', value: e.target.value })
+            }
             sx={{
               backgroundColor: '#fff',
               border: 'none',
@@ -104,8 +80,8 @@ const Register: FC<any> = ({}) => {
                 color: 'primary.dark',
               },
             }}
-            helperText={password.error}
-            error={!!password.error}
+            helperText={get.password.error}
+            error={!!get.password.error}
             InputLabelProps={{ shrink: false }}
             InputProps={{
               autoComplete: 'none',
@@ -124,7 +100,7 @@ const Register: FC<any> = ({}) => {
               label="REGISTER"
               color={Colors.primary.dark}
               boxShadowColor={Colors.primary.light}
-              onClick={createUser}
+              onClick={on.createUser}
             />
             <CustomButton
               label="LOGIN NOW"

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import User from '../../models/User';
-import dbConnect from '../../src/utils/dbConnect';
+import User from '../../../models/User';
+import dbConnect from '../../../src/utils/dbConnect';
 import bcrypt from 'bcryptjs';
 
 export default async function handler(
@@ -8,8 +8,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method } = req;
-
-  console.log('hello');
 
   await dbConnect();
 
@@ -20,9 +18,12 @@ export default async function handler(
       const hashedPassword = await bcrypt.hash(password, 10);
 
       try {
-        const newUser = await User.create({ email, password: hashedPassword });
+        const newUser = await User.create({
+          email,
+          password: hashedPassword,
+        });
 
-        res.status(201).json({ success: true, data: newUser });
+        res.status(201).json({ success: true, data: { email: newUser.email } });
       } catch (e: any) {
         console.log(e, 'error api');
 
