@@ -1,12 +1,12 @@
-import { Box, Input, InputAdornment, Snackbar, TextField } from '@mui/material';
-import { FC } from 'react';
-import { useAuth } from '../src/pageHooks/auth';
-import style from '../src/styles/register.module.css';
 import EmailIcon from '@mui/icons-material/Email';
 import HttpsIcon from '@mui/icons-material/Https';
 import PersonIcon from '@mui/icons-material/Person';
-import CustomButton from '../src/components/ui-kit/Button/Button';
+import { Box, InputAdornment, Snackbar, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
+import { FC } from 'react';
+import CustomButton from '../src/components/ui-kit/Button/Button';
+import { useAuth } from '../src/pageHooks/auth';
+import style from '../src/styles/register.module.css';
 import { Colors } from '../src/utils/colors';
 
 const Login: FC<any> = ({}) => {
