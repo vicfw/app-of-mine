@@ -13,13 +13,15 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import Layout from '../src/components/Layout/Layout';
 import { Colors } from '../src/utils/colors';
 import AddIcon from '@mui/icons-material/Add';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 const createAdvertising: FC<any> = ({}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#ccc',
     padding: '20px 40px',
@@ -162,6 +164,7 @@ const createAdvertising: FC<any> = ({}) => {
               <Grid container spacing={2}>
                 <Grid item>
                   <Box
+                    onClick={() => inputRef.current?.click()}
                     sx={{
                       height: 100,
                       width: 100,
@@ -173,7 +176,7 @@ const createAdvertising: FC<any> = ({}) => {
                       cursor: 'pointer',
                     }}
                   >
-                    <input hidden />
+                    <input hidden ref={inputRef} type="file" />
                     <AddIcon />
                   </Box>
                 </Grid>
