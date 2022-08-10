@@ -2,6 +2,7 @@ import { Box, Button, Container } from '@mui/material';
 import { FC } from 'react';
 import FaceIcon from '@mui/icons-material/Face';
 import NextLink from 'next/link';
+import Image from 'next/image';
 
 const Header: FC<any> = ({}) => {
   return (
@@ -58,9 +59,9 @@ const Header: FC<any> = ({}) => {
             <Box
               color={'#464545'}
               display="flex"
-              style={{ cursor: 'pointer', gap: 10 }}
+              style={{ cursor: 'pointer', gap: 10, width: 50, height: 50 }}
             >
-              logo
+              <Image src="/logo.png" width={200} height={70} />
             </Box>
 
             <Box
