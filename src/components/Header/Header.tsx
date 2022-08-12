@@ -3,8 +3,11 @@ import { FC } from 'react';
 import FaceIcon from '@mui/icons-material/Face';
 import NextLink from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Header: FC<any> = ({}) => {
+  const router = useRouter();
+
   return (
     <>
       <Box sx={{ minHeight: 50 }} bgcolor="#ccc">
@@ -59,9 +62,10 @@ const Header: FC<any> = ({}) => {
             <Box
               color={'#464545'}
               display="flex"
-              style={{ cursor: 'pointer', gap: 10, width: 50, height: 50 }}
+              style={{ cursor: 'pointer', gap: 10, width: 120, height: 70 }}
+              onClick={() => router.push('/')}
             >
-              <Image src="/logo.png" width={200} height={70} />
+              <Image src="/logo.png" width={200} height={200} />
             </Box>
 
             <Box

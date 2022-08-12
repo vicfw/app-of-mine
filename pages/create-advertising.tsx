@@ -23,7 +23,7 @@ const createAdvertising: FC<any> = ({}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: '#ccc',
+    backgroundColor: '#efefef',
     padding: '20px 40px',
     borderRadius: '10px',
     boxShadow: '2px 5px 5px #b3b3b3 ',
@@ -87,7 +87,7 @@ const createAdvertising: FC<any> = ({}) => {
                     color: Colors.grey.main,
                   }}
                 >
-                  Ad title
+                  Description
                 </Typography>
                 <TextField
                   multiline
