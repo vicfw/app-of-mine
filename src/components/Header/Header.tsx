@@ -4,12 +4,17 @@ import FaceIcon from '@mui/icons-material/Face';
 import NextLink from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 const Header: FC<any> = ({}) => {
   const router = useRouter();
 
   return (
     <>
+      <Head>
+        <title>Truck app</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Box sx={{ minHeight: 50 }} bgcolor="#ccc">
         <Container>
           <Box

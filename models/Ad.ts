@@ -10,7 +10,15 @@ const AdSchema = new mongoose.Schema(
       minlength: 4,
       maxlength: 50,
     },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: true,
+    },
+    isApproved: {
+      type: Boolean,
+      default: false,
+    },
     phone: {
       type: String,
       minlength: 4,
