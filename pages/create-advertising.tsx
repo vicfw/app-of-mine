@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
+import errors from 'formidable/FormidableError';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { ChangeEvent, FC, useRef, useState } from 'react';
@@ -37,12 +38,12 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     organization: string;
   } = {
     title: '',
-    category: '',
+    category: 'select',
     phone: '',
     description: '',
     images: [],
-    city: '',
-    organization: '',
+    city: 'select',
+    organization: 'person',
   };
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -50,10 +51,20 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 
   const [createAd, setCreateAd] = useState(createAdInitialState);
 
+  const [errorString, setErrorString] = useState({
+    title: '',
+    category: '',
+    phone: '',
+    description: '',
+    images: '',
+    city: '',
+  });
+
   console.log(createAd, 'createAd');
 
   const onChangeInputs = (e: any) => {
     setCreateAd((perv) => ({ ...perv, [e.target.name]: e.target.value }));
+    setErrorString((perv) => ({ ...perv, [e.target.name]: '' }));
   };
 
   const onFileUploadChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +85,6 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 
     /** File validation */
     if (!file.type.startsWith('image')) {
-      alert('Please select a valide image');
       return;
     }
 
@@ -103,6 +113,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
         images: [...perv.images, { img: data.url }],
       }));
 
+      setErrorString((perv) => ({ ...perv, images: '' }));
+
       setPreviewUrls((perv) => {
         return [...perv, URL.createObjectURL(file)];
       });
@@ -111,6 +123,78 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     /** Reset file input */
     e.target.type = 'text';
     e.target.type = 'file';
+  };
+
+  const errorHandler = () => {
+    let errors: any = {};
+    let f: keyof typeof createAd;
+    for (f in createAd) {
+      if (!createAd[f]) {
+        errors[f] = `${f} of a ad cant be empty `;
+      }
+
+      if (typeof createAd[f] === 'object' && !createAd[f].length) {
+        errors[f] = `${f} of a ad cant be empty `;
+      }
+    }
+
+    setErrorString(errors as any);
+
+    if (createAd.title.length < 4) {
+      setErrorString((perv) => ({
+        ...perv,
+        title: 'title of a ad cant be less than 4 characters',
+      }));
+    }
+
+    if (createAd.phone.length < 9) {
+      setErrorString((perv) => ({
+        ...perv,
+        phone: 'phone of an ad should have more than 9 numbers',
+      }));
+    }
+  };
+
+  const createAdHandler = async () => {
+    const values = Object.values(errorString);
+
+    const haveError = values.some((err) => err);
+
+    console.log(haveError, 'haveError');
+
+    if (haveError) return;
+
+    const response = await fetch('/api/ad', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(createAd),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      console.log(data);
+    } else {
+      console.log(data);
+    }
+
+    console.log(data, 'the data');
+  };
+
+  const clearTheForm = () => {
+    setCreateAd({
+      title: '',
+      category: 'select',
+      phone: '',
+      description: '',
+      images: [],
+      city: 'select',
+      organization: 'person',
+    });
+    setPreviewUrls([]);
   };
 
   return (
@@ -151,6 +235,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   sx={{ '& .MuiSelect-select': { color: Colors.grey.dark } }}
                   onChange={onChangeInputs}
                   name="category"
+                  error={!!errorString.category}
+                  value={createAd.category}
                 >
                   <MenuItem value={'select'} disabled>
                     Select
@@ -164,6 +250,15 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                     );
                   })}
                 </Select>
+                <Typography
+                  sx={{
+                    color: 'red',
+                    margin: '5px 0 0 10px',
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  {errorString.category}
+                </Typography>
               </Box>
               <Box mb={2} sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Typography
@@ -180,6 +275,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   placeholder="Choose a suitable title for your ad"
                   onChange={onChangeInputs}
                   name="title"
+                  error={!!errorString.title}
+                  helperText={errorString.title}
+                  value={createAd.title}
                 />
               </Box>
               <Box mb={2} sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -199,6 +297,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   placeholder="Choose a suitable title for your ad"
                   onChange={onChangeInputs}
                   name="description"
+                  error={!!errorString.description}
+                  helperText={errorString.description}
+                  value={createAd.description}
                 />
               </Box>
               {/* phone number input */}
@@ -218,6 +319,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   onChange={onChangeInputs}
                   name="phone"
                   type="number"
+                  error={!!errorString.phone}
+                  helperText={errorString.phone}
+                  value={createAd.phone}
                 />
               </Box>
               {/*  CITY/ADDRESS select box */}
@@ -237,12 +341,23 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   sx={{ '& .MuiSelect-select': { color: Colors.grey.dark } }}
                   onChange={onChangeInputs}
                   name="city"
+                  error={!!errorString.city}
+                  value={createAd.city}
                 >
                   <MenuItem value={'select'}>Select</MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem value={'10'}>Ten</MenuItem>
+                  <MenuItem value={'20'}>Twenty</MenuItem>
+                  <MenuItem value={'30'}>Thirty</MenuItem>
                 </Select>
+                <Typography
+                  sx={{
+                    color: 'red',
+                    margin: '5px 0 0 10px',
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  {errorString.city}
+                </Typography>
               </Box>
 
               <RadioGroup row>
@@ -252,6 +367,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   label="Person"
                   onChange={onChangeInputs}
                   name="organization"
+                  checked={createAd.organization === 'person'}
                 />
                 <FormControlLabel
                   value="company"
@@ -259,6 +375,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   label="Company/Store"
                   onChange={onChangeInputs}
                   name="organization"
+                  checked={createAd.organization === 'company'}
                 />
               </RadioGroup>
             </Paper>
@@ -269,12 +386,14 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
               <Typography
                 component="h2"
                 fontSize={20}
+                onClick={clearTheForm}
                 sx={{
                   marginBottom: 1,
                   display: 'flex',
                   justifyContent: 'flex-end',
                   alignItems: 'flex-end',
                   height: 45,
+                  cursor: 'pointer',
                 }}
                 color={Colors.primary.dark}
               >
@@ -381,6 +500,15 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   </Box>
                 </Grid>
               </Grid>
+              <Typography
+                sx={{
+                  color: 'red',
+                  margin: '5px 0 0 0',
+                  fontSize: '0.75rem',
+                }}
+              >
+                {errorString.images}
+              </Typography>
 
               <Typography
                 component="p"
@@ -401,7 +529,13 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
               </Typography>
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }} mt={1}>
-              <Button variant="contained">ADD</Button>
+              <Button
+                variant="contained"
+                onClick={createAdHandler}
+                onMouseDown={errorHandler}
+              >
+                ADD
+              </Button>
             </Box>
           </Grid>
         </Grid>

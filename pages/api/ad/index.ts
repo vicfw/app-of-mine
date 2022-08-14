@@ -13,6 +13,8 @@ export default async function handler(
   switch (method) {
     case 'POST':
       try {
+        console.log(req.body, 'body');
+
         const ad = await Ad.create(req.body);
 
         console.log(ad);
