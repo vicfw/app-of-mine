@@ -30,7 +30,7 @@ export const parseForm = async (
 
     let filename = ''; //  To avoid duplicate upload
     const form = formidable({
-      maxFiles: 2,
+      maxFiles: 1,
       maxFileSize: 1024 * 1024, // 1mb
       uploadDir,
       filename: (_name, _ext, part) => {
@@ -52,6 +52,8 @@ export const parseForm = async (
     });
 
     form.parse(req, function (err, fields, files) {
+      console.log(err, 'in err');
+
       if (err) reject(err);
       else resolve({ fields, files });
     });
