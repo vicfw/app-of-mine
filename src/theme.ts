@@ -13,8 +13,9 @@ const theme = createTheme({
       main: '#fda20d',
       dark: '#f4a111',
     },
-    grey: {
-      '100': '#7e8784',
+    info: {
+      main: '#7e8784',
+      light: '#c7c7c7',
     },
     error: {
       main: red.A400,

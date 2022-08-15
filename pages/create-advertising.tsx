@@ -14,9 +14,9 @@ import {
   Typography,
 } from '@mui/material';
 import { Container } from '@mui/system';
-import errors from 'formidable/FormidableError';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { ChangeEvent, FC, useRef, useState } from 'react';
 import Category from '../models/Category';
 import Layout from '../src/components/Layout/Layout';
@@ -46,6 +46,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     organization: 'person',
   };
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
@@ -58,9 +59,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     description: '',
     images: '',
     city: '',
+    fail: '',
   });
-
-  console.log(createAd, 'createAd');
 
   const onChangeInputs = (e: any) => {
     setCreateAd((perv) => ({ ...perv, [e.target.name]: e.target.value }));
@@ -127,14 +127,18 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 
   const errorHandler = () => {
     let errors: any = {};
-    let f: keyof typeof createAd;
-    for (f in createAd) {
-      if (!createAd[f]) {
-        errors[f] = `${f} of a ad cant be empty `;
+    let value: keyof typeof createAd;
+    for (value in createAd) {
+      if (!createAd[value]) {
+        errors[value] = `${value} of a ad cant be empty `;
       }
 
-      if (typeof createAd[f] === 'object' && !createAd[f].length) {
-        errors[f] = `${f} of a ad cant be empty `;
+      if (createAd[value] === 'select') {
+        errors[value] = `${value} of a ad cant be empty `;
+      }
+
+      if (typeof createAd[value] === 'object' && !createAd[value].length) {
+        errors[value] = `${value} of a ad cant be empty `;
       }
     }
 
@@ -176,12 +180,10 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     const data = await response.json();
 
     if (data.success) {
-      console.log(data);
+      router.replace('/?created');
     } else {
-      console.log(data);
+      setErrorString((perv) => ({ ...perv, fail: 'Something went wrong' }));
     }
-
-    console.log(data, 'the data');
   };
 
   const clearTheForm = () => {
