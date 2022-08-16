@@ -15,12 +15,25 @@ const Categories: FC<CategoriesPropTypes> = ({
   name,
 }) => {
   return (
-    <Paper sx={{ backgroundColor: Colors.grey.light }}>
-      <p>{adCount}</p>
-      <Box>
+    <Paper sx={{ backgroundColor: Colors.grey.light, padding: 2 }}>
+      <p style={{ textAlign: 'right' }}>{adCount}</p>
+      <Box
+        width={'100%'}
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
         <Image src={image} alt={image} width={200} height={200} />
       </Box>
-      <Typography component="h2">{name}</Typography>
+      <Typography
+        sx={{
+          textAlign: 'center',
+          fontSize: 25,
+          fontWeight: 'bold',
+          color: Colors.grey.dark,
+        }}
+        component="h2"
+      >
+        {name}
+      </Typography>
     </Paper>
   );
 };

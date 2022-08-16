@@ -16,7 +16,7 @@ const index: FC<HomePagePropTypes> = ({ categories }) => {
   return (
     <Layout>
       <SearchSection />
-      <Container>
+      <Container sx={{ padding: '20px 0' }}>
         <Grid container spacing={2}>
           {categories.map((cat) => {
             return (
