@@ -82,15 +82,15 @@ const Header: FC<any> = ({}) => {
                 <Button
                   variant="contained"
                   sx={{
-                    width: 150,
+                    width: 170,
                     color: '#fff',
                     borderRadius: 10,
                     backgroundImage:
-                      'linear-gradient(180deg, rgba(141,206,179,1) 0%, rgba(36,126,89,1) 74%)',
+                      'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
                     textTransform: 'capitalize',
                   }}
                 >
-                  Sell My Car
+                  Sell My Truck/Trailer
                 </Button>
               </NextLink>
             </Box>

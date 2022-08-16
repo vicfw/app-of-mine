@@ -21,6 +21,7 @@ import { ChangeEvent, FC, useRef, useState } from 'react';
 import Category from '../models/Category';
 import Layout from '../src/components/Layout/Layout';
 import { Colors } from '../src/utils/colors';
+import dbConnect from '../src/utils/dbConnect';
 import { CategoryType } from '../types/category';
 
 interface createAdvertisingPropTypes {
@@ -548,6 +549,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 export default createAdvertising;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  await dbConnect();
+
   try {
     const categories = await Category.find();
 

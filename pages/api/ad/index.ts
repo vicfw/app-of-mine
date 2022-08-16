@@ -1,4 +1,3 @@
-import { MongooseError } from 'mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Ad from '../../../models/Ad';
 
@@ -8,16 +7,10 @@ export default async function handler(
 ) {
   const { method } = req;
 
-  console.log('method:', method);
-
   switch (method) {
     case 'POST':
       try {
-        console.log(req.body, 'body');
-
         const ad = await Ad.create(req.body);
-
-        console.log(ad);
 
         res.status(201).json({ success: true, data: ad });
       } catch (e: any) {
