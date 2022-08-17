@@ -11,23 +11,20 @@ export const parseForm = async (
   req: NextApiRequest
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   return await new Promise(async (resolve, reject) => {
-    const uploadDir = join(
-      process.env.ROOT_DIR || process.cwd(),
-      `/uploads/${dateFn.format(Date.now(), 'dd-MM-Y')}`
-    );
+    const uploadDir = join(process.env.ROOT_DIR || process.cwd(), `/public`);
 
     console.log(uploadDir, 'uploadDir');
 
     try {
       await stat(uploadDir);
     } catch (e: any) {
-      if (e.code === 'ENOENT') {
-        await mkdir(uploadDir, { recursive: true });
-      } else {
-        console.error(e);
-        reject(e);
-        return;
-      }
+      // if (e.code === 'ENOENT') {
+      //   await mkdir(uploadDir, { recursive: true });
+      // } else {
+      //   console.error(e);
+      //   reject(e);
+      //   return;
+      // }
     }
 
     let filename = ''; //  To avoid duplicate upload
