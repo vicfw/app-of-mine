@@ -16,6 +16,8 @@ export const parseForm = async (
       `/public/uploads/`
     );
 
+    console.log(uploadDir, 'uploadDir');
+
     try {
       await stat(uploadDir);
     } catch (e: any) {
