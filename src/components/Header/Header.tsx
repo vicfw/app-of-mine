@@ -82,7 +82,6 @@ const Header: FC<any> = ({}) => {
                 <Button
                   variant="contained"
                   sx={{
-                    width: 170,
                     color: '#fff',
                     borderRadius: 10,
                     backgroundImage:

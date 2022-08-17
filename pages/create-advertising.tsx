@@ -17,7 +17,7 @@ import { Container } from '@mui/system';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ChangeEvent, FC, useRef, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import Category from '../models/Category';
 import Layout from '../src/components/Layout/Layout';
 import { Colors } from '../src/utils/colors';
@@ -75,9 +75,23 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
       return;
     }
 
-    if (!fileInput.files || fileInput.files.length === 0) {
+    if (
+      !fileInput.files ||
+      fileInput.files.length === 0 ||
+      fileInput.files.length > 1
+    ) {
+      setErrorString((perv) => ({
+        ...perv,
+        images: 'you cant upload more than 3 pictures for you Ad',
+      }));
       return;
     }
+
+    if (previewUrls.length === 3) {
+      return;
+    }
+
+    console.log(previewUrls.length, 'previewUrls');
 
     const file = fileInput.files[0];
 
@@ -86,6 +100,10 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 
     /** File validation */
     if (!file.type.startsWith('image')) {
+      setErrorString((perv) => ({
+        ...perv,
+        images: 'please upload files with format of png or jpg',
+      }));
       return;
     }
 
@@ -104,7 +122,12 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
       error: string | null;
     } = await res.json();
 
-    console.log(data, error);
+    if (error?.includes('maxFileSize ')) {
+      return setErrorString((perv) => ({
+        ...perv,
+        images: 'max allowed file size is 1mb',
+      }));
+    }
 
     /** Setting file state */
 

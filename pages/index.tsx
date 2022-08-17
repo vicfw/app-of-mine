@@ -4,6 +4,7 @@ import { FC } from 'react';
 import Category from '../models/Category';
 import Categories from '../src/components/Categories/Categories.component';
 import Layout from '../src/components/Layout/Layout';
+import PopularAd from '../src/components/PopularAd/PopularAd';
 import SearchSection from '../src/components/SearchSection/SearchSection';
 import dbConnect from '../src/utils/dbConnect';
 import { CategoryType } from '../types/category';
@@ -16,8 +17,9 @@ const index: FC<HomePagePropTypes> = ({ categories }) => {
   return (
     <Layout>
       <SearchSection />
+      {/* categories section */}
       <Container sx={{ padding: '20px 0' }}>
-        <Grid container spacing={2}>
+        <Grid component="section" container spacing={2}>
           {categories.map((cat) => {
             return (
               <Grid item lg={4} key={cat._id}>
@@ -26,6 +28,9 @@ const index: FC<HomePagePropTypes> = ({ categories }) => {
             );
           })}
         </Grid>
+      </Container>
+      <Container sx={{ padding: '20px 0' }}>
+        <PopularAd />
       </Container>
     </Layout>
   );

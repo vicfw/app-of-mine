@@ -21,7 +21,7 @@ const handler = async (
   try {
     const { fields, files } = await parseForm(req);
 
-    const file = files.media;
+    const file = files!.media;
     let url = Array.isArray(file)
       ? file.map((f) => f.newFilename)
       : `/${file.newFilename}`;
