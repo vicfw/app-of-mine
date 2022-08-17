@@ -13,7 +13,7 @@ const handler = async (
     res.setHeader('Allow', 'POST');
     res.status(405).json({
       data: null,
-      error: 'Method Not Allowed',
+      error: 'Method Not Allowed!',
     });
     return;
   }
