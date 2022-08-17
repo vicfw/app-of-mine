@@ -24,7 +24,7 @@ const handler = async (
     const file = files.media;
     let url = Array.isArray(file)
       ? file.map((f) => f.newFilename)
-      : file.newFilename;
+      : `/${file.newFilename}`;
 
     res.status(200).json({
       data: {

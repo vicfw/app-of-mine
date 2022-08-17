@@ -18,13 +18,13 @@ const index: FC<HomePagePropTypes> = ({ categories }) => {
       <SearchSection />
       <Container sx={{ padding: '20px 0' }}>
         <Grid container spacing={2}>
-          {/* {categories.map((cat) => {
+          {categories.map((cat) => {
             return (
               <Grid item lg={4} key={cat._id}>
                 <Categories name={cat.name} image={cat.image} />
               </Grid>
             );
-          })} */}
+          })}
         </Grid>
       </Container>
     </Layout>
