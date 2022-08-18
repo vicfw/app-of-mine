@@ -6,6 +6,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method } = req;
+  await dbConnect();
 
   switch (method) {
     case 'PATCH':
