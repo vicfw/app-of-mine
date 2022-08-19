@@ -46,6 +46,8 @@ export const parseForm = async (
         return filename;
       },
       filter: (part) => {
+        console.log(part, 'parted');
+
         return (
           part.name === 'media' && (part.mimetype?.includes('image') || false)
         );
