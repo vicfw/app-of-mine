@@ -163,6 +163,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     }
 
     /** Setting file state */
+    console.log(data, 'data');
 
     if (data?.url) {
       setCreateAd((perv) => ({
