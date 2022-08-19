@@ -12,6 +12,10 @@ export const parseForm = async (
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   return await new Promise(async (resolve, reject) => {
     const uploadDir = join(process.env.ROOT_DIR || process.cwd(), `/public`);
+    // const uploadDir = join(
+    //   process.env.ROOT_DIR || process.cwd(),
+    //   `/uploads/${dateFn.format(Date.now(), 'dd-MM-Y')}`
+    // );
 
     console.log(uploadDir, 'uploadDir');
 
@@ -20,13 +24,13 @@ export const parseForm = async (
     } catch (e: any) {
       console.log(e, 'from stat');
 
-      // if (e.code === 'ENOENT') {
-      //   await mkdir(uploadDir, { recursive: true });
-      // } else {
-      //   console.error(e);
-      //   reject(e);
-      //   return;
-      // }
+      if (e.code === 'ENOENT') {
+        await mkdir(uploadDir, { recursive: true });
+      } else {
+        console.error(e);
+        reject(e);
+        return;
+      }
     }
 
     let filename = ''; //  To avoid duplicate upload

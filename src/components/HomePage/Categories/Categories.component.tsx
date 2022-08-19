@@ -1,7 +1,7 @@
 import { Box, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC } from 'react';
-import { Colors } from '../../utils/colors';
+import { Colors } from '../../../utils/colors';
 
 interface CategoriesPropTypes {
   adCount?: number;
