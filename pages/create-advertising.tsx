@@ -3,6 +3,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import {
   Box,
   Button,
+  CircularProgress,
   FormControlLabel,
   Grid,
   MenuItem,
@@ -52,6 +53,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   const [createAd, setCreateAd] = useState(createAdInitialState);
+  const [loading, setLoading] = useState<boolean[]>([]);
 
   const [errorString, setErrorString] = useState({
     title: '',
@@ -68,6 +70,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     setErrorString((perv) => ({ ...perv, [e.target.name]: '' }));
   };
 
+  console.log(loading, 'loading');
+
   const onFileUploadChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const fileInput = e.target;
 
@@ -78,7 +82,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     if (
       !fileInput.files ||
       fileInput.files.length === 0 ||
-      fileInput.files.length > 1
+      fileInput.files.length > 1 ||
+      previewUrls.length === 3
     ) {
       setErrorString((perv) => ({
         ...perv,
@@ -87,13 +92,17 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
       return;
     }
 
-    if (previewUrls.length === 3) {
-      return;
-    }
-
-    console.log(previewUrls.length, 'previewUrls');
-
     const file = fileInput.files[0];
+
+    const fileSizeInMegaBytes = file.size / 1024 ** 2;
+
+    // if (fileSizeInMegaBytes > 1) {
+    //   setErrorString((perv) => ({
+    //     ...perv,
+    //     images: 'use images less than 1 megabytes',
+    //   }));
+    //   return;
+    // }
 
     let formData = new FormData();
     formData.append('media', file);
@@ -105,6 +114,21 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
         images: 'please upload files with format of png or jpg',
       }));
       return;
+    }
+
+    if (previewUrls.length >= loading.length) {
+      setLoading((perv) => {
+        return [...perv, true];
+      });
+    } else {
+      setLoading((perv) => {
+        return perv.map((p, index) => {
+          if (perv.length - 1 === index) {
+            p = true;
+          }
+          return p;
+        });
+      });
     }
 
     const res = await fetch('/api/upload', {
@@ -123,15 +147,20 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     } = await res.json();
 
     if (error?.includes('maxFileSize ')) {
-      return setErrorString((perv) => ({
+      setErrorString((perv) => ({
         ...perv,
         images: 'max allowed file size is 1mb',
       }));
+      setLoading((perv) => {
+        return perv.map((p) => false);
+      });
     }
 
     /** Setting file state */
 
-    if (data) {
+    console.log(data);
+
+    if (data?.url) {
       setCreateAd((perv) => ({
         ...perv,
         images: [...perv.images, { img: data.url }],
@@ -141,6 +170,13 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 
       setPreviewUrls((perv) => {
         return [...perv, URL.createObjectURL(file)];
+      });
+      setLoading((perv) => {
+        return perv.map((p) => false);
+      });
+    } else {
+      setLoading((perv) => {
+        return perv.map((p) => false);
       });
     }
 
@@ -430,7 +466,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
             <Paper
               sx={{
                 backgroundColor: '#efefef',
-                padding: '20px 40px',
+                padding: '20px 40px 0px 40px',
                 borderRadius: '10px',
                 boxShadow: '2px 5px 5px #b3b3b3 ',
               }}
@@ -480,7 +516,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                       borderRadius: '8px',
                     }}
                   >
-                    {previewUrls[0] ? (
+                    {loading[0] ? (
+                      <CircularProgress />
+                    ) : previewUrls[0] ? (
                       <Image src={previewUrls[0]} width={100} height={100} />
                     ) : (
                       <CameraAltIcon />
@@ -499,7 +537,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                       borderRadius: '8px',
                     }}
                   >
-                    {previewUrls[1] ? (
+                    {loading[1] ? (
+                      <CircularProgress />
+                    ) : previewUrls[1] ? (
                       <Image src={previewUrls[1]} width={100} height={100} />
                     ) : (
                       <CameraAltIcon />
@@ -518,7 +558,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                       borderRadius: '8px',
                     }}
                   >
-                    {previewUrls[2] ? (
+                    {loading[2] ? (
+                      <CircularProgress />
+                    ) : previewUrls[2] ? (
                       <Image src={previewUrls[2]} width={100} height={100} />
                     ) : (
                       <CameraAltIcon />
@@ -547,6 +589,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   increase the chance of your add being seen 5 times
                 </Typography>
               </Typography>
+              <Box display={'flex'} justifyContent="center">
+                <Image src="/camera-phone.png" width={340} height={340} />
+              </Box>
             </Paper>
             <Typography component="p" color={Colors.grey.dark} mt={2}>
               by clicking the ad registration button , you agree to the sites's
