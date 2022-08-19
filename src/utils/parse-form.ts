@@ -18,6 +18,8 @@ export const parseForm = async (
     try {
       await stat(uploadDir);
     } catch (e: any) {
+      console.log(e, 'from stat');
+
       // if (e.code === 'ENOENT') {
       //   await mkdir(uploadDir, { recursive: true });
       // } else {
