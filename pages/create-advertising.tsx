@@ -96,13 +96,13 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
 
     const fileSizeInMegaBytes = file.size / 1024 ** 2;
 
-    // if (fileSizeInMegaBytes > 1) {
-    //   setErrorString((perv) => ({
-    //     ...perv,
-    //     images: 'use images less than 1 megabytes',
-    //   }));
-    //   return;
-    // }
+    if (fileSizeInMegaBytes > 1) {
+      setErrorString((perv) => ({
+        ...perv,
+        images: 'use images less than 1 megabytes',
+      }));
+      return;
+    }
 
     let formData = new FormData();
     formData.append('media', file);
