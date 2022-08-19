@@ -18,7 +18,7 @@ import { Container } from '@mui/system';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FC, useRef, useState } from 'react';
 import Category from '../models/Category';
 import Layout from '../src/components/Layout/Layout';
 import { Colors } from '../src/utils/colors';
@@ -89,6 +89,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
         ...perv,
         images: 'you cant upload more than 3 pictures for you Ad',
       }));
+      e.target.type = 'text';
+      e.target.type = 'file';
       return;
     }
 
@@ -101,6 +103,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
         ...perv,
         images: 'use images less than 1 megabytes',
       }));
+      e.target.type = 'text';
+      e.target.type = 'file';
       return;
     }
 
@@ -113,6 +117,8 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
         ...perv,
         images: 'please upload files with format of png or jpg',
       }));
+      e.target.type = 'text';
+      e.target.type = 'file';
       return;
     }
 
@@ -157,8 +163,6 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     }
 
     /** Setting file state */
-
-    console.log(data);
 
     if (data?.url) {
       setCreateAd((perv) => ({
@@ -590,12 +594,14 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                 </Typography>
               </Typography>
               <Box display={'flex'} justifyContent="center">
-                <Image src="/camera-phone.png" width={340} height={340} />
+                <Box display={'flex'} justifyContent="center">
+                  <Image src="/camera-phone.png" width={345} height={345} />
+                </Box>
               </Box>
             </Paper>
             <Typography component="p" color={Colors.grey.dark} mt={2}>
               by clicking the ad registration button , you agree to the sites's
-              <Typography component="span" color={Colors.primary.main}>
+              <Typography component="span" color={Colors.primary.dark}>
                 terms and conditions
               </Typography>
             </Typography>
@@ -604,6 +610,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                 variant="contained"
                 onClick={createAdHandler}
                 onMouseDown={errorHandler}
+                sx={{ color: '#fff' }}
               >
                 ADD
               </Button>
