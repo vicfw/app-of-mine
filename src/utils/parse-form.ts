@@ -24,13 +24,13 @@ export const parseForm = async (
     } catch (e: any) {
       console.log(e, 'from stat');
 
-      if (e.code === 'ENOENT') {
-        await mkdir(uploadDir, { recursive: true });
-      } else {
-        console.error(e);
-        reject(e);
-        return;
-      }
+      // if (e.code === 'ENOENT') {
+      //   await mkdir(uploadDir, { recursive: true });
+      // } else {
+      //   console.error(e);
+      //   reject(e);
+      //   return;
+      // }
     }
 
     let filename = ''; //  To avoid duplicate upload
