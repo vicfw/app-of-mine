@@ -48,6 +48,7 @@ export const useAuth = (whichPage: string) => {
           body: JSON.stringify({
             email: email.value,
             password: password.value,
+            fromAdmin: true,
           }),
         });
 

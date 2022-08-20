@@ -13,6 +13,7 @@ import Layout from '../src/components/Layout/Layout';
 import dbConnect from '../src/utils/dbConnect';
 import { AdsType } from '../types/ad';
 import { CategoryType } from '../types/category';
+import { getSession } from 'next-auth/react';
 
 interface HomePagePropTypes {
   categories: CategoryType[];
@@ -61,9 +62,13 @@ export default index;
 
 export const getServerSideProps: GetServerSideProps = async ({
   query: { page = 0 },
+  req,
 }) => {
   await dbConnect();
   const limit = 10;
+
+  const session = await getSession({ req });
+  console.log(session, 'session');
 
   try {
     const categories = await Category.find();
