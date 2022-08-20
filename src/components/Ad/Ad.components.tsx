@@ -36,8 +36,8 @@ const Ad: FC<AdPropTypes> = ({
         mb={1}
       >
         <Image
-          width={200}
-          height={200}
+          width={250}
+          height={230}
           src={image}
           style={{ borderRadius: '10px' }}
         />

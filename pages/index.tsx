@@ -1,11 +1,12 @@
-import { Container, Grid } from '@mui/material';
+import { Button, Container, Grid } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import Ad from '../models/Ad';
 import Category from '../models/Category';
 import AdsSection from '../src/components/HomePage/AdsSection/AdsSection';
 import Categories from '../src/components/HomePage/Categories/Categories.component';
+import PaginationButtons from '../src/components/HomePage/PaginationButtons/PaginationButtons';
 import PopularAd from '../src/components/HomePage/PopularAd/PopularAd';
 import SearchSection from '../src/components/HomePage/SearchSection/SearchSection';
 import Layout from '../src/components/Layout/Layout';
@@ -15,13 +16,20 @@ import { CategoryType } from '../types/category';
 
 interface HomePagePropTypes {
   categories: CategoryType[];
-  page: number;
+  page: string;
   count: number;
   ads: AdsType[];
 }
 
 const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
   const router = useRouter();
+
+  useEffect(() => {
+    const paginationBtn = document.getElementById('btn');
+    if (paginationBtn && router.query.page) {
+      paginationBtn.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [router.query]);
 
   return (
     <Layout>
@@ -43,8 +51,8 @@ const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
       <PopularAd />
       {/*  ads section */}
       <AdsSection ads={ads} />
-      <button onClick={() => router.push(`/?page=${page + 1}`)}>up</button>
-      <button onClick={() => router.push(`/?page=${page - 1}`)}>down</button>
+      {/* pogination btns */}
+      <PaginationButtons page={page} haveAds={!!ads.length} />
     </Layout>
   );
 };
@@ -57,10 +65,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   await dbConnect();
   const limit = 10;
 
-  // if (!page) {
-  //   page = 1;
-  // }
-
   try {
     const categories = await Category.find();
 
@@ -72,9 +76,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       { skip: (page as number) * limit, limit }
     );
 
-    console.log(ads, 'ads');
-    console.log(countOfAllDocs, 'countOfAllDocs');
-
     return {
       props: {
         categories: JSON.parse(JSON.stringify(categories)),
@@ -84,8 +85,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   } catch (e) {
-    console.log(e, 'error');
-
     return {
       notFound: true,
     };
