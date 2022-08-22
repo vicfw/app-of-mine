@@ -11,23 +11,26 @@ export const parseForm = async (
   req: NextApiRequest
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   return await new Promise(async (resolve, reject) => {
-    // const uploadDir = join(process.env.ROOT_DIR || process.cwd(), `/public`);
-    const uploadDir = join(process.env.ROOT_DIR || process.cwd(), `/uploads`);
+    const uploadDir = join(process.env.ROOT_DIR || process.cwd());
+    // const uploadDir = join(
+    //   process.env.ROOT_DIR || process.cwd(),
+    //   `/uploads/${dateFn.format(Date.now(), 'dd-MM-Y')}`
+    // );
 
-    //trucks-app.vercel.app
+    console.log(uploadDir, 'uploadDir');
 
     try {
       await stat(uploadDir);
     } catch (e: any) {
       console.log(e, 'from stat');
 
-      if (e.code === 'ENOENT') {
-        await mkdir(uploadDir, { recursive: true });
-      } else {
-        console.error(e, 'couldnt make folder');
-        reject(e);
-        return;
-      }
+      // if (e.code === 'ENOENT') {
+      //   await mkdir(uploadDir, { recursive: true });
+      // } else {
+      //   console.error(e);
+      //   reject(e);
+      //   return;
+      // }
     }
 
     let filename = ''; //  To avoid duplicate upload
@@ -47,6 +50,8 @@ export const parseForm = async (
         return filename;
       },
       filter: (part) => {
+        console.log(part, 'parted');
+
         return (
           part.name === 'media' && (part.mimetype?.includes('image') || false)
         );
