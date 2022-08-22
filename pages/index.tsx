@@ -1,5 +1,6 @@
-import { Button, Container, Grid } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
 import Ad from '../models/Ad';
@@ -13,7 +14,6 @@ import Layout from '../src/components/Layout/Layout';
 import dbConnect from '../src/utils/dbConnect';
 import { AdsType } from '../types/ad';
 import { CategoryType } from '../types/category';
-import { getSession } from 'next-auth/react';
 
 interface HomePagePropTypes {
   categories: CategoryType[];
@@ -52,7 +52,7 @@ const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
       <PopularAd />
       {/*  ads section */}
       <AdsSection ads={ads} />
-      {/* pogination btns */}
+      {/* pagination buttons */}
       <PaginationButtons page={page} haveAds={!!ads.length} />
     </Layout>
   );
