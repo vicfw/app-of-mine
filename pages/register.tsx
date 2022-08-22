@@ -3,6 +3,8 @@ import HttpsIcon from '@mui/icons-material/Https';
 import PersonIcon from '@mui/icons-material/Person';
 import { InputAdornment, TextField } from '@mui/material';
 import { Box } from '@mui/system';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import CustomButton from '../src/components/ui-kit/Button/Button';
@@ -120,3 +122,20 @@ const Register: FC<any> = ({}) => {
   );
 };
 export default Register;
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  console.log(session);
+
+  if (session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  } else {
+    return { props: {} };
+  }
+};

@@ -2,12 +2,14 @@ import EmailIcon from '@mui/icons-material/Email';
 import HttpsIcon from '@mui/icons-material/Https';
 import PersonIcon from '@mui/icons-material/Person';
 import { Box, InputAdornment, Snackbar, TextField } from '@mui/material';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
 import CustomButton from '../src/components/ui-kit/Button/Button';
 import { useAuth } from '../src/pageHooks/auth';
 import style from '../src/styles/register.module.css';
 import { Colors } from '../src/utils/colors';
+import { GetServerSideProps } from 'next';
 
 const Login: FC<any> = ({}) => {
   const router = useRouter();
@@ -135,3 +137,21 @@ const Login: FC<any> = ({}) => {
   );
 };
 export default Login;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
+
+  console.log(session);
+
+  if (session) {
+    return {
+      props: {},
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  } else {
+    return { props: {} };
+  }
+};

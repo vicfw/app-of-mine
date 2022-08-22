@@ -34,6 +34,8 @@ export default NextAuth({
       async authorize(credentials) {
         if (!credentials) return;
 
+        console.log(credentials, 'credentials');
+
         await dbConnect();
 
         console.log(credentials, 'credentials');
@@ -52,11 +54,21 @@ export default NextAuth({
         if (!isValid) {
           throw new Error('Could not log you in');
         }
-        return user;
+
+        if (credentials.callbackUrl.includes('admin')) {
+          if (user.isAdmin) {
+            return user;
+          } else {
+            throw new Error('You Cant Sign in');
+          }
+        } else {
+          return user;
+        }
       },
       credentials: {
         email: '' as CredentialInput,
         password: '' as CredentialInput,
+        callbackUrl: '' as CredentialInput,
       },
     }),
   ],
