@@ -15,8 +15,6 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log(token, 'token');
-
       (session.user as ExtendedUserType).isAdmin = token.user.isAdmin;
 
       return session;
