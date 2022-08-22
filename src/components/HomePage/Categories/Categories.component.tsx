@@ -2,7 +2,6 @@ import { Box, Paper, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Colors } from '../../../utils/colors';
-import fs from 'path';
 
 interface CategoriesPropTypes {
   adCount?: number;
@@ -22,12 +21,7 @@ const Categories: FC<CategoriesPropTypes> = ({
         width={'100%'}
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
-        <Image
-          src={image ? require(`../../../../uploads${image}`) : ''}
-          alt={image}
-          width={200}
-          height={200}
-        />
+        <Image src={image} alt={image} width={200} height={200} />
       </Box>
       <Typography
         sx={{

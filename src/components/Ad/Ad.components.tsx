@@ -2,7 +2,6 @@ import { Paper, Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Colors } from '../../utils/colors';
-import fs from 'path';
 
 interface AdPropTypes {
   image: string;
@@ -21,8 +20,6 @@ const Ad: FC<AdPropTypes> = ({
   number,
   bgColor,
 }) => {
-  console.log(image, 'image');
-
   return (
     <Paper
       sx={{
@@ -41,7 +38,7 @@ const Ad: FC<AdPropTypes> = ({
         <Image
           width={250}
           height={230}
-          src={image ? require(`../../../uploads${image}`) : ''}
+          src={image}
           style={{ borderRadius: '10px' }}
         />
       </Box>
