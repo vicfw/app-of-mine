@@ -21,6 +21,8 @@ const Ad: FC<AdPropTypes> = ({
   number,
   bgColor,
 }) => {
+  console.log(image, 'image');
+
   return (
     <Paper
       sx={{

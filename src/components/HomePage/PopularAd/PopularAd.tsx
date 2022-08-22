@@ -12,7 +12,7 @@ const PopularAd: FC<any> = ({}) => {
             return (
               <Grid item lg={3}>
                 <Ad
-                  image="/media-1660753437124-926545028.png"
+                  image=""
                   title="title"
                   description={'description'}
                   isPop={true}

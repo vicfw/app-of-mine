@@ -12,21 +12,23 @@ const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
   return (
     <Container sx={{ padding: '20px 0' }}>
       <Grid container spacing={2}>
-        {ads.map((ad) => {
-          console.log(ad.images, 'ad.images');
+        {ads.length > 0
+          ? ads.map((ad) => {
+              console.log(ad.images, 'ad.images');
 
-          return (
-            <Grid item lg={3} key={ad._id}>
-              <Ad
-                title={ad.title}
-                description={ad.description}
-                number={ad.phone}
-                bgColor={Colors.grey.light}
-                image={ad.images[0].img}
-              />
-            </Grid>
-          );
-        })}
+              return (
+                <Grid item lg={3} key={ad._id}>
+                  <Ad
+                    title={ad.title}
+                    description={ad.description}
+                    number={ad.phone}
+                    bgColor={Colors.grey.light}
+                    image={ad.images[0].img}
+                  />
+                </Grid>
+              );
+            })
+          : null}
       </Grid>
     </Container>
   );

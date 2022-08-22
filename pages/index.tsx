@@ -81,6 +81,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       { skip: (page as number) * limit, limit }
     );
 
+    console.log(ads, 'ads');
+
     return {
       props: {
         categories: JSON.parse(JSON.stringify(categories)),
