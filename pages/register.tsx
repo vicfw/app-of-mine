@@ -122,6 +122,7 @@ const Register: FC<any> = ({}) => {
   );
 };
 export default Register;
+
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 

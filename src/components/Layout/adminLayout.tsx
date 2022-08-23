@@ -3,7 +3,6 @@ import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -18,64 +17,31 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-
-const drawerWidth = 240;
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  //ignore-ts
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  })
-);
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
+import { useRouter } from 'next/router';
+import { StarBorder } from '@mui/icons-material';
+import { Collapse } from '@mui/material';
+import { AppBar, DrawerHeader, Main, sidebarList } from './constants';
 
 interface AdminLayoutProps {
   children?: any;
   header?: string;
 }
 
+const drawerWidth = 240;
+
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-
+  const [openSubList, setOpenSubList] = React.useState([
+    {
+      item: 'Ads',
+      open: false,
+    },
+    {
+      item: 'test',
+      open: false,
+    },
+  ]);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -83,6 +49,23 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const router = useRouter();
+
+  const splittedRouter = React.useMemo(() => router.pathname.split('/'), []);
+
+  React.useEffect(() => {
+    setOpenSubList((perv) => {
+      return perv.map((p) => {
+        if (router.pathname.includes(p.item.toLowerCase())) {
+          p.open = true;
+        }
+        return p;
+      });
+    });
+
+    const setBg = () => {};
+  }, [router]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -121,7 +104,17 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        <DrawerHeader sx={{ justifyContent: 'space-between' }}>
+          <Typography
+            sx={{
+              marginLeft: 6.1,
+              fontWeight: 'bold',
+              fontSize: 20,
+              color: (theme) => theme.palette.primary.main,
+            }}
+          >
+            Get Truck
+          </Typography>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
@@ -132,28 +125,66 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
+          {sidebarList.map((item, index) => (
+            <>
+              <ListItem key={item.id} disablePadding>
+                <ListItemButton
+                  onClick={() => {
+                    setOpenSubList((perv) => {
+                      return perv.map((p) => {
+                        if (p.item === item.name) p.open = !p.open;
+                        return p;
+                      });
+                    });
+                  }}
+                >
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </ListItem>
+              {item.subItems.map((it) => {
+                return (
+                  <Collapse
+                    in={openSubList[index]?.open}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <List component="div" disablePadding>
+                      <ListItemButton
+                        sx={{
+                          pl: 4,
+                          backgroundColor:
+                            splittedRouter[splittedRouter.length - 1] ===
+                            it.name.split(' ').join('-').toLowerCase()
+                              ? (theme) => theme.palette.primary.main
+                              : '',
+                          color:
+                            splittedRouter[splittedRouter.length - 1] ===
+                            it.name.split(' ').join('-').toLowerCase()
+                              ? '#fff'
+                              : '#000',
+                        }}
+                        onClick={() =>
+                          router.push(
+                            `/admin/${item.name.toLowerCase()}/${it.name
+                              .split(' ')
+                              .join('-')
+                              .toLowerCase()}`
+                          )
+                        }
+                      >
+                        <ListItemIcon>
+                          <StarBorder />
+                        </ListItemIcon>
+                        <ListItemText primary={it.name} />
+                      </ListItemButton>
+                    </List>
+                  </Collapse>
+                );
+              })}
+            </>
           ))}
         </List>
       </Drawer>
