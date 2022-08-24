@@ -63,8 +63,6 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
         return p;
       });
     });
-
-    const setBg = () => {};
   }, [router]);
 
   return (
@@ -130,6 +128,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
               <ListItem key={item.id} disablePadding>
                 <ListItemButton
                   onClick={() => {
+                    if (!item.subItems?.length) {
+                      router.push(`/admin/${item.name.toLowerCase().trim()}`);
+                    }
                     setOpenSubList((perv) => {
                       return perv.map((p) => {
                         if (p.item === item.name) p.open = !p.open;
@@ -144,46 +145,47 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
                   <ListItemText primary={item.name} />
                 </ListItemButton>
               </ListItem>
-              {item.subItems.map((it) => {
-                return (
-                  <Collapse
-                    in={openSubList[index]?.open}
-                    timeout="auto"
-                    unmountOnExit
-                  >
-                    <List component="div" disablePadding>
-                      <ListItemButton
-                        sx={{
-                          pl: 4,
-                          backgroundColor:
-                            splittedRouter[splittedRouter.length - 1] ===
-                            it.name.split(' ').join('-').toLowerCase()
-                              ? (theme) => theme.palette.primary.main
-                              : '',
-                          color:
-                            splittedRouter[splittedRouter.length - 1] ===
-                            it.name.split(' ').join('-').toLowerCase()
-                              ? '#fff'
-                              : '#000',
-                        }}
-                        onClick={() =>
-                          router.push(
-                            `/admin/${item.name.toLowerCase()}/${it.name
-                              .split(' ')
-                              .join('-')
-                              .toLowerCase()}`
-                          )
-                        }
-                      >
-                        <ListItemIcon>
-                          <StarBorder />
-                        </ListItemIcon>
-                        <ListItemText primary={it.name} />
-                      </ListItemButton>
-                    </List>
-                  </Collapse>
-                );
-              })}
+              {item.subItems?.length &&
+                item.subItems.map((it) => {
+                  return (
+                    <Collapse
+                      in={openSubList[index]?.open}
+                      timeout="auto"
+                      unmountOnExit
+                    >
+                      <List component="div" disablePadding>
+                        <ListItemButton
+                          sx={{
+                            pl: 4,
+                            backgroundColor:
+                              splittedRouter[splittedRouter.length - 1] ===
+                              it.name.split(' ').join('-').toLowerCase()
+                                ? (theme) => theme.palette.primary.main
+                                : '',
+                            color:
+                              splittedRouter[splittedRouter.length - 1] ===
+                              it.name.split(' ').join('-').toLowerCase()
+                                ? '#fff'
+                                : '#000',
+                          }}
+                          onClick={() =>
+                            router.push(
+                              `/admin/${item.name.toLowerCase()}/${it.name
+                                .split(' ')
+                                .join('-')
+                                .toLowerCase()}`
+                            )
+                          }
+                        >
+                          <ListItemIcon>
+                            <StarBorder />
+                          </ListItemIcon>
+                          <ListItemText primary={it.name} />
+                        </ListItemButton>
+                      </List>
+                    </Collapse>
+                  );
+                })}
             </>
           ))}
         </List>

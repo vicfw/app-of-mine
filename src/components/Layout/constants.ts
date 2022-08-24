@@ -14,9 +14,8 @@ export const sidebarList = [
     subItems: [{ name: 'Approved' }, { name: 'Not Approved' }],
   },
   {
-    name: 'test',
-    id: 1,
-    subItems: [{ name: 'Approved' }, { name: 'Not Approved' }],
+    name: 'Categories',
+    id: 2,
   },
 ];
 
