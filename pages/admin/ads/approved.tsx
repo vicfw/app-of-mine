@@ -5,30 +5,38 @@ import AdminLayout from '../../../src/components/Layout/adminLayout';
 import style from '../../../src/styles/adminTable.module.css';
 import { AdsType } from '../../../types/ad';
 
-interface NotApprovedProps {
-  ads?: AdsType[];
-}
+interface ApprovedProps {}
 
-const NotApproved: FC<NotApprovedProps> = () => {
-  const [tableData, setTableData] = useState([
-    {
-      id: '',
-      title: '',
-      isSelected: false,
-      createdAt: new Date(),
-    },
-  ]);
+const Approved: FC<ApprovedProps> = () => {
+  const [tableData, setTableData] = useState<
+    | {
+        id: string;
+        title: string;
+        isSelected: boolean;
+        createdAt: Date;
+      }[]
+    | []
+  >([]);
+
+  const [pagination, setPagination] = useState({
+    skip: 0,
+    limit: 10,
+  });
+  const [totalAds, setTotalAds] = useState(0);
 
   const fetchAds = async () => {
-    const res = await fetch('/api/admin/approved?hello=farid', {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const result: { success: boolean; data: AdsType[] } = await res.json();
+    const res = await fetch(
+      `/api/admin/approved?skip=${pagination.skip}&limit=${pagination.limit}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const result: { success: boolean; data: AdsType[]; total: number } =
+      await res.json();
 
     if (result.success) {
       const mappedAds = result.data.map((ad) => {
@@ -40,14 +48,15 @@ const NotApproved: FC<NotApprovedProps> = () => {
         };
       });
 
-      setTableData(mappedAds);
+      setTableData((perv) => [...perv, ...mappedAds]);
+      setTotalAds(result.total);
     }
   };
 
   const deleteAds = async () => {
     const body = tableData.filter((dt) => dt.isSelected).map((bd) => bd.id);
 
-    const res = await fetch('/api/admin/not-approved?hello=farid', {
+    const res = await fetch('/api/admin/approved', {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -67,7 +76,7 @@ const NotApproved: FC<NotApprovedProps> = () => {
 
   useEffect(() => {
     fetchAds();
-  }, []);
+  }, [pagination]);
 
   return (
     <AdminLayout header="Approved Ads">
@@ -121,8 +130,20 @@ const NotApproved: FC<NotApprovedProps> = () => {
             })}
           </tbody>
         </table>
+        <Box display={'flex'} justifyContent="center" width="%100" mt={1}>
+          <Button
+            sx={{ color: '#fff' }}
+            variant="contained"
+            onClick={() =>
+              setPagination((perv) => ({ ...perv, skip: perv.skip + 10 }))
+            }
+            disabled={tableData.length >= totalAds}
+          >
+            Load More...
+          </Button>
+        </Box>
       </Container>
     </AdminLayout>
   );
 };
-export default NotApproved;
+export default Approved;

@@ -63,7 +63,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
         return p;
       });
     });
-  }, [router]);
+  }, []);
 
   return (
     <Box sx={{ display: 'flex' }}>

@@ -7,19 +7,20 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { method } = req;
-
-  console.log(req.query, 'query');
+  const { query } = req;
 
   await dbConnect();
 
   switch (method) {
     case 'GET':
       try {
-        const ad = await Ad.find({ isApproved: true });
+        const total = await Ad.find({ isApproved: true }).countDocuments();
+        const ad = await Ad.find({ isApproved: true })
+          .limit(query?.limit ? +query.limit : 9999)
+          .skip(query?.skip ? +query.skip : 0)
+          .sort({ createdAt: -1 });
 
-        console.log(ad, 'ad');
-
-        res.status(201).json({ success: true, data: ad });
+        res.status(201).json({ success: true, data: ad, total });
       } catch (e: any) {
         res.status(201).json({
           success: false,

@@ -10,25 +10,38 @@ interface NotApprovedProps {
 }
 
 const NotApproved: FC<NotApprovedProps> = () => {
-  const [tableData, setTableData] = useState([
-    {
-      id: '',
-      title: '',
-      isSelected: false,
-      createdAt: new Date(),
-    },
-  ]);
+  const [tableData, setTableData] = useState<
+    | {
+        id: string;
+        title: string;
+        isSelected: boolean;
+        createdAt: Date;
+      }[]
+    | []
+  >([]);
+  const [pagination, setPagination] = useState({
+    skip: 0,
+    limit: 10,
+  });
+  const [totalAds, setTotalAds] = useState(0);
+
+  console.log(totalAds, 'totalAds');
+  console.log(tableData.length, 'tableData.length,');
 
   const fetchAds = async () => {
-    const res = await fetch('/api/admin/not-approved?hello=farid', {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
+    const res = await fetch(
+      `/api/admin/not-approved?skip=${pagination.skip}&limit=${pagination.limit}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-    const result: { success: boolean; data: AdsType[] } = await res.json();
+    const result: { success: boolean; data: AdsType[]; total: number } =
+      await res.json();
 
     if (result.success) {
       const mappedAds = result.data.map((ad) => {
@@ -40,7 +53,8 @@ const NotApproved: FC<NotApprovedProps> = () => {
         };
       });
 
-      setTableData(mappedAds);
+      setTableData((perv) => [...perv, ...mappedAds]);
+      setTotalAds(result.total);
     }
   };
 
@@ -67,7 +81,7 @@ const NotApproved: FC<NotApprovedProps> = () => {
 
   useEffect(() => {
     fetchAds();
-  }, []);
+  }, [pagination]);
 
   return (
     <AdminLayout header="Not Approved Ads">
@@ -86,15 +100,15 @@ const NotApproved: FC<NotApprovedProps> = () => {
           <thead>
             <tr>
               <th></th>
-              <th>Id</th>
+              <th>NO.</th>
               <th>Title</th>
-              <th>createdAt</th>
+              <th>CreatedAt</th>
             </tr>
           </thead>
           <tbody>
             {tableData.map((dt, index) => {
               return (
-                <tr>
+                <tr key={dt.id}>
                   <td className={style.td}>
                     <input
                       type="checkbox"
@@ -121,6 +135,21 @@ const NotApproved: FC<NotApprovedProps> = () => {
             })}
           </tbody>
         </table>
+        <Box display={'flex'} justifyContent="center" width="%100" mt={1}>
+          <Button
+            sx={{ color: '#fff' }}
+            variant="contained"
+            onClick={() =>
+              setPagination((perv) => ({
+                ...perv,
+                skip: perv.skip + tableData.length,
+              }))
+            }
+            disabled={tableData.length >= totalAds}
+          >
+            Load More...
+          </Button>
+        </Box>
       </Container>
     </AdminLayout>
   );

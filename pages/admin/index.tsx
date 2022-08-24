@@ -3,10 +3,10 @@ import { getSession } from 'next-auth/react';
 import { FC } from 'react';
 import AdminLayout from '../../src/components/Layout/adminLayout';
 
-const index: FC<any> = ({}) => {
+const Index: FC<any> = ({}) => {
   return <AdminLayout></AdminLayout>;
 };
-export default index;
+export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
