@@ -1,7 +1,11 @@
 import { styled, useTheme } from '@mui/material/styles';
-import MuiAppBar from '@mui/material/AppBar';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
 const drawerWidth = 240;
+
+interface AppBarProps extends MuiAppBarProps {
+  open?: boolean;
+}
 
 export const sidebarList = [
   {
@@ -18,7 +22,9 @@ export const sidebarList = [
 
 export const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
-})(
+})<{
+  open?: boolean;
+}>(
   //ignore-ts
   ({ theme, open }) => ({
     flexGrow: 1,
@@ -40,7 +46,7 @@ export const Main = styled('main', {
 
 export const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
+})<AppBarProps>(({ theme, open }) => ({
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
