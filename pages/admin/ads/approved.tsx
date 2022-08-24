@@ -135,7 +135,10 @@ const Approved: FC<ApprovedProps> = () => {
             sx={{ color: '#fff' }}
             variant="contained"
             onClick={() =>
-              setPagination((perv) => ({ ...perv, skip: perv.skip + 10 }))
+              setPagination((perv) => ({
+                ...perv,
+                skip: perv.skip + tableData.length,
+              }))
             }
             disabled={tableData.length >= totalAds}
           >
