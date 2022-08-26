@@ -1,92 +1,34 @@
 import { Box, Button, Container } from '@mui/material';
 import { format } from 'date-fns';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
+import ApprovalModal from '../../../src/components/ApprovalModal/ApprovalModal';
 import AdminLayout from '../../../src/components/Layout/adminLayout';
+import { useApprovedPage } from '../../../src/pageHooks/approved';
 import style from '../../../src/styles/adminTable.module.css';
-import { AdsType } from '../../../types/ad';
 
 interface ApprovedProps {}
 
 const Approved: FC<ApprovedProps> = () => {
-  const [tableData, setTableData] = useState<
-    | {
-        id: string;
-        title: string;
-        isSelected: boolean;
-        createdAt: Date;
-      }[]
-    | []
-  >([]);
-
-  const [pagination, setPagination] = useState({
-    skip: 0,
-    limit: 10,
-  });
-  const [totalAds, setTotalAds] = useState(0);
-
-  const fetchAds = async () => {
-    const res = await fetch(
-      `/api/admin/approved?skip=${pagination.skip}&limit=${pagination.limit}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const result: { success: boolean; data: AdsType[]; total: number } =
-      await res.json();
-
-    if (result.success) {
-      const mappedAds = result.data.map((ad) => {
-        return {
-          id: ad._id,
-          title: ad.title,
-          isSelected: false,
-          createdAt: new Date(ad.createdAt),
-        };
-      });
-
-      setTableData((perv) => [...perv, ...mappedAds]);
-      setTotalAds(result.total);
-    }
-  };
-
-  const deleteAds = async () => {
-    const body = tableData.filter((dt) => dt.isSelected).map((bd) => bd.id);
-
-    const res = await fetch('/api/admin/approved', {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    const result: { success: boolean } = await res.json();
-
-    if (result.success) {
-      setTableData((perv) => {
-        return perv.filter((p) => !p.isSelected);
-      });
-    }
-  };
-
-  useEffect(() => {
-    fetchAds();
-  }, [pagination]);
+  const { val, on, set } = useApprovedPage();
 
   return (
     <AdminLayout header="Approved Ads">
+      <ApprovalModal
+        openState={{
+          open: val.deleteModalState,
+          setOpen: set.setDeleteModalState,
+        }}
+        bodyText="Are You Sure To Delete ?"
+        func={on.deleteAds}
+      />
       <Container>
         <Box display="flex" justifyContent={'end'}>
           {' '}
           <Button
             sx={{ textTransform: 'capitalizes', color: '#fff' }}
             variant="contained"
-            onClick={deleteAds}
+            onClick={() => on.canDelete() && set.setDeleteModalState(true)}
+            disabled={!on.canDelete()}
           >
             Delete Ad(s)
           </Button>
@@ -101,15 +43,15 @@ const Approved: FC<ApprovedProps> = () => {
             </tr>
           </thead>
           <tbody>
-            {tableData.map((dt, index) => {
+            {val.tableData.map((dt, index) => {
               return (
-                <tr>
+                <tr key={dt.id}>
                   <td className={style.td}>
                     <input
                       type="checkbox"
                       checked={dt.isSelected}
                       onChange={(e) => {
-                        setTableData((perv) => {
+                        set.setTableData((perv) => {
                           return perv.map((p) => {
                             if (p.id === dt.id) {
                               p.isSelected = e.target.checked;
@@ -135,12 +77,12 @@ const Approved: FC<ApprovedProps> = () => {
             sx={{ color: '#fff' }}
             variant="contained"
             onClick={() =>
-              setPagination((perv) => ({
+              set.setPagination((perv) => ({
                 ...perv,
-                skip: tableData.length,
+                skip: val.tableData.length,
               }))
             }
-            disabled={tableData.length >= totalAds}
+            disabled={val.tableData.length >= val.totalAds}
           >
             Load More...
           </Button>

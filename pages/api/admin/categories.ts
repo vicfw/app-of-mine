@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Ad from '../../../models/Ad';
+import Category from '../../../models/Category';
 import dbConnect from '../../../src/utils/dbConnect';
 
 export default async function handler(
@@ -14,13 +14,13 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const total = await Ad.find({ isApproved: true }).count();
-        const ad = await Ad.find({ isApproved: true })
+        const total = await Category.estimatedDocumentCount();
+        const category = await Category.find()
           .limit(query?.limit ? +query.limit : 9999)
           .skip(query?.skip ? +query.skip : 0)
           .sort({ createdAt: -1 });
 
-        res.status(201).json({ success: true, data: ad, total });
+        res.status(201).json({ success: true, data: category, total });
       } catch (e: any) {
         res.status(201).json({
           success: false,
@@ -32,15 +32,26 @@ export default async function handler(
       break;
 
     case 'DELETE':
-      const dd = await Ad.deleteMany({ _id: req.body });
-
-      console.log(dd);
+      const dd = await Category.deleteMany({ _id: req.body });
 
       if (dd.acknowledged && dd.deletedCount > 0) {
-        return res.status(200).json({ success: true });
+        res.status(200).json({ success: true });
       }
-      return res.status(400).json({ success: false });
+      res.status(400).json({ success: false });
+      break;
+    case 'PATCH':
+      const updated = await Category.updateMany(
+        { _id: req.body },
+        { isApproved: true } //this part need to be fixed
+      );
 
+      if (updated.acknowledged) {
+        res.status(201).json({ success: true });
+      } else {
+        res.status(400).json({ success: false, data: null });
+      }
+
+      break;
     default:
       res.status(400).json({ success: false, message: 'something went wrong' });
 
