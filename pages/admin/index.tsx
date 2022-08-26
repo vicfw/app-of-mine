@@ -8,20 +8,32 @@ const Index: FC<any> = ({}) => {
 };
 export default Index;
 
-// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-//   const session = await getSession({ req });
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  try {
+    await dbConnect();
 
-//   console.log(session);
+    const session = await getSession({ req });
 
-//   if (session && !session.user.isAdmin) {
-//     return {
-//       props: {},
-//       //   redirect: {
-//       //     destination: '/',
-//       //     permanent: false,
-//       //   },
-//     };
-//   } else {
-//     return { props: {} };
-//   }
-// };
+    console.log(session);
+
+    if (!session?.user.isAdmin) {
+      return {
+        props: {},
+        //   redirect: {
+        //     destination: '/',
+        //     permanent: false,
+        //   },
+      };
+    } else {
+      return {
+        props: {},
+        //   redirect: {
+        //     destination: '/',
+        //     permanent: false,
+        //   },
+      };
+    }
+  } catch (e) {
+    return { props: {} };
+  }
+};
