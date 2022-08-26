@@ -126,8 +126,6 @@ export default Register;
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
 
-  console.log(session);
-
   if (session) {
     return {
       props: {},

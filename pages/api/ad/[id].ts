@@ -25,8 +25,6 @@ export default async function handler(
     case 'DELETE':
       const { id: deleteId } = req.query as { id: string };
 
-      console.log(deleteId);
-
       try {
         const deletedAd = await Ad.findByIdAndDelete(deleteId);
 

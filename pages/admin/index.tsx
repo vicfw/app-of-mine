@@ -12,8 +12,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     const session = await getSession({ req });
 
-    console.log(session);
-
     if (!session?.user.isAdmin) {
       return {
         props: {},

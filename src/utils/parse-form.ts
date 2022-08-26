@@ -11,21 +11,15 @@ export const parseForm = async (
   req: NextApiRequest
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   return await new Promise(async (resolve, reject) => {
-    console.log(__dirname, '../public');
-
     const uploadDir = join(process.cwd(), '/public');
     // const uploadDir = join(
     //   process.env.ROOT_DIR || process.cwd(),
     //   `/uploads/${dateFn.format(Date.now(), 'dd-MM-Y')}`
     // );
 
-    console.log(uploadDir, 'uploadDir');
-
     try {
       await stat(uploadDir);
     } catch (e: any) {
-      console.log(e, 'from stat');
-
       // if (e.code === 'ENOENT') {
       //   await mkdir(uploadDir, { recursive: true });
       // } else {
@@ -52,8 +46,6 @@ export const parseForm = async (
         return filename;
       },
       filter: (part) => {
-        console.log(part, 'parted');
-
         return (
           part.name === 'media' && (part.mimetype?.includes('image') || false)
         );
@@ -61,8 +53,6 @@ export const parseForm = async (
     });
 
     form.parse(req, function (err, fields, files) {
-      console.log(err, 'in err');
-
       if (err) reject(err);
       else resolve({ fields, files });
     });

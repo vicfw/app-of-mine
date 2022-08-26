@@ -65,7 +65,7 @@ const Approved: FC<ApprovedProps> = () => {
       body: JSON.stringify(body),
     });
 
-    const result: { success: boolean; data: AdsType[] } = await res.json();
+    const result: { success: boolean } = await res.json();
 
     if (result.success) {
       setTableData((perv) => {
@@ -137,7 +137,7 @@ const Approved: FC<ApprovedProps> = () => {
             onClick={() =>
               setPagination((perv) => ({
                 ...perv,
-                skip: perv.skip + tableData.length,
+                skip: tableData.length,
               }))
             }
             disabled={tableData.length >= totalAds}

@@ -25,9 +25,6 @@ const NotApproved: FC<NotApprovedProps> = () => {
   });
   const [totalAds, setTotalAds] = useState(0);
 
-  console.log(totalAds, 'totalAds');
-  console.log(tableData.length, 'tableData.length,');
-
   const fetchAds = async () => {
     const res = await fetch(
       `/api/admin/not-approved?skip=${pagination.skip}&limit=${pagination.limit}`,
@@ -142,7 +139,7 @@ const NotApproved: FC<NotApprovedProps> = () => {
             onClick={() =>
               setPagination((perv) => ({
                 ...perv,
-                skip: perv.skip + tableData.length,
+                skip: tableData.length,
               }))
             }
             disabled={tableData.length >= totalAds}

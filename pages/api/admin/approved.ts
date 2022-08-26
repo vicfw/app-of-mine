@@ -34,7 +34,9 @@ export default async function handler(
     case 'DELETE':
       const dd = await Ad.deleteMany({ _id: req.body });
 
-      if (dd.acknowledged) {
+      console.log(dd);
+
+      if (dd.acknowledged && dd.deletedCount > 0) {
         return res.status(200).json({ success: true });
       }
       return res.status(400).json({ success: false });

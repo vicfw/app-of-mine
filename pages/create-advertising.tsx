@@ -70,8 +70,6 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     setErrorString((perv) => ({ ...perv, [e.target.name]: '' }));
   };
 
-  console.log(loading, 'loading');
-
   const onFileUploadChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const fileInput = e.target;
 
@@ -163,7 +161,6 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     }
 
     /** Setting file state */
-    console.log(data, 'data');
 
     if (data?.url) {
       setCreateAd((perv) => ({
@@ -228,8 +225,6 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
     const values = Object.values(errorString);
 
     const haveError = values.some((err) => err);
-
-    console.log(haveError, 'haveError');
 
     if (haveError) return;
 

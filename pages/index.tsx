@@ -68,7 +68,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const limit = 10;
 
   const session = await getSession({ req });
-  console.log(session, 'session');
 
   try {
     const categories = await Category.find();
@@ -80,8 +79,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       {},
       { skip: (page as number) * limit, limit }
     );
-
-    console.log(ads, 'ads');
 
     return {
       props: {

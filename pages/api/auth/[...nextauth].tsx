@@ -34,11 +34,7 @@ export default NextAuth({
       async authorize(credentials) {
         if (!credentials) return;
 
-        console.log(credentials, 'credentials');
-
         await dbConnect();
-
-        console.log(credentials, 'credentials');
 
         const user = await UserEntity.findOne({ email: credentials!.email });
 

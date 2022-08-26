@@ -14,7 +14,7 @@ const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
       <Grid container spacing={2}>
         {ads.length > 0
           ? ads.map((ad) => {
-              console.log(ad.images, 'ad.images');
+              ad.images, 'ad.images';
 
               return (
                 <Grid item lg={3} key={ad._id}>
