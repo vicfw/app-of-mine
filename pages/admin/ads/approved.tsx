@@ -1,10 +1,10 @@
-import { Box, Button, Container } from '@mui/material';
-import { format } from 'date-fns';
-import { FC } from 'react';
-import ApprovalModal from '../../../src/components/ApprovalModal/ApprovalModal';
-import AdminLayout from '../../../src/components/Layout/adminLayout';
-import { useApprovedPage } from '../../../src/pageHooks/approved';
-import style from '../../../src/styles/adminTable.module.css';
+import { Box, Button, Container } from "@mui/material";
+import { format } from "date-fns";
+import { FC } from "react";
+import ApprovalModal from "../../../src/components/ApprovalModal/ApprovalModal";
+import AdminLayout from "../../../src/components/Layout/adminLayout";
+import { useApprovedPage } from "../../../src/pageHooks/approved";
+import style from "../../../src/styles/adminTable.module.css";
 
 interface ApprovedProps {}
 
@@ -22,10 +22,10 @@ const Approved: FC<ApprovedProps> = () => {
         func={on.deleteAds}
       />
       <Container>
-        <Box display="flex" justifyContent={'end'}>
-          {' '}
+        <Box display="flex" justifyContent={"end"}>
+          {" "}
           <Button
-            sx={{ textTransform: 'capitalizes', color: '#fff' }}
+            sx={{ textTransform: "capitalizes", color: "#fff" }}
             variant="contained"
             onClick={() => on.canDelete() && set.setDeleteModalState(true)}
             disabled={!on.canDelete()}
@@ -65,16 +65,16 @@ const Approved: FC<ApprovedProps> = () => {
                   <td className={style.td}>{index + 1}</td>
                   <td className={style.td}>{dt.title}</td>
                   <td className={style.td}>
-                    {format(dt.createdAt, 'yyy/MM/dd')}
+                    {format(dt.createdAt, "yyy/MM/dd")}
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <Box display={'flex'} justifyContent="center" width="%100" mt={1}>
+        <Box display={"flex"} justifyContent="center" width="%100" mt={1}>
           <Button
-            sx={{ color: '#fff' }}
+            sx={{ color: "#fff" }}
             variant="contained"
             onClick={() =>
               set.setPagination((perv) => ({
@@ -92,3 +92,25 @@ const Approved: FC<ApprovedProps> = () => {
   );
 };
 export default Approved;
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  try {
+    const session = await getSession({ req });
+
+    if (session?.user.isAdmin) {
+      return {
+        props: {},
+      };
+    } else {
+      return {
+        props: {},
+        redirect: {
+          destination: "/admin/login",
+          permanent: false,
+        },
+      };
+    }
+  } catch (e) {
+    return { props: {} };
+  }
+};
