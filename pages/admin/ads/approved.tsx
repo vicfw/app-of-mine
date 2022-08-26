@@ -1,5 +1,7 @@
 import { Box, Button, Container } from "@mui/material";
 import { format } from "date-fns";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 import { FC } from "react";
 import ApprovalModal from "../../../src/components/ApprovalModal/ApprovalModal";
 import AdminLayout from "../../../src/components/Layout/adminLayout";
