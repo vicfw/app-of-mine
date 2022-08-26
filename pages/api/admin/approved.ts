@@ -14,7 +14,7 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const total = await Ad.find({ isApproved: true }).countDocuments();
+        const total = await Ad.find({ isApproved: true }).count();
         const ad = await Ad.find({ isApproved: true })
           .limit(query?.limit ? +query.limit : 9999)
           .skip(query?.skip ? +query.skip : 0)

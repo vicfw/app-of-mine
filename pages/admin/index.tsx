@@ -10,8 +10,6 @@ export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
-    await dbConnect();
-
     const session = await getSession({ req });
 
     console.log(session);
