@@ -28,7 +28,7 @@ export const useAuth = (whichPage: string) => {
         email: email.value,
         password: password.value,
       });
-      console.log(response);
+      response;
 
       if (response?.error) {
         setLoginError(response.error);
@@ -48,6 +48,7 @@ export const useAuth = (whichPage: string) => {
           body: JSON.stringify({
             email: email.value,
             password: password.value,
+            fromAdmin: true,
           }),
         });
 
@@ -63,7 +64,7 @@ export const useAuth = (whichPage: string) => {
           router.replace('/login');
         }
       } catch (error) {
-        console.log(error);
+        error;
       }
     }
   };

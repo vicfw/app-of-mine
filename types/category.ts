@@ -4,4 +4,5 @@ export interface CategoryType {
   slug: string;
   createdAt: Date;
   updatedAt: Date;
+  image: string;
 }

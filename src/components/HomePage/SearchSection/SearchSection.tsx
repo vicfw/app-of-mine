@@ -7,8 +7,8 @@ const SearchSection: FC<any> = ({}) => {
       sx={{
         backgroundImage: "url('/bc-search.jpg')",
         backgroundPosition: 'center center',
-        minHeight: '700px',
-        maxHeight: '700px',
+        minHeight: '75vh',
+        maxHeight: '75vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

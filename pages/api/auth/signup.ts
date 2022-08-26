@@ -25,8 +25,6 @@ export default async function handler(
 
         res.status(201).json({ success: true, data: { email: newUser.email } });
       } catch (e: any) {
-        console.log(e, 'error api');
-
         if (e.message.includes('duplicate')) {
           res.status(400).json({
             success: false,

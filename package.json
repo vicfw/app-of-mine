@@ -25,6 +25,7 @@
     "mongoose": "^6.0.11",
     "next": "latest",
     "next-auth": "^4.10.3",
+    "next-images": "^1.8.4",
     "react": "latest",
     "react-dom": "latest"
   },

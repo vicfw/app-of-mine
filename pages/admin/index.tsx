@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import { FC } from "react";
-import AdminLayout from "../../src/components/Layout/";
+import AdminLayout from "../../src/components/Layout/adminLayout";
 
 const Index: FC<any> = ({}) => {
   return <AdminLayout></AdminLayout>;

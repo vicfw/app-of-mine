@@ -11,21 +11,22 @@ export const parseForm = async (
   req: NextApiRequest
 ): Promise<{ fields: formidable.Fields; files: formidable.Files }> => {
   return await new Promise(async (resolve, reject) => {
-    const uploadDir = join(
-      process.env.ROOT_DIR || process.cwd(),
-      `/uploads/${dateFn.format(Date.now(), 'dd-MM-Y')}`
-    );
+    const uploadDir = join(process.cwd(), '/public');
+    // const uploadDir = join(
+    //   process.env.ROOT_DIR || process.cwd(),
+    //   `/uploads/${dateFn.format(Date.now(), 'dd-MM-Y')}`
+    // );
 
     try {
       await stat(uploadDir);
     } catch (e: any) {
-      if (e.code === 'ENOENT') {
-        await mkdir(uploadDir, { recursive: true });
-      } else {
-        console.error(e);
-        reject(e);
-        return;
-      }
+      // if (e.code === 'ENOENT') {
+      //   await mkdir(uploadDir, { recursive: true });
+      // } else {
+      //   console.error(e);
+      //   reject(e);
+      //   return;
+      // }
     }
 
     let filename = ''; //  To avoid duplicate upload
@@ -52,8 +53,6 @@ export const parseForm = async (
     });
 
     form.parse(req, function (err, fields, files) {
-      console.log(err, 'in err');
-
       if (err) reject(err);
       else resolve({ fields, files });
     });

@@ -19,6 +19,10 @@ const AdSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isPopular: {
+      type: Boolean,
+      default: false,
+    },
     phone: {
       type: String,
       minlength: 4,

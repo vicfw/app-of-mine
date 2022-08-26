@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { Colors } from '../../utils/colors';
 
 const Header: FC<any> = ({}) => {
   const router = useRouter();
@@ -24,17 +25,12 @@ const Header: FC<any> = ({}) => {
             minHeight={50}
           >
             <Box
-              color={'#464545'}
+              color={Colors.grey.dark}
               display="flex"
               style={{ cursor: 'pointer', gap: 10 }}
             >
-              <span>Cars,Trucks {'&'} SUVs</span>
               <span>Commercial / Heavy Trucks</span>
               <span>Trailers</span>
-              <span>RVs</span>
-              <span>Boats</span>
-              <span>Watercraft</span>
-              <span>Bikes {'&'} ATVs</span>
             </Box>
 
             <Box
@@ -42,9 +38,12 @@ const Header: FC<any> = ({}) => {
               alignItems={'center'}
               style={{ cursor: 'pointer', gap: 10 }}
             >
-              <FaceIcon />
+              <FaceIcon sx={{ color: Colors.grey.dark }} />
               <NextLink href={'/login'}>
-                <Box component={'span'} sx={{ fontWeight: 'bold' }}>
+                <Box
+                  component={'span'}
+                  sx={{ fontWeight: 'bold', color: Colors.grey.dark }}
+                >
                   Log In
                 </Box>
               </NextLink>
@@ -82,15 +81,14 @@ const Header: FC<any> = ({}) => {
                 <Button
                   variant="contained"
                   sx={{
-                    width: 150,
                     color: '#fff',
                     borderRadius: 10,
                     backgroundImage:
-                      'linear-gradient(180deg, rgba(141,206,179,1) 0%, rgba(36,126,89,1) 74%)',
+                      'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
                     textTransform: 'capitalize',
                   }}
                 >
-                  Sell My Car
+                  Sell My Truck/Trailer
                 </Button>
               </NextLink>
             </Box>

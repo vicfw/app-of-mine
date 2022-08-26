@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Ad from '../../../models/Ad';
+import dbConnect from '../../../src/utils/dbConnect';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { method } = req;
+  await dbConnect();
 
   switch (method) {
     case 'PATCH':
@@ -22,8 +24,6 @@ export default async function handler(
 
     case 'DELETE':
       const { id: deleteId } = req.query as { id: string };
-
-      console.log(deleteId);
 
       try {
         const deletedAd = await Ad.findByIdAndDelete(deleteId);

@@ -13,7 +13,7 @@ const handler = async (
     res.setHeader('Allow', 'POST');
     res.status(405).json({
       data: null,
-      error: 'Method Not Allowed',
+      error: 'Method Not Allowed!',
     });
     return;
   }
@@ -21,8 +21,10 @@ const handler = async (
   try {
     const { fields, files } = await parseForm(req);
 
-    const file = files.media;
-    let url = Array.isArray(file) ? file.map((f) => f.filepath) : file.filepath;
+    const file = files!.media;
+    let url = Array.isArray(file)
+      ? file.map((f) => f.newFilename)
+      : `/${file.newFilename}`;
 
     res.status(200).json({
       data: {

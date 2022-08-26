@@ -1,13 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Category from '../../../models/Category';
+import dbConnect from '../../../src/utils/dbConnect';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { method } = req;
-
-  console.log('method:', method);
+  await dbConnect();
 
   switch (method) {
     case 'POST':
