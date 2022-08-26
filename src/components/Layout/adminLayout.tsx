@@ -1,26 +1,26 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { useRouter } from 'next/router';
-import { StarBorder } from '@mui/icons-material';
-import { Collapse } from '@mui/material';
-import { AppBar, DrawerHeader, Main, sidebarList } from './constants';
+import * as React from "react";
+import { styled, useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import { useRouter } from "next/router";
+import { StarBorder } from "@mui/icons-material";
+import { Collapse } from "@mui/material";
+import { AppBar, DrawerHeader, Main, sidebarList } from "./constants";
 
 interface AdminLayoutProps {
   children?: any;
@@ -34,11 +34,11 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
   const [open, setOpen] = React.useState(true);
   const [openSubList, setOpenSubList] = React.useState([
     {
-      item: 'Ads',
+      item: "Ads",
       open: false,
     },
     {
-      item: 'test',
+      item: "test",
       open: false,
     },
   ]);
@@ -52,7 +52,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
 
   const router = useRouter();
 
-  const splittedRouter = React.useMemo(() => router.pathname.split('/'), []);
+  const splittedRouter = React.useMemo(() => router.pathname.split("/"), []);
 
   React.useEffect(() => {
     setOpenSubList((perv) => {
@@ -66,7 +66,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
@@ -75,7 +75,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2, ...(open && { display: "none" }) }}
           >
             <MenuIcon />
           </IconButton>
@@ -83,9 +83,9 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ color: '#fff ' }}
+            sx={{ color: "#fff " }}
           >
-            {header ?? 'Home'}
+            {header ?? "Home"}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -93,20 +93,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
         sx={{
           width: drawerWidth,
           flexShrink: 0,
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
             width: drawerWidth,
-            boxSizing: 'border-box',
+            boxSizing: "border-box",
           },
         }}
         variant="persistent"
         anchor="left"
         open={open}
       >
-        <DrawerHeader sx={{ justifyContent: 'space-between' }}>
+        <DrawerHeader sx={{ justifyContent: "space-between" }}>
           <Typography
             sx={{
               marginLeft: 6.1,
-              fontWeight: 'bold',
+              fontWeight: "bold",
               fontSize: 20,
               color: (theme) => theme.palette.primary.main,
             }}
@@ -114,7 +114,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
             Get Truck
           </Typography>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? (
+            {theme.direction === "ltr" ? (
               <ChevronLeftIcon />
             ) : (
               <ChevronRightIcon />
@@ -152,6 +152,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
                       in={openSubList[index]?.open}
                       timeout="auto"
                       unmountOnExit
+                      key={it.name}
                     >
                       <List component="div" disablePadding>
                         <ListItemButton
@@ -159,20 +160,20 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
                             pl: 4,
                             backgroundColor:
                               splittedRouter[splittedRouter.length - 1] ===
-                              it.name.split(' ').join('-').toLowerCase()
+                              it.name.split(" ").join("-").toLowerCase()
                                 ? (theme) => theme.palette.primary.main
-                                : '',
+                                : "",
                             color:
                               splittedRouter[splittedRouter.length - 1] ===
-                              it.name.split(' ').join('-').toLowerCase()
-                                ? '#fff'
-                                : '#000',
+                              it.name.split(" ").join("-").toLowerCase()
+                                ? "#fff"
+                                : "#000",
                           }}
                           onClick={() =>
                             router.push(
                               `/admin/${item.name.toLowerCase()}/${it.name
-                                .split(' ')
-                                .join('-')
+                                .split(" ")
+                                .join("-")
                                 .toLowerCase()}`
                             )
                           }
