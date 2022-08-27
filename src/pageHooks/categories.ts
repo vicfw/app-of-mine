@@ -178,6 +178,9 @@ export const useCategoriesPage = () => {
           return p;
         });
       });
+      setOpenEditModal(false);
+    } else {
+      alert('something went wrong,try again later');
     }
   };
 
