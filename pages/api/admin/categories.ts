@@ -13,6 +13,8 @@ export default async function handler(
 
   switch (method) {
     case 'GET':
+      console.log(req);
+
       try {
         const total = await Category.estimatedDocumentCount();
         const category = await Category.find()

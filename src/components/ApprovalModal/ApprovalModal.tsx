@@ -15,6 +15,7 @@ interface ApprovalModalProps {
   approveBtnText?: string;
   cancelBtnText?: string;
   func: () => void;
+  children?: any;
 }
 
 const ApprovalModal: FC<ApprovalModalProps> = ({
@@ -23,6 +24,7 @@ const ApprovalModal: FC<ApprovalModalProps> = ({
   approveBtnText,
   cancelBtnText,
   func,
+  children,
 }) => {
   const handleToggle = () => {
     setOpen(!open);
@@ -38,8 +40,8 @@ const ApprovalModal: FC<ApprovalModalProps> = ({
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle> {bodyText}</DialogTitle>
-
-        <DialogActions>
+        {children && children}
+        <DialogActions sx={{ justifyContent: 'center' }}>
           <Button variant="contained" sx={{ color: '#fff' }} onClick={func}>
             {approveBtnText || 'Submit'}
           </Button>

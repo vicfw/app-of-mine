@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
 }) => {
   await dbConnect();
-  const limit = 10;
+  const limit = 12;
 
   const session = await getSession({ req });
 

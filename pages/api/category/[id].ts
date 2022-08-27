@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { json } from 'stream/consumers';
 import Category from '../../../models/Category';
 import dbConnect from '../../../src/utils/dbConnect';
 
@@ -13,8 +14,14 @@ export default async function handler(
     case 'PATCH':
       const { id: updateId } = req.query as { id: string };
 
+      const parsedBody = JSON.parse(req.body);
+
+      const finalData = Object.assign(parsedBody, {
+        slug: parsedBody.name.trim().split(' ').join('_'),
+      });
+
       try {
-        const newAd = await Category.updateOne({ updateId }, { ...req.body });
+        const newAd = await Category.updateOne({ updateId }, { ...finalData });
         res.status(200).json({ success: true, data: newAd });
       } catch (e: any) {
         res.status(400).json({ success: false, message: e.message });

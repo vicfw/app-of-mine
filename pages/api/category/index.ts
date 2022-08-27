@@ -11,19 +11,25 @@ export default async function handler(
 
   switch (method) {
     case 'POST':
+      const parsedBody = JSON.parse(req.body);
+
+      const finalData = Object.assign(parsedBody, {
+        slug: parsedBody.name.trim().split(' ').join('_'),
+      });
+
       try {
-        if (!req.body.name) {
+        if (!finalData.name) {
           return res
             .status(400)
             .json({ success: false, massage: "Category name can't be empty" });
         }
-        if (!req.body.slug) {
+        if (!finalData.slug) {
           return res
             .status(400)
             .json({ success: false, massage: "Category name can't be empty" });
         }
 
-        const category = await Category.create(req.body);
+        const category = await Category.create(finalData);
 
         res.status(201).json({ success: true, data: category });
       } catch (e: any) {
