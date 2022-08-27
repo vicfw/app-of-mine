@@ -20,6 +20,7 @@ const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
                 <Grid item lg={3} key={ad._id}>
                   <Ad
                     title={ad.title}
+                    id={ad._id}
                     description={ad.description}
                     number={ad.phone}
                     bgColor={Colors.grey.light}

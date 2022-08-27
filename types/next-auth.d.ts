@@ -7,6 +7,7 @@ declare module 'next-auth' {
     /** This is an example. You can find me in types/next-auth.d.ts */
     user: {
       isAdmin: boolean;
+      email: string;
     };
   }
 }
@@ -15,6 +16,7 @@ declare module 'next-auth' {
   interface User {
     /** This is an example. You can find me in types/next-auth.d.ts */
     isAdmin: boolean;
+    email: string;
   }
 }
 
@@ -23,6 +25,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     user: {
       isAdmin: boolean;
+      email: string;
     } /** This is an example. You can find me in types/next-auth.d.ts */;
   }
 }

@@ -1,23 +1,61 @@
 import { Container, Grid, Paper, Typography } from '@mui/material';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Colors } from '../../../utils/colors';
 import Ad from '../../Ad/Ad.components';
 
 const PopularAd: FC<any> = ({}) => {
+  const [popularAds, setPopularAds] = useState<
+    | {
+        image: string;
+        title: string;
+        description: string;
+        id: string;
+        phone: string;
+      }[]
+    | []
+  >([]);
+
+  useEffect(() => {
+    fetch('/api/ad/popular', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    }).then((res) =>
+      res.json().then((result) => {
+        if (result.success) {
+          const mappedData = result.data.map((dt: any) => {
+            return {
+              id: dt._id,
+              image: dt.image,
+              description: dt.description,
+              title: dt.title,
+              phone: dt.phone,
+            };
+          });
+
+          setPopularAds(mappedData);
+        }
+      })
+    );
+  }, []);
+
   return (
     <Container sx={{ padding: '20px 0' }}>
       <Paper sx={{ backgroundColor: Colors.grey.light, padding: '25px' }}>
         <Grid container spacing={2}>
-          {[1, 2, 3].map((item) => {
+          {popularAds.map((item) => {
             return (
               <Grid item lg={3}>
                 <Ad
                   image=""
-                  title="title"
-                  description={'description'}
+                  id={item.id}
+                  title={item.title}
+                  description={item.description}
                   isPop={true}
-                  number="number"
-                  key={item}
+                  number={item.phone}
+                  key={item.id}
                   bgColor="#fff"
                 />
               </Grid>

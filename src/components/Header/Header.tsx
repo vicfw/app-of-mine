@@ -6,9 +6,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Colors } from '../../utils/colors';
+import { useSession } from 'next-auth/react';
 
 const Header: FC<any> = ({}) => {
   const router = useRouter();
+
+  const session = useSession();
 
   return (
     <>
@@ -38,13 +41,18 @@ const Header: FC<any> = ({}) => {
               alignItems={'center'}
               style={{ cursor: 'pointer', gap: 10 }}
             >
-              <FaceIcon sx={{ color: Colors.grey.dark }} />
+              {session.status !== 'authenticated' && (
+                <FaceIcon sx={{ color: Colors.grey.dark }} />
+              )}
+
               <NextLink href={'/login'}>
                 <Box
                   component={'span'}
                   sx={{ fontWeight: 'bold', color: Colors.grey.dark }}
                 >
-                  Log In
+                  {session.data?.user
+                    ? `Welcome ${session.data?.user.email}`
+                    : 'Login'}
                 </Box>
               </NextLink>
             </Box>

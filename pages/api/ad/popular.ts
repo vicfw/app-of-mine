@@ -13,20 +13,15 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-      } catch (e) {}
+        const justPopularAds = await Ad.find({ isPopular: true })
+          .sort({ createdAt: -1 })
+          .limit(3);
 
-      break;
-    case 'POST':
-      try {
-        const ad = await Ad.create(req.body);
-
-        res.status(201).json({ success: true, data: ad });
-      } catch (e: any) {
-        res.status(201).json({
-          success: false,
-          message: e.message,
-          field: e.errors?.title?.path,
-        });
+        res.status(200).json({ success: true, data: justPopularAds });
+      } catch (e) {
+        res
+          .status(200)
+          .json({ success: false, massage: 'something went wrong' });
       }
 
       break;

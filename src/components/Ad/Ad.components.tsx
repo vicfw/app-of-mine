@@ -1,5 +1,6 @@
 import { Paper, Box, Typography } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { Colors } from '../../utils/colors';
 
@@ -10,6 +11,7 @@ interface AdPropTypes {
   description: string;
   number: string;
   bgColor: string;
+  id: string;
 }
 
 const Ad: FC<AdPropTypes> = ({
@@ -19,14 +21,18 @@ const Ad: FC<AdPropTypes> = ({
   description,
   number,
   bgColor,
+  id,
 }) => {
+  const router = useRouter();
   return (
     <Paper
       sx={{
         backgroundColor: bgColor,
         padding: '20px',
         borderRadius: '10px',
+        cursor: 'pointer',
       }}
+      onClick={() => router.push(`/ad/${id}`)}
     >
       <Box
         width="100%"
