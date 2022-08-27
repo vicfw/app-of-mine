@@ -1,25 +1,25 @@
-import * as React from "react";
-import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import { StarBorder } from "@mui/icons-material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { Collapse } from "@mui/material";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import { useTheme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import { StarBorder } from "@mui/icons-material";
-import { Collapse } from "@mui/material";
+import * as React from "react";
 import { AppBar, DrawerHeader, Main, sidebarList } from "./constants";
 
 interface AdminLayoutProps {
@@ -124,8 +124,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
         <Divider />
         <List>
           {sidebarList.map((item, index) => (
-            <>
-              <ListItem key={item.id} disablePadding>
+            <React.Fragment key={item.id}>
+              <ListItem disablePadding>
                 <ListItemButton
                   onClick={() => {
                     if (!item.subItems?.length) {
@@ -187,7 +187,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, header }) => {
                     </Collapse>
                   );
                 })}
-            </>
+            </React.Fragment>
           ))}
         </List>
       </Drawer>

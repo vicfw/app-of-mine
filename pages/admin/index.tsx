@@ -4,16 +4,13 @@ import { FC } from "react";
 import AdminLayout from "../../src/components/Layout/adminLayout";
 
 const Index: FC<any> = ({}) => {
-  return <AdminLayout></AdminLayout>;
+  return <AdminLayout>Dashboard</AdminLayout>;
 };
 export default Index;
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     const session = await getSession({ req });
-
-    console.log("wtf");
-    console.log(session, "session");
 
     if (session?.user.isAdmin) {
       return {

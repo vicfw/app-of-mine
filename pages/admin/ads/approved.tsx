@@ -42,6 +42,7 @@ const Approved: FC<ApprovedProps> = () => {
               <th>Id</th>
               <th>Title</th>
               <th>createdAt</th>
+              <th>Popular Ad</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +69,21 @@ const Approved: FC<ApprovedProps> = () => {
                   <td className={style.td}>{dt.title}</td>
                   <td className={style.td}>
                     {format(dt.createdAt, "yyy/MM/dd")}
+                  </td>
+                  <td className={style.td}>
+                    <Button
+                      variant="contained"
+                      sx={{ color: "#fff" }}
+                      color={dt.isPop ? "error" : "primary"}
+                      onClick={() => {
+                        on.changePopularity(
+                          dt.id,
+                          dt.isPop ? { isPopular: false } : { isPopular: true }
+                        );
+                      }}
+                    >
+                      {dt.isPop ? "Popular" : "Not Popular"}
+                    </Button>
                   </td>
                 </tr>
               );
