@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Category from '../../../models/Category';
-import dbConnect from '../../../src/utils/dbConnect';
+import { NextApiRequest, NextApiResponse } from "next";
+import Category from "../../../models/Category";
+import dbConnect from "../../../src/utils/dbConnect";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,9 +12,7 @@ export default async function handler(
   await dbConnect();
 
   switch (method) {
-    case 'GET':
-      console.log(req);
-
+    case "GET":
       try {
         const total = await Category.estimatedDocumentCount();
         const category = await Category.find()
@@ -27,13 +25,13 @@ export default async function handler(
         res.status(201).json({
           success: false,
           message: e.message,
-          field: '',
+          field: "",
         });
       }
 
       break;
 
-    case 'DELETE':
+    case "DELETE":
       const dd = await Category.deleteMany({ _id: req.body });
 
       if (dd.acknowledged && dd.deletedCount > 0) {
@@ -41,7 +39,7 @@ export default async function handler(
       }
       res.status(400).json({ success: false });
       break;
-    case 'PATCH':
+    case "PATCH":
       const updated = await Category.updateMany(
         { _id: req.body },
         { isApproved: true } //this part need to be fixed
@@ -55,7 +53,7 @@ export default async function handler(
 
       break;
     default:
-      res.status(400).json({ success: false, message: 'something went wrong' });
+      res.status(400).json({ success: false, message: "something went wrong" });
 
       break;
   }

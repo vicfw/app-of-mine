@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { json } from 'stream/consumers';
-import Category from '../../../models/Category';
-import dbConnect from '../../../src/utils/dbConnect';
+import { NextApiRequest, NextApiResponse } from "next";
+import { json } from "stream/consumers";
+import Category from "../../../models/Category";
+import dbConnect from "../../../src/utils/dbConnect";
 
 export default async function handler(
   req: NextApiRequest,
@@ -11,17 +11,18 @@ export default async function handler(
   await dbConnect();
 
   switch (method) {
-    case 'PATCH':
+    case "PATCH":
       const { id: updateId } = req.query as { id: string };
 
       const parsedBody = JSON.parse(req.body);
 
-      const finalData = Object.assign(parsedBody, {
-        slug: parsedBody.name.trim().split(' ').join('_'),
-      });
+      parsedBody.slug = parsedBody.name.trim().split(" ").join("_");
 
       try {
-        const newAd = await Category.updateOne({ updateId }, { ...finalData });
+        const newAd = await Category.findByIdAndUpdate(
+          { _id: updateId },
+          parsedBody
+        );
         res.status(200).json({ success: true, data: newAd });
       } catch (e: any) {
         res.status(400).json({ success: false, message: e.message });
@@ -29,7 +30,7 @@ export default async function handler(
 
       break;
 
-    case 'DELETE':
+    case "DELETE":
       const { id: deleteId } = req.query as { id: string };
 
       try {
@@ -37,7 +38,7 @@ export default async function handler(
         if (!deletedCategory) {
           return res
             .status(400)
-            .json({ success: false, message: 'there is no such a category' });
+            .json({ success: false, message: "there is no such a category" });
         }
 
         return res.status(200).json({ success: true });
@@ -46,7 +47,7 @@ export default async function handler(
       }
 
     default:
-      res.status(400).json({ success: false, message: 'something went wrong' });
+      res.status(400).json({ success: false, message: "something went wrong" });
       break;
   }
 }

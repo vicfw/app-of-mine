@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import Ad from '../../../models/Ad';
-import dbConnect from '../../../src/utils/dbConnect';
+import { NextApiRequest, NextApiResponse } from "next";
+import Ad from "../../../models/Ad";
+import dbConnect from "../../../src/utils/dbConnect";
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +12,7 @@ export default async function handler(
   await dbConnect();
 
   switch (method) {
-    case 'GET':
+    case "GET":
       try {
         const total = await Ad.find({ isApproved: true }).count();
         const ad = await Ad.find({ isApproved: true })
@@ -25,16 +25,14 @@ export default async function handler(
         res.status(201).json({
           success: false,
           message: e.message,
-          field: '',
+          field: "",
         });
       }
 
       break;
 
-    case 'DELETE':
+    case "DELETE":
       const dd = await Ad.deleteMany({ _id: req.body });
-
-      console.log(dd);
 
       if (dd.acknowledged && dd.deletedCount > 0) {
         return res.status(200).json({ success: true });
@@ -42,7 +40,7 @@ export default async function handler(
       return res.status(400).json({ success: false });
 
     default:
-      res.status(400).json({ success: false, message: 'something went wrong' });
+      res.status(400).json({ success: false, message: "something went wrong" });
 
       break;
   }
