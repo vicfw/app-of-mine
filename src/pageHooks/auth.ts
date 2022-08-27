@@ -30,13 +30,20 @@ export const useAuth = (whichPage: string) => {
       });
       response;
 
+      console.log(response, 'response');
+
       if (response?.error) {
         setLoginError(response.error);
         setToast(true);
         handleToastClose();
         return;
       }
-      router.push('/');
+
+      if (response && response.url?.includes('admin')) {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     } else {
       try {
         const res = await fetch('/api/auth/signup', {
