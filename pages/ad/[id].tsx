@@ -16,7 +16,7 @@ interface SingleAdPropsTypes {
   ad: AdsType;
 }
 
-const SingleAd: FC<any> = ({ ad }) => {
+const SingleAd: FC<SingleAdPropsTypes> = ({ ad }) => {
   return (
     <Layout>
       <Container sx={{ marginTop: "20px" }}>
@@ -48,7 +48,7 @@ const SingleAd: FC<any> = ({ ad }) => {
                 sx={{ marginTop: "4px", fontSize: "15px" }}
               />
               <Typography sx={{ display: "flex", alignItems: "center" }}>
-                {/* {ad.title} */}
+                {ad.title}
               </Typography>
             </Box>
           </Box>
@@ -72,10 +72,10 @@ const SingleAd: FC<any> = ({ ad }) => {
                 />
               </Box>
               <Typography mt={1} fontSize="1.4rem" component={"h2"}>
-                {"title"}
+                {ad.title}
               </Typography>
               <Divider sx={{ marginTop: "10px" }} />
-              <Typography component={"p"}>descreption</Typography>
+              <Typography component={"p"}>{ad.description}</Typography>
             </Paper>
           </Grid>
           <Grid item lg={4} xs={12}>
@@ -102,7 +102,7 @@ const SingleAd: FC<any> = ({ ad }) => {
                 mt={1}
               >
                 <Button sx={{ color: "#fff" }} variant="contained">
-                  phone number
+                  {ad.phone}
                 </Button>
                 <Button variant="outlined">site.user@gamil.com</Button>
               </Box>
@@ -162,33 +162,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   console.log(context.params);
 
   try {
-    const session = await getSession({ req: context.req });
-
-    if (!session) {
-      return {
-        props: {},
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    } else {
-      try {
-        await dbConnect();
-        const ad = await Ad.findById(context.params);
-
-        console.log(ad, "ad");
-
-        return {
-          props: { ad },
-        };
-      } catch (e) {
-        console.log(e);
-
-        return { props: {} };
-      }
+    if (!context.params?.id) {
+      throw new Error("Bad Request");
     }
+
+    await dbConnect();
+    const ad = await Ad.findById(context.params.id);
+
+    console.log(ad, "ad");
+
+    return {
+      props: { ad: JSON.parse(JSON.stringify(ad)) },
+    };
   } catch (e) {
+    console.log(e);
+
     return { props: {} };
   }
 };
