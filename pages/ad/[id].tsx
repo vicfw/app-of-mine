@@ -1,44 +1,54 @@
-import { Button, Grid, Paper, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
-import { FC } from 'react';
-import Layout from '../../src/components/Layout/Layout';
-import HomeIcon from '@mui/icons-material/Home';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import Image from 'next/image';
+import { Button, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Box, Container } from "@mui/system";
+import { FC } from "react";
+import Layout from "../../src/components/Layout/Layout";
+import HomeIcon from "@mui/icons-material/Home";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Image from "next/image";
+import AdComponent from "../../src/components/Ad/Ad.components";
+import { GetServerSideProps } from "next/types";
+import { getSession } from "next-auth/react";
+import Ad from "../../models/Ad";
+import { AdsType } from "../../types/ad";
+import dbConnect from "../../src/utils/dbConnect";
 
-const SingleAd: FC<any> = ({}) => {
+interface SingleAdPropsTypes {
+  ad: AdsType;
+}
+
+const SingleAd: FC<any> = ({ ad }) => {
   return (
     <Layout>
-      <Container sx={{ marginTop: '20px' }}>
+      <Container sx={{ marginTop: "20px" }}>
         {/* breadcrumb */}
         <Paper
           sx={{
-            backgroundColor: '#efefef',
-            padding: '20px 40px',
-            borderRadius: '10px',
-            boxShadow: '2px 5px 5px #b3b3b3 ',
+            backgroundColor: "#efefef",
+            padding: "20px 40px",
+            borderRadius: "10px",
+            boxShadow: "2px 5px 5px #b3b3b3 ",
           }}
         >
-          <Box display={'flex'} alignContent="center">
+          <Box display={"flex"} alignContent="center">
             <HomeIcon />
             <Box
-              display={'flex'}
+              display={"flex"}
               alignContent="center"
               ml={1}
-              sx={{ marginTop: '2px' }}
+              sx={{ marginTop: "2px" }}
             >
               <Typography
-                component={'span'}
-                sx={{ display: 'flex', alignItems: 'center' }}
+                component={"span"}
+                sx={{ display: "flex", alignItems: "center" }}
               >
                 Home
               </Typography>
               <ArrowForwardIosIcon
                 fontSize="small"
-                sx={{ marginTop: '4px', fontSize: '15px' }}
+                sx={{ marginTop: "4px", fontSize: "15px" }}
               />
-              <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-                ad title
+              <Typography sx={{ display: "flex", alignItems: "center" }}>
+                {/* {ad.title} */}
               </Typography>
             </Box>
           </Box>
@@ -47,46 +57,51 @@ const SingleAd: FC<any> = ({}) => {
           <Grid item lg={8} xs={12}>
             <Paper
               sx={{
-                backgroundColor: '#efefef',
-                padding: '20px 40px',
-                borderRadius: '10px',
-                boxShadow: '2px 5px 5px #b3b3b3 ',
+                backgroundColor: "#efefef",
+                padding: "20px 40px",
+                borderRadius: "10px",
+                boxShadow: "2px 5px 5px #b3b3b3 ",
               }}
             >
               <Box>
                 <Image
-                  src={'/term-bg-1-666de2d941529c25aa511dc18d727160.jpg'}
+                  src={"/term-bg-1-666de2d941529c25aa511dc18d727160.jpg"}
                   width={200}
                   height={150}
                   layout="responsive"
                 />
               </Box>
+              <Typography mt={1} fontSize="1.4rem" component={"h2"}>
+                {"title"}
+              </Typography>
+              <Divider sx={{ marginTop: "10px" }} />
+              <Typography component={"p"}>descreption</Typography>
             </Paper>
           </Grid>
           <Grid item lg={4} xs={12}>
             <Paper
               sx={{
-                backgroundColor: '#efefef',
-                padding: '20px 40px',
-                borderRadius: '10px',
-                boxShadow: '2px 5px 5px #b3b3b3 ',
+                backgroundColor: "#efefef",
+                padding: "20px 40px",
+                borderRadius: "10px",
+                boxShadow: "2px 5px 5px #b3b3b3 ",
               }}
             >
-              <Box display={'flex'} justifyContent="center">
+              <Box display={"flex"} justifyContent="center">
                 <Image
-                  src={'/term-bg-1-666de2d941529c25aa511dc18d727160.jpg'}
+                  src={"/term-bg-1-666de2d941529c25aa511dc18d727160.jpg"}
                   width={200}
                   height={200}
                 />
               </Box>
               <Box
-                display={'flex'}
+                display={"flex"}
                 flexDirection="column"
                 gap="10px"
                 justifyContent="center"
                 mt={1}
               >
-                <Button sx={{ color: '#fff' }} variant="contained">
+                <Button sx={{ color: "#fff" }} variant="contained">
                   phone number
                 </Button>
                 <Button variant="outlined">site.user@gamil.com</Button>
@@ -94,8 +109,86 @@ const SingleAd: FC<any> = ({}) => {
             </Paper>
           </Grid>
         </Grid>
+        <Paper
+          sx={{
+            backgroundColor: "#efefef",
+            padding: "20px 40px",
+            borderRadius: "10px",
+            boxShadow: "2px 5px 5px #b3b3b3 ",
+            marginTop: "20px",
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item lg={4}>
+              <AdComponent
+                bgColor="#fff"
+                description="desc"
+                id="s"
+                image="/ss"
+                number="3333"
+                title="hello"
+              />
+            </Grid>
+
+            <Grid item lg={4}>
+              <AdComponent
+                bgColor="#fff"
+                description="desc"
+                id="s"
+                image="/ss"
+                number="3333"
+                title="hello"
+              />
+            </Grid>
+            <Grid item lg={4}>
+              <AdComponent
+                bgColor="#fff"
+                description="desc"
+                id="s"
+                image="/ss"
+                number="3333"
+                title="hello"
+              />
+            </Grid>
+          </Grid>
+        </Paper>
       </Container>
     </Layout>
   );
 };
 export default SingleAd;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  console.log(context.params);
+
+  try {
+    const session = await getSession({ req: context.req });
+
+    if (!session) {
+      return {
+        props: {},
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    } else {
+      try {
+        await dbConnect();
+        const ad = await Ad.findById(context.params);
+
+        console.log(ad, "ad");
+
+        return {
+          props: { ad },
+        };
+      } catch (e) {
+        console.log(e);
+
+        return { props: {} };
+      }
+    }
+  } catch (e) {
+    return { props: {} };
+  }
+};
