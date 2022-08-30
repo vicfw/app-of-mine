@@ -16,6 +16,7 @@
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
     "@mui/material": "latest",
+    "@trendyol-js/react-carousel": "^3.0.0",
     "@types/formidable": "^2.0.5",
     "@types/mime": "^3.0.1",
     "bcryptjs": "^2.4.3",

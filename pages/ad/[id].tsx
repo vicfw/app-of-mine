@@ -9,8 +9,12 @@ import AdComponent from "../../src/components/Ad/Ad.components";
 import { GetServerSideProps } from "next/types";
 import { getSession } from "next-auth/react";
 import Ad from "../../models/Ad";
+import { Carousel } from "@trendyol-js/react-carousel";
 import { AdsType } from "../../types/ad";
 import dbConnect from "../../src/utils/dbConnect";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { ArrowBackIos, EmailOutlined } from "@mui/icons-material";
+import { Colors } from "../../src/utils/colors";
 
 interface SingleAdPropsTypes {
   ad: AdsType;
@@ -61,16 +65,41 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad }) => {
                 padding: "20px 40px",
                 borderRadius: "10px",
                 boxShadow: "2px 5px 5px #b3b3b3 ",
+                "& .carousel": {
+                  alignItems: "center",
+                },
               }}
             >
-              <Box>
-                <Image
-                  src={"/term-bg-1-666de2d941529c25aa511dc18d727160.jpg"}
-                  width={200}
-                  height={150}
-                  layout="responsive"
-                />
-              </Box>
+              <Carousel
+                responsive
+                show={1}
+                slide={1}
+                rightArrow={
+                  <ArrowForwardIosIcon
+                    sx={{ color: Colors.grey.dark, cursor: "pointer" }}
+                  />
+                }
+                leftArrow={
+                  <ArrowBackIosIcon
+                    sx={{ color: Colors.grey.dark, cursor: "pointer" }}
+                  />
+                }
+                className="carousel"
+              >
+                {ad.images.map((img) => {
+                  return (
+                    <Box>
+                      <Image
+                        src={img.img}
+                        width={200}
+                        height={150}
+                        layout="responsive"
+                      />
+                    </Box>
+                  );
+                })}
+              </Carousel>
+
               <Typography mt={1} fontSize="1.4rem" component={"h2"}>
                 {ad.title}
               </Typography>
