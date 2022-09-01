@@ -26,7 +26,7 @@ const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const paginationBtn = document.getElementById('btn');
+    const paginationBtn = document.getElementById('first');
     if (paginationBtn && router.query.page) {
       paginationBtn.scrollIntoView({ behavior: 'smooth' });
     }

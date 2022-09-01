@@ -12,6 +12,7 @@ interface AdPropTypes {
   number: string;
   bgColor: string;
   id: string;
+  isFirst?: boolean;
 }
 
 const Ad: FC<AdPropTypes> = ({
@@ -22,15 +23,18 @@ const Ad: FC<AdPropTypes> = ({
   number,
   bgColor,
   id,
+  isFirst,
 }) => {
   const router = useRouter();
   return (
     <Paper
+      id={isFirst ? 'first' : ''}
       sx={{
         backgroundColor: bgColor,
-        padding: '20px',
+        padding: '22px',
         borderRadius: '10px',
         cursor: 'pointer',
+        zIndex: 100,
       }}
       onClick={() => router.push(`/ad/${id}`)}
     >

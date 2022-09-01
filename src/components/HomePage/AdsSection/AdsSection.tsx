@@ -13,7 +13,7 @@ const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
     <Container sx={{ padding: '20px 0' }}>
       <Grid container spacing={2}>
         {ads.length > 0
-          ? ads.map((ad) => {
+          ? ads.map((ad, index) => {
               ad.images, 'ad.images';
 
               return (
@@ -25,6 +25,7 @@ const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
                     number={ad.phone}
                     bgColor={Colors.grey.light}
                     image={ad.images[0].img}
+                    isFirst={index === 0}
                   />
                 </Grid>
               );

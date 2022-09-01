@@ -16,10 +16,16 @@ const PaginationButtons: FC<PropTypes> = ({ page, haveAds }) => {
             variant="contained"
             sx={{
               color: '#fff',
-              borderRadius: 10,
+              borderRadius: 3,
               backgroundImage:
                 'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
               textTransform: 'capitalize',
+              boxShadow: 'none',
+              '&:hover': {
+                boxShadow: 'none',
+                backgroundImage:
+                  'linear-gradient(180deg, #619781 0%, #12d685 74%)',
+              },
             }}
             onClick={() => {
               router.push(`/?page=${parseInt(page) + 1}`);
@@ -36,10 +42,16 @@ const PaginationButtons: FC<PropTypes> = ({ page, haveAds }) => {
             disabled={+page <= 0}
             sx={{
               color: '#fff',
-              borderRadius: 10,
+              borderRadius: 3,
               backgroundImage:
                 'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
               textTransform: 'capitalize',
+              boxShadow: 'none',
+              '&:hover': {
+                boxShadow: 'none',
+                backgroundImage:
+                  'linear-gradient(180deg, #619781 0%, #12d685 74%)',
+              },
             }}
             onClick={() => {
               if (+page <= 0) {
