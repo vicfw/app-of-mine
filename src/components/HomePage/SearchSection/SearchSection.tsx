@@ -19,7 +19,7 @@ const SearchSection: FC<any> = ({}) => {
           sx={{
             display: 'flex',
             border: '1px solid #ccc',
-            flexDirection: { xs: 'column' },
+            flexDirection: { xs: 'column', md: 'row' },
           }}
         >
           <TextField
