@@ -28,11 +28,7 @@ const CustomButton: FC<CustomButtonProps> = ({
   }));
 
   return (
-    <ColorButton
-      {...props}
-      sx={{ display: 'flex', flex: 1 }}
-      variant="contained"
-    >
+    <ColorButton {...props} variant="contained">
       {label}
     </ColorButton>
   );

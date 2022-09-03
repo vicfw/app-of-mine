@@ -35,6 +35,7 @@ const Ad: FC<AdPropTypes> = ({
         borderRadius: '10px',
         cursor: 'pointer',
         zIndex: 100,
+        boxShadow: 'none',
       }}
       onClick={() => router.push(`/ad/${id}`)}
     >

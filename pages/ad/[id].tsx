@@ -13,6 +13,8 @@ import Layout from '../../src/components/Layout/Layout';
 import { Colors } from '../../src/utils/colors';
 import dbConnect from '../../src/utils/dbConnect';
 import { AdsType } from '../../types/ad';
+import NextLink from 'next/link';
+import useMediaQuery from '../../src/utils/useMediaQuery';
 
 interface SingleAdPropsTypes {
   ad: AdsType;
@@ -20,6 +22,9 @@ interface SingleAdPropsTypes {
 }
 
 const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
+  const matches = useMediaQuery('(max-width: 500px)');
+  console.log(matches, 'match');
+
   return (
     <Layout>
       <Container sx={{ marginTop: '20px' }}>
@@ -40,12 +45,18 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
               ml={1}
               sx={{ marginTop: '2px' }}
             >
-              <Typography
-                component={'span'}
-                sx={{ display: 'flex', alignItems: 'center' }}
-              >
-                Home
-              </Typography>
+              <NextLink href="/">
+                <Typography
+                  component={'span'}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  Home
+                </Typography>
+              </NextLink>
               <ArrowForwardIosIcon
                 fontSize="small"
                 sx={{ marginTop: '4px', fontSize: '15px' }}
@@ -87,7 +98,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
               >
                 {ad.images.map((img) => {
                   return (
-                    <Box>
+                    <Box key={img.img}>
                       <Image
                         src={img.img}
                         width={200}
@@ -140,7 +151,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
         <Paper
           sx={{
             backgroundColor: '#efefef',
-            padding: '20px 40px',
+            padding: '20px',
             borderRadius: '10px',
             boxShadow: '2px 5px 5px #b3b3b3 ',
             marginTop: '20px',
@@ -151,7 +162,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
         >
           <Carousel
             responsive
-            show={3}
+            show={matches ? 1 : 3}
             slide={1}
             rightArrow={
               <ArrowForwardIosIcon

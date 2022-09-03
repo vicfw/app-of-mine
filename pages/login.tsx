@@ -17,7 +17,7 @@ const Login: FC<any> = ({}) => {
 
   return (
     <div className={style.wrapper}>
-      <form className={style.form} onSubmit={() => {}}>
+      <Box className={style.form} sx={{ margin: { xs: ' 0 10px' } }}>
         <div className={style.header}>
           <PersonIcon
             sx={{
@@ -101,21 +101,23 @@ const Login: FC<any> = ({}) => {
               color={Colors.primary.dark}
               boxShadowColor={Colors.primary.light}
               onClick={on.createUser}
+              sx={{ display: 'flex', flex: 1, fontSize: { xs: '13px' } }}
             />
             <CustomButton
               label="REGISTER NOW"
               color={Colors.secondary.dark}
               boxShadowColor={Colors.secondary.light}
               onClick={() => router.push('/register')}
+              sx={{ display: 'flex', flex: 1, fontSize: { xs: '13px' } }}
             />
           </Box>
-          <CustomButton
+          {/* <CustomButton
             label="FORGOT PASSWORD"
             color={Colors.grey.main}
             boxShadowColor={Colors.grey.dark}
-          />
+          /> */}
         </div>
-      </form>
+      </Box>
       <div>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
