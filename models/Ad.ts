@@ -48,7 +48,7 @@ const AdSchema = new mongoose.Schema(
       enum: ['person', 'company'],
     },
   },
-  { timestamps: true }
+  { toJSON: { virtuals: true }, timestamps: true }
 );
 
 export default mongoose.models.Ad || mongoose.model('Ad', AdSchema);

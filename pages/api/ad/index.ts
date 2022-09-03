@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import Ad from '../../../models/Ad';
+import Category from '../../../models/Category';
 import dbConnect from '../../../src/utils/dbConnect';
 
 export default async function handler(
@@ -13,7 +14,15 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-      } catch (e) {}
+        const ads = await Ad.find().populate({
+          path: 'category',
+          model: Category,
+        });
+        res.status(200).json({ success: true, data: ads });
+      } catch (e: any) {
+        console.log(e);
+        res.status(400).json({ success: false, error: e.message });
+      }
 
       break;
     case 'POST':

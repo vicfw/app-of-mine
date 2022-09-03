@@ -2,7 +2,7 @@ import { Container, Grid } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Ad from '../models/Ad';
 import Category from '../models/Category';
 import AdsSection from '../src/components/HomePage/AdsSection/AdsSection';
@@ -22,7 +22,21 @@ interface HomePagePropTypes {
   ads: AdsType[];
 }
 
-const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
+const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
+  const [categories, setCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    fetch('/api/category', {
+      method: 'GET',
+    }).then((res) =>
+      res.json().then((data) => {
+        console.log(data);
+
+        setCategories(data.data);
+      })
+    );
+  }, []);
+
   const router = useRouter();
 
   useEffect(() => {
@@ -39,13 +53,18 @@ const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
       {/* categories section */}
       <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
         <Grid component="section" container spacing={2} alignItems="center">
-          {categories.map((cat) => {
-            return (
-              <Grid item lg={4} key={cat._id} xs={12}>
-                <Categories name={cat.name} image={cat.image} />
-              </Grid>
-            );
-          })}
+          {categories?.length &&
+            categories?.map((cat) => {
+              return (
+                <Grid item lg={4} key={cat._id} xs={12}>
+                  <Categories
+                    name={cat.name}
+                    image={cat.image}
+                    adCount={cat.ads}
+                  />
+                </Grid>
+              );
+            })}
         </Grid>
       </Container>
       {/* popular ads section */}
@@ -70,8 +89,6 @@ export const getServerSideProps: GetServerSideProps = async ({
   const session = await getSession({ req });
 
   try {
-    const categories = await Category.find();
-
     const countOfAllDocs = await Ad.estimatedDocumentCount();
 
     const ads = await Ad.find(
@@ -82,7 +99,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 
     return {
       props: {
-        categories: JSON.parse(JSON.stringify(categories)),
         ads: JSON.parse(JSON.stringify(ads)),
         page,
         count: countOfAllDocs,

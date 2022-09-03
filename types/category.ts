@@ -1,4 +1,5 @@
 export interface CategoryType {
+  ads: number;
   _id: string;
   name: string;
   slug: string;

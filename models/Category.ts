@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Ad from './Ad';
 
 const CategorySchema = new mongoose.Schema(
   {
@@ -18,8 +19,16 @@ const CategorySchema = new mongoose.Schema(
       lowercase: true,
     },
   },
-  { timestamps: true }
+  { toJSON: { virtuals: true }, timestamps: true }
 );
+
+// Virtual populate
+CategorySchema.virtual('ads', {
+  ref: 'Ad',
+  foreignField: 'category',
+  localField: '_id',
+  count: true,
+});
 
 export default mongoose.models.Category ||
   mongoose.model('Category', CategorySchema);
