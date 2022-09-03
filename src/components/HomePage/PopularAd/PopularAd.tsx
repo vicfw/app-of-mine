@@ -52,7 +52,7 @@ const PopularAd: FC<any> = ({}) => {
         <Grid container spacing={2}>
           {popularAds.map((item) => {
             return (
-              <Grid item lg={3}>
+              <Grid item lg={3} xs={12}>
                 <Ad
                   image=""
                   id={item.id}
