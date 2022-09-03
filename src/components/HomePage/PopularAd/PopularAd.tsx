@@ -42,8 +42,13 @@ const PopularAd: FC<any> = ({}) => {
   }, []);
 
   return (
-    <Container sx={{ padding: '20px 0' }}>
-      <Paper sx={{ backgroundColor: Colors.grey.light, padding: '25px' }}>
+    <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
+      <Paper
+        sx={{
+          backgroundColor: Colors.grey.light,
+          padding: { lg: '25px', xs: '10px' },
+        }}
+      >
         <Grid container spacing={2}>
           {popularAds.map((item) => {
             return (
@@ -65,6 +70,7 @@ const PopularAd: FC<any> = ({}) => {
           <Grid
             item
             lg={3}
+            xs={12}
             textAlign="center"
             display="flex"
             justifyContent="center"

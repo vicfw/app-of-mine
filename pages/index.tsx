@@ -37,11 +37,11 @@ const index: FC<HomePagePropTypes> = ({ categories, page, count, ads }) => {
       {/* search section */}
       <SearchSection />
       {/* categories section */}
-      <Container sx={{ padding: '20px 0' }}>
-        <Grid component="section" container spacing={2}>
+      <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
+        <Grid component="section" container spacing={2} alignItems="center">
           {categories.map((cat) => {
             return (
-              <Grid item lg={4} key={cat._id}>
+              <Grid item lg={4} key={cat._id} xs={12}>
                 <Categories name={cat.name} image={cat.image} />
               </Grid>
             );

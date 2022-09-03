@@ -31,6 +31,7 @@ const Header: FC<any> = ({}) => {
               color={Colors.grey.dark}
               display="flex"
               style={{ cursor: 'pointer', gap: 10 }}
+              sx={{ display: { xs: 'none' } }}
             >
               <span>Commercial / Heavy Trucks</span>
               <span>Trailers</span>

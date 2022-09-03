@@ -15,7 +15,13 @@ const SearchSection: FC<any> = ({}) => {
       }}
     >
       <Paper sx={{ padding: '15px' }}>
-        <Box sx={{ display: 'flex', border: '1px solid #ccc' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            border: '1px solid #ccc',
+            flexDirection: { xs: 'column' },
+          }}
+        >
           <TextField
             placeholder="Search"
             sx={{ '& MuiInputBase-root': { borderRadius: 0 } }}

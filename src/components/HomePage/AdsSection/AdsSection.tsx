@@ -10,14 +10,14 @@ interface AdsSectionPropTypes {
 
 const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
   return (
-    <Container sx={{ padding: '20px 0' }}>
+    <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
       <Grid container spacing={2}>
         {ads.length > 0
           ? ads.map((ad, index) => {
               ad.images, 'ad.images';
 
               return (
-                <Grid item lg={3} key={ad._id}>
+                <Grid item lg={3} key={ad._id} xs={12}>
                   <Ad
                     title={ad.title}
                     id={ad._id}

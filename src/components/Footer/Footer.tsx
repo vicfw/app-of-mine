@@ -18,7 +18,17 @@ const Footer: FC<any> = ({}) => {
     >
       <Container>
         <Grid container pt={5} color={'#fff'}>
-          <Grid item lg={2}>
+          <Grid
+            item
+            lg={2}
+            xs={12}
+            sx={{
+              display: { xs: 'flex' },
+              alignItems: { xs: 'center' },
+              flexDirection: { xs: 'column' },
+              marginBottom: { xs: '10px' },
+            }}
+          >
             <Typography component={'h2'} fontWeight={'bold'} fontSize={25}>
               Get Truck
             </Typography>
@@ -27,7 +37,7 @@ const Footer: FC<any> = ({}) => {
             <Typography>12850</Typography>
             <Typography mt={3}>www.gettruck.com</Typography>
           </Grid>
-          <Grid item lg={2}>
+          <Grid item lg={2} xs={4} sx={{ textAlign: { xs: 'center' } }}>
             <Typography component={'h3'} fontSize={17}>
               Sitemap
             </Typography>
@@ -38,7 +48,7 @@ const Footer: FC<any> = ({}) => {
             <Typography>Sitemap</Typography>
             <Typography>Sitemap</Typography>
           </Grid>
-          <Grid item lg={2}>
+          <Grid item lg={2} xs={4} sx={{ textAlign: { xs: 'center' } }}>
             <Typography component={'h3'} fontSize={17}>
               Menu
             </Typography>
@@ -49,7 +59,7 @@ const Footer: FC<any> = ({}) => {
             <Typography>Menu</Typography>
             <Typography>Menu</Typography>
           </Grid>
-          <Grid item lg={2}>
+          <Grid item lg={2} xs={4} sx={{ textAlign: { xs: 'center' } }}>
             <Typography component={'h3'} fontSize={17}>
               Sit Amet
             </Typography>
@@ -67,6 +77,10 @@ const Footer: FC<any> = ({}) => {
             flexDirection={'column'}
             alignItems="center"
             gap="10px"
+            xs={12}
+            sx={{
+              justifyContent: { xs: 'center' },
+            }}
           >
             <Image src="/logo.png" width={80} height={50} />
             <Typography component={'h3'}>
