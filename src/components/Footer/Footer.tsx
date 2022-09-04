@@ -11,7 +11,7 @@ const Footer: FC<any> = ({}) => {
     <Grid
       container
       sx={{
-        backgroundColor: Colors.grey.dark,
+        backgroundColor: '#42414c',
         marginTop: '25px',
         padding: '0 0 25px 0',
       }}
@@ -41,23 +41,23 @@ const Footer: FC<any> = ({}) => {
             <Typography component={'h3'} fontSize={17}>
               Sitemap
             </Typography>
-            <Typography>Sitemap</Typography>
-            <Typography>Sitemap</Typography>
-            <Typography>Sitemap</Typography>
-            <Typography>Sitemap</Typography>
-            <Typography>Sitemap</Typography>
-            <Typography>Sitemap</Typography>
+            <Typography>Home</Typography>
+            <Typography>About</Typography>
+            <Typography>Blog</Typography>
+            <Typography>Menu</Typography>
+            <Typography>Store</Typography>
+            <Typography>Contact</Typography>
           </Grid>
           <Grid item lg={2} xs={4} sx={{ textAlign: { xs: 'center' } }}>
             <Typography component={'h3'} fontSize={17}>
               Menu
             </Typography>
-            <Typography>Menu</Typography>
-            <Typography>Menu</Typography>
-            <Typography>Menu</Typography>
-            <Typography>Menu</Typography>
-            <Typography>Menu</Typography>
-            <Typography>Menu</Typography>
+            <Typography>Trailers</Typography>
+            <Typography>RVs</Typography>
+            <Typography>Boats</Typography>
+            <Typography>Boats</Typography>
+            <Typography>WaterCraft</Typography>
+            <Typography>Bikes {'&'} ATV's</Typography>
           </Grid>
           <Grid item lg={2} xs={4} sx={{ textAlign: { xs: 'center' } }}>
             <Typography component={'h3'} fontSize={17}>

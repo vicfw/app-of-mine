@@ -47,6 +47,7 @@ const PopularAd: FC<any> = ({}) => {
         sx={{
           backgroundColor: Colors.grey.light,
           padding: { lg: '25px', xs: '10px' },
+          boxShadow: 'none',
         }}
       >
         <Grid container spacing={2}>
@@ -87,7 +88,7 @@ const PopularAd: FC<any> = ({}) => {
                 padding: '5px',
                 borderRadius: '8px',
                 fontWeight: 'bolder',
-                fontSize: '20px',
+                fontSize: '30px',
               }}
             >
               POP
@@ -99,7 +100,10 @@ const PopularAd: FC<any> = ({}) => {
             >
               Most Popular Cars in Canada
             </Typography>
-            <Typography component={'span'} sx={{ color: Colors.grey.dark }}>
+            <Typography
+              component={'span'}
+              sx={{ color: Colors.grey.dark, fontSize: '17px' }}
+            >
               You can see the most popular cars for sale and purchase in Canada
               on our site
             </Typography>

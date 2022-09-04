@@ -15,7 +15,14 @@ const Categories: FC<CategoriesPropTypes> = ({
   name,
 }) => {
   return (
-    <Paper sx={{ backgroundColor: Colors.grey.light, padding: 2 }}>
+    <Paper
+      sx={{
+        backgroundColor: Colors.grey.light,
+        padding: 2,
+        boxShadow:
+          '0px 2px 1px -1px rgb(0 0 0 / 1%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);',
+      }}
+    >
       <p style={{ textAlign: 'right' }}>{adCount}</p>
       <Box
         width={'100%'}

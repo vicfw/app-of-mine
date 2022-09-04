@@ -19,7 +19,7 @@ const Header: FC<any> = ({}) => {
         <title>Truck app</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Box sx={{ minHeight: 50 }} bgcolor="#ccc">
+      <Box sx={{ minHeight: 50 }} bgcolor={Colors.grey.light}>
         <Container>
           <Box
             display={'flex'}
@@ -61,9 +61,12 @@ const Header: FC<any> = ({}) => {
         </Container>
       </Box>
       <Box
-        sx={{ minHeight: 50, boxShadow: '2px 1px 3px #ccc' }}
+        sx={{
+          minHeight: 50,
+          boxShadow: 'inset 1px -3px 3px rgba(0,0,0,20%)',
+          zIndex: 100,
+        }}
         bgcolor="#fff"
-        borderBottom="1px solid #ccc"
       >
         <Container>
           <Box
@@ -92,9 +95,13 @@ const Header: FC<any> = ({}) => {
                   sx={{
                     color: '#fff',
                     borderRadius: 10,
-                    backgroundImage:
-                      'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
+                    backgroundColor: '#12d685',
                     textTransform: 'capitalize',
+                    boxShadow: 'none',
+                    '&:hover': {
+                      boxShadow: 'none',
+                      backgroundColor: '#12d685',
+                    },
                   }}
                 >
                   Sell My Truck/Trailer

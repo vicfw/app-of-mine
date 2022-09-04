@@ -23,7 +23,7 @@ const AdsSection: FC<AdsSectionPropTypes> = ({ ads }) => {
                     id={ad._id}
                     description={ad.description}
                     number={ad.phone}
-                    bgColor={Colors.grey.light}
+                    bgColor={'#f7f4f4'}
                     image={ad.images[0].img}
                     isFirst={index === 0}
                   />

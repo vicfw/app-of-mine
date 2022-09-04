@@ -35,7 +35,8 @@ const Ad: FC<AdPropTypes> = ({
         borderRadius: '10px',
         cursor: 'pointer',
         zIndex: 100,
-        boxShadow: 'none',
+        boxShadow:
+          '0px 1px 1px 5px rgb(0 0 0 / 1%), 0px 1px 1px 1px rgb(0 0 0 / 1%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
       }}
       onClick={() => router.push(`/ad/${id}`)}
     >
@@ -65,7 +66,7 @@ const Ad: FC<AdPropTypes> = ({
           sx={{
             backgroundColor: Colors.primary.main,
             color: '#04e940',
-            padding: '5px',
+            padding: '1px 5px',
             borderRadius: '8px',
             fontWeight: 'bolder',
             fontSize: '20px',
