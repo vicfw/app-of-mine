@@ -1,7 +1,29 @@
 import { Box, Button, MenuItem, Paper, Select, TextField } from '@mui/material';
-import { FC } from 'react';
+import { FC, useRef, useState } from 'react';
+import { CategoryType } from '../../../../types/category';
 
-const SearchSection: FC<any> = ({}) => {
+interface SearchSectionPropTypes {
+  categories: CategoryType[];
+}
+
+const SearchSection: FC<SearchSectionPropTypes> = ({ categories }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [categoryId, setCategoryId] = useState('');
+
+  const handleSearch = () => {
+    fetch('/api/ad/search', {
+      method: 'POST',
+      body: JSON.stringify({
+        text: inputRef.current!.value,
+        category: categoryId,
+      }),
+    }).then((res) =>
+      res.json().then((data) => {
+        inputRef.current!.value = '';
+      })
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -24,12 +46,22 @@ const SearchSection: FC<any> = ({}) => {
         >
           <TextField
             placeholder="Search"
-            sx={{ '& MuiInputBase-root': { borderRadius: 0 } }}
+            sx={{ '& .MuiInputBase-root': { borderRadius: 0 } }}
+            ref={inputRef}
+            onChange={(e) => (inputRef.current!.value = e.target.value)}
           />
-          <Select defaultValue={'select'} sx={{ borderRadius: 0 }}>
+          <Select
+            defaultValue={'select'}
+            sx={{ borderRadius: 0 }}
+            onChange={(e) => setCategoryId(e.target.value)}
+          >
             <MenuItem value={'select'} disabled>
               All Applications
             </MenuItem>
+            {categories.length &&
+              categories.map((cat) => {
+                return <MenuItem value={cat._id}>{cat.name}</MenuItem>;
+              })}
           </Select>
           <Select defaultValue={'select'} sx={{ borderRadius: 0 }}>
             <MenuItem value={'select'} disabled>
@@ -38,6 +70,7 @@ const SearchSection: FC<any> = ({}) => {
           </Select>
           <Button
             variant="contained"
+            onClick={handleSearch}
             sx={{
               backgroundColor: (theme) => `${theme.palette.info.light}`,
               textTransform: 'capitalize',

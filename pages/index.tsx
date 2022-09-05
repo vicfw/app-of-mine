@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material';
+import { CircularProgress, Container, Grid } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -24,15 +24,16 @@ interface HomePagePropTypes {
 
 const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
+  const [categoryLoader, setCategoryLoader] = useState(false);
 
   useEffect(() => {
+    setCategoryLoader(true);
     fetch('/api/category', {
       method: 'GET',
     }).then((res) =>
       res.json().then((data) => {
-        console.log(data);
-
         setCategories(data.data);
+        setCategoryLoader(false);
       })
     );
   }, []);
@@ -49,11 +50,11 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   return (
     <Layout>
       {/* search section */}
-      <SearchSection />
+      <SearchSection categories={categories} />
       {/* categories section */}
       <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
         <Grid component="section" container spacing={2} alignItems="center">
-          {categories?.length &&
+          {categories?.length && !categoryLoader ? (
             categories?.map((cat) => {
               return (
                 <Grid item lg={4} key={cat._id} xs={12}>
@@ -64,7 +65,10 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
                   />
                 </Grid>
               );
-            })}
+            })
+          ) : (
+            <CircularProgress size="60" />
+          )}
         </Grid>
       </Container>
       {/* popular ads section */}
@@ -85,8 +89,6 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   await dbConnect();
   const limit = 12;
-
-  const session = await getSession({ req });
 
   try {
     const countOfAllDocs = await Ad.estimatedDocumentCount();

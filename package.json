@@ -28,7 +28,8 @@
     "next-auth": "^4.10.3",
     "next-images": "^1.8.4",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "sharp": "^0.31.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
