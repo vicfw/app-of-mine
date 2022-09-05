@@ -1,16 +1,34 @@
-import { Box, Button, MenuItem, Paper, Select, TextField } from '@mui/material';
-import { FC, useRef, useState } from 'react';
+import {
+  Box,
+  Button,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
+import { AdsType } from '../../../../types/ad';
 import { CategoryType } from '../../../../types/category';
 
 interface SearchSectionPropTypes {
   categories: CategoryType[];
+  setSearchResult: Dispatch<SetStateAction<AdsType[]>>;
 }
 
-const SearchSection: FC<SearchSectionPropTypes> = ({ categories }) => {
+const SearchSection: FC<SearchSectionPropTypes> = ({
+  categories,
+  setSearchResult,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [categoryId, setCategoryId] = useState('');
+  const [notFoundMassage, setNotFoundMassage] = useState('');
 
   const handleSearch = () => {
+    if (!inputRef.current!.value && !categoryId) {
+      setNotFoundMassage('please enter a ad title');
+      return;
+    }
     fetch('/api/ad/search', {
       method: 'POST',
       body: JSON.stringify({
@@ -19,7 +37,20 @@ const SearchSection: FC<SearchSectionPropTypes> = ({ categories }) => {
       }),
     }).then((res) =>
       res.json().then((data) => {
-        inputRef.current!.value = '';
+        console.log(data, 'data');
+
+        if (data?.data?.length) {
+          setSearchResult(data.data);
+          const paginationBtn = document.getElementById('first');
+          if (paginationBtn) {
+            paginationBtn.scrollIntoView({ behavior: 'smooth' });
+          }
+          setNotFoundMassage('');
+        } else {
+          setNotFoundMassage("we couldn't find you any ad");
+          setCategoryId('');
+          inputRef.current!.value = '';
+        }
       })
     );
   };
@@ -83,6 +114,7 @@ const SearchSection: FC<SearchSectionPropTypes> = ({ categories }) => {
             Search
           </Button>
         </Box>
+        {notFoundMassage ? <Typography>{notFoundMassage}</Typography> : null}
       </Paper>
     </Box>
   );

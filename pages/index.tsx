@@ -25,6 +25,7 @@ interface HomePagePropTypes {
 const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [categoryLoader, setCategoryLoader] = useState(false);
+  const [searchResult, setSearchResult] = useState<AdsType[]>([]);
 
   useEffect(() => {
     setCategoryLoader(true);
@@ -50,7 +51,10 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   return (
     <Layout>
       {/* search section */}
-      <SearchSection categories={categories} />
+      <SearchSection
+        categories={categories}
+        setSearchResult={setSearchResult}
+      />
       {/* categories section */}
       <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
         <Grid component="section" container spacing={2} alignItems="center">
@@ -74,7 +78,7 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
       {/* popular ads section */}
       <PopularAd />
       {/*  ads section */}
-      <AdsSection ads={ads} />
+      <AdsSection ads={ads} searchResult={searchResult} />
       {/* pagination buttons */}
       <PaginationButtons page={page} haveAds={!!ads.length} />
     </Layout>
