@@ -23,7 +23,6 @@ interface SingleAdPropsTypes {
 
 const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
   const matches = useMediaQuery('(max-width: 500px)');
-  console.log(matches, 'match');
 
   return (
     <Layout>
@@ -202,8 +201,6 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
 export default SingleAd;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  console.log(context.params);
-
   try {
     if (!context.params?.id) {
       throw new Error('Bad Request');
@@ -222,8 +219,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (e) {
-    console.log(e);
-
     return { props: {} };
   }
 };

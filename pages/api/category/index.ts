@@ -20,7 +20,6 @@ export default async function handler(
         });
         res.status(200).json({ success: true, data: categories });
       } catch (e: any) {
-        console.log(e);
         res.status(400).json({ success: false, error: e.message });
       }
 

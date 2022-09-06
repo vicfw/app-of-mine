@@ -1,10 +1,11 @@
-import { Container, Grid, Typography } from '@mui/material';
+import { Box, Container, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import { FC } from 'react';
 import { Colors } from '../../utils/colors';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import Link from 'next/link';
 
 const Footer: FC<any> = ({}) => {
   return (
@@ -63,7 +64,9 @@ const Footer: FC<any> = ({}) => {
             <Typography component={'h3'} fontSize={17}>
               Sit Amet
             </Typography>
-            <Typography>Sit Amet</Typography>
+            <Link href="/privacy-policy" prefetch={false}>
+              <Typography sx={{ cursor: 'pointer' }}>Privacy Policy</Typography>
+            </Link>
             <Typography>Sit Amet</Typography>
             <Typography>Sit Amet</Typography>
             <Typography>Sit Amet</Typography>
@@ -82,7 +85,13 @@ const Footer: FC<any> = ({}) => {
               justifyContent: { xs: 'center' },
             }}
           >
-            <Image src="/logo.png" width={80} height={50} />
+            <Box
+              color={'#464545'}
+              display="flex"
+              style={{ cursor: 'pointer', gap: 10, width: 150, height: 40 }}
+            >
+              <Image src="/logo.png" width={300} height={50} />
+            </Box>
             <Typography component={'h3'}>
               Copyright &copy; 2020 getTruck
             </Typography>

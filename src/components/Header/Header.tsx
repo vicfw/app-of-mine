@@ -8,7 +8,7 @@ import Head from 'next/head';
 import { Colors } from '../../utils/colors';
 import { useSession } from 'next-auth/react';
 
-const Header: FC<any> = ({}) => {
+const Header: FC<{ title?: string }> = ({ title }) => {
   const router = useRouter();
 
   const session = useSession();
@@ -16,7 +16,7 @@ const Header: FC<any> = ({}) => {
   return (
     <>
       <Head>
-        <title>Truck app</title>
+        <title>{title}</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Box sx={{ minHeight: 50 }} bgcolor={Colors.grey.light}>
@@ -63,7 +63,7 @@ const Header: FC<any> = ({}) => {
       <Box
         sx={{
           minHeight: 50,
-          boxShadow: 'inset 1px -3px 3px rgba(0,0,0,20%)',
+          boxShadow: '1px 2px 4px 0px rgb(0 0 0 / 20%)',
           zIndex: 100,
         }}
         bgcolor="#fff"
@@ -78,10 +78,10 @@ const Header: FC<any> = ({}) => {
             <Box
               color={'#464545'}
               display="flex"
-              style={{ cursor: 'pointer', gap: 10, width: 120, height: 70 }}
+              style={{ cursor: 'pointer', gap: 10, width: 150, height: 40 }}
               onClick={() => router.push('/')}
             >
-              <Image src="/logo.png" width={200} height={200} />
+              <Image src="/logo.png" width={300} height={50} />
             </Box>
 
             <Box

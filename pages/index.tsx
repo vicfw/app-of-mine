@@ -55,7 +55,7 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   }, [router.query]);
 
   return (
-    <Layout>
+    <Layout title="Truck App">
       {/* search section */}
       <SearchSection
         categories={categories}

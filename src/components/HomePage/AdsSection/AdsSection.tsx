@@ -9,8 +9,6 @@ interface AdsSectionPropTypes {
 }
 
 const AdsSection: FC<AdsSectionPropTypes> = ({ ads, searchResult }) => {
-  console.log(searchResult, 'searchResult');
-
   return (
     <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
       <Grid container spacing={2}>

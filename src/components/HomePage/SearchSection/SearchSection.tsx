@@ -40,8 +40,6 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
   searchResultTotal,
   searchPagination,
 }) => {
-  console.log(searchPagination, 'searchPagination');
-
   const inputRef = useRef<HTMLInputElement>(null);
   const [categoryId, setCategoryId] = useState('');
   const [notFoundMassage, setNotFoundMassage] = useState('');
@@ -62,8 +60,6 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
       }
     ).then((res) =>
       res.json().then((data) => {
-        console.log(data, 'data');
-
         if (data?.data?.length) {
           setSearchResult(data.data);
           const paginationBtn = document.getElementById('first');
