@@ -7,19 +7,41 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { AdsType } from '../../../../types/ad';
 import { CategoryType } from '../../../../types/category';
 
 interface SearchSectionPropTypes {
   categories: CategoryType[];
   setSearchResult: Dispatch<SetStateAction<AdsType[]>>;
+  searchResultTotal: {
+    get: number;
+    set: Dispatch<SetStateAction<number>>;
+  };
+  searchPagination: { limit: number; skip: number };
+  setSearchPagination: Dispatch<
+    SetStateAction<{
+      limit: number;
+      skip: number;
+    }>
+  >;
 }
 
 const SearchSection: FC<SearchSectionPropTypes> = ({
   categories,
   setSearchResult,
+  searchResultTotal,
+  searchPagination,
 }) => {
+  console.log(searchPagination, 'searchPagination');
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [categoryId, setCategoryId] = useState('');
   const [notFoundMassage, setNotFoundMassage] = useState('');
@@ -29,13 +51,16 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
       setNotFoundMassage('please enter a ad title');
       return;
     }
-    fetch('/api/ad/search', {
-      method: 'POST',
-      body: JSON.stringify({
-        text: inputRef.current!.value,
-        category: categoryId,
-      }),
-    }).then((res) =>
+    fetch(
+      `/api/ad/search?limit=${searchPagination.limit}&skip=${searchPagination.skip}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          text: inputRef.current!.value,
+          category: categoryId,
+        }),
+      }
+    ).then((res) =>
       res.json().then((data) => {
         console.log(data, 'data');
 
@@ -46,6 +71,7 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
             paginationBtn.scrollIntoView({ behavior: 'smooth' });
           }
           setNotFoundMassage('');
+          searchResultTotal.set(data.total);
         } else {
           setNotFoundMassage("we couldn't find you any ad");
           setCategoryId('');
@@ -54,6 +80,10 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
       })
     );
   };
+
+  useEffect(() => {
+    if (searchResultTotal.get > 0) handleSearch();
+  }, [searchPagination]);
 
   return (
     <Box
@@ -94,11 +124,11 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
                 return <MenuItem value={cat._id}>{cat.name}</MenuItem>;
               })}
           </Select>
-          <Select defaultValue={'select'} sx={{ borderRadius: 0 }}>
+          {/* <Select defaultValue={'select'} sx={{ borderRadius: 0 }}>
             <MenuItem value={'select'} disabled>
               All Makes
             </MenuItem>
-          </Select>
+          </Select> */}
           <Button
             variant="contained"
             onClick={handleSearch}

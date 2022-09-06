@@ -46,7 +46,7 @@ const Header: FC<any> = ({}) => {
                 <FaceIcon sx={{ color: Colors.grey.dark }} />
               )}
 
-              <NextLink href={'/login'}>
+              <NextLink href={'/login'} prefetch={false}>
                 <Box
                   component={'span'}
                   sx={{ fontWeight: 'bold', color: Colors.grey.dark }}
@@ -89,7 +89,7 @@ const Header: FC<any> = ({}) => {
               alignItems={'center'}
               style={{ cursor: 'pointer', gap: 10 }}
             >
-              <NextLink href={'/create-advertising'}>
+              <NextLink href={'/create-advertising'} prefetch={false}>
                 <Button
                   variant="contained"
                   sx={{

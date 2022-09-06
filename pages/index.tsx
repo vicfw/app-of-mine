@@ -26,6 +26,12 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   const [categories, setCategories] = useState<CategoryType[]>([]);
   const [categoryLoader, setCategoryLoader] = useState(false);
   const [searchResult, setSearchResult] = useState<AdsType[]>([]);
+  const [searchPagination, setSearchPagination] = useState({
+    limit: 12,
+    skip: 0,
+  });
+
+  const [searchResultTotal, setSearchResultTotal] = useState(0);
 
   useEffect(() => {
     setCategoryLoader(true);
@@ -54,6 +60,12 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
       <SearchSection
         categories={categories}
         setSearchResult={setSearchResult}
+        searchPagination={searchPagination}
+        setSearchPagination={setSearchPagination}
+        searchResultTotal={{
+          get: searchResultTotal,
+          set: setSearchResultTotal,
+        }}
       />
       {/* categories section */}
       <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
@@ -80,7 +92,13 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
       {/*  ads section */}
       <AdsSection ads={ads} searchResult={searchResult} />
       {/* pagination buttons */}
-      <PaginationButtons page={page} haveAds={!!ads.length} />
+      <PaginationButtons
+        page={page}
+        haveAds={!!ads.length}
+        searchMode={!!searchResult.length}
+        searchPagination={{ get: searchPagination, set: setSearchPagination }}
+        searchResultTotal={searchResultTotal}
+      />
     </Layout>
   );
 };

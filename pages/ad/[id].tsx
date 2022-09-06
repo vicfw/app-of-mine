@@ -45,7 +45,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
               ml={1}
               sx={{ marginTop: '2px' }}
             >
-              <NextLink href="/">
+              <NextLink href="/" prefetch={false}>
                 <Typography
                   component={'span'}
                   sx={{

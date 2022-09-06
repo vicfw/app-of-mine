@@ -6,7 +6,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { method } = req;
+  const { method, query } = req;
   await dbConnect();
 
   switch (method) {
@@ -14,12 +14,20 @@ export default async function handler(
       try {
         const body = JSON.parse(req.body);
 
-        const found = await Ad.find({
-          title: { $regex: body.text },
+        const total = await Ad.find({
+          title: { $regex: body.text.toLowerCase() },
           ...(body.category ? { category: body.category } : null),
-        });
+        }).count();
 
-        res.status(200).json({ success: true, data: found });
+        const found = await Ad.find({
+          title: { $regex: body.text.toLowerCase() },
+          ...(body.category ? { category: body.category } : null),
+        })
+          .limit(query?.limit ? +query.limit : 9999)
+          .skip(query?.skip ? +query.skip : 0)
+          .sort({ createdAt: -1 });
+
+        res.status(200).json({ success: true, data: found, total });
       } catch (e: any) {
         res.status(400).json({ success: false, message: e.message });
       }
