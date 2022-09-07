@@ -245,6 +245,7 @@ export const useCreateAdvertising = () => {
       clearTheForm,
       onFileUploadChange,
       createAdHandler,
+      errorHandler,
     },
   };
 };
