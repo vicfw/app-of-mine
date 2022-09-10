@@ -1,16 +1,15 @@
 import { CircularProgress, Container, Grid } from "@mui/material";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Ad from "../models/Ad";
-import Category from "../models/Category";
 import AdsSection from "../src/components/HomePage/AdsSection/AdsSection";
 import Categories from "../src/components/HomePage/Categories/Categories.component";
 import PaginationButtons from "../src/components/HomePage/PaginationButtons/PaginationButtons";
 import PopularAd from "../src/components/HomePage/PopularAd/PopularAd";
 import SearchSection from "../src/components/HomePage/SearchSection/SearchSection";
 import Layout from "../src/components/Layout/Layout";
+import { Context } from "../src/context";
 import dbConnect from "../src/utils/dbConnect";
 import { AdsType } from "../types/ad";
 import { CategoryType } from "../types/category";
@@ -23,7 +22,7 @@ interface HomePagePropTypes {
 }
 
 const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
-  const [categories, setCategories] = useState<CategoryType[]>([]);
+  const { state, dispatch } = useContext(Context);
   const [categoryLoader, setCategoryLoader] = useState(false);
   const [searchResult, setSearchResult] = useState<AdsType[]>([]);
   const [searchPagination, setSearchPagination] = useState({
@@ -32,18 +31,6 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   });
 
   const [searchResultTotal, setSearchResultTotal] = useState(0);
-
-  useEffect(() => {
-    setCategoryLoader(true);
-    fetch("/api/category", {
-      method: "GET",
-    }).then((res) =>
-      res.json().then((data) => {
-        setCategories(data.data);
-        setCategoryLoader(false);
-      })
-    );
-  }, []);
 
   const router = useRouter();
 
@@ -58,7 +45,7 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
     <Layout title="Truck App">
       {/* search section */}
       <SearchSection
-        categories={categories}
+        categories={state.categories}
         setSearchResult={setSearchResult}
         searchPagination={searchPagination}
         setSearchPagination={setSearchPagination}
@@ -70,8 +57,8 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
       {/* categories section */}
       <Container sx={{ padding: { lg: "20px 0", xs: "20px 11px" } }}>
         <Grid component="section" container spacing={2} alignItems="center">
-          {categories?.length && !categoryLoader ? (
-            categories?.map((cat) => {
+          {state.categories?.length && !categoryLoader ? (
+            state.categories?.map((cat) => {
               return (
                 <Grid item lg={3} key={cat._id} xs={12}>
                   <Categories

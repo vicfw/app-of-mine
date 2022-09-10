@@ -1,10 +1,10 @@
-import { contextType } from ".";
+import { contextType, InitialState } from ".";
 
-export function category(state: contextType, action: any) {
+export function category(state: InitialState, action: any): InitialState {
+  console.log(action, "action");
+
   switch (action.type) {
     case "FETCH_CATEGORIES":
-      console.log(action, "action");
-
       return { ...state, categories: action.payload };
     default:
       return state;

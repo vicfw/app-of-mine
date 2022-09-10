@@ -10,6 +10,8 @@ import { Context } from "../../context";
 const Footer: FC<any> = ({}) => {
   const { state, dispatch } = useContext(Context);
 
+  console.log(state, "state");
+
   useEffect(() => {
     fetch("/api/category", {
       method: "GET",
@@ -74,8 +76,8 @@ const Footer: FC<any> = ({}) => {
               Categories
             </Typography>
 
-            {state.categories.length
-              ? state.categories.map((cat: any) => {
+            {state.categories?.length
+              ? state.categories?.map((cat: any) => {
                   return <Typography>{cat.name}</Typography>;
                 })
               : null}

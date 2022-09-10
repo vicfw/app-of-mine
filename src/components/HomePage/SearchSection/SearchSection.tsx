@@ -12,14 +12,16 @@ import {
   FC,
   SetStateAction,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
 import { AdsType } from "../../../../types/ad";
 import { CategoryType } from "../../../../types/category";
+import { cities as citiesArray } from "../../../utils/cities";
 
 interface SearchSectionPropTypes {
-  categories: CategoryType[];
+  categories: CategoryType[] | null;
   setSearchResult: Dispatch<SetStateAction<AdsType[]>>;
   searchResultTotal: {
     get: number;
@@ -42,11 +44,16 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [categoryId, setCategoryId] = useState("");
+  const [cityName, setCityName] = useState("");
   const [notFoundMassage, setNotFoundMassage] = useState("");
 
+  const cities: string[] = useMemo(() => {
+    return citiesArray;
+  }, []);
+
   const handleSearch = () => {
-    if (!inputRef.current!.value && !categoryId) {
-      setNotFoundMassage("please enter a ad title");
+    if (!inputRef.current!.value && !categoryId && !cityName) {
+      setNotFoundMassage("please enter a field");
       return;
     }
     fetch(
@@ -56,6 +63,7 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
         body: JSON.stringify({
           text: inputRef.current!.value,
           category: categoryId,
+          city: cityName,
         }),
       }
     ).then((res) =>
@@ -116,16 +124,23 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
             <MenuItem value={"select"} disabled>
               All Applications
             </MenuItem>
-            {categories.length &&
-              categories.map((cat) => {
+            {categories?.length &&
+              categories?.map((cat) => {
                 return <MenuItem value={cat._id}>{cat.name}</MenuItem>;
               })}
           </Select>
-          {/* <Select defaultValue={'select'} sx={{ borderRadius: 0 }}>
-            <MenuItem value={'select'} disabled>
-              All Makes
+          <Select
+            defaultValue={"select"}
+            sx={{ borderRadius: 0 }}
+            onChange={(e) => setCityName(e.target.value)}
+          >
+            <MenuItem value={"select"} disabled>
+              All Cities
             </MenuItem>
-          </Select> */}
+            {cities.map((ct) => (
+              <MenuItem value={ct}>{ct}</MenuItem>
+            ))}
+          </Select>
           <Button
             variant="contained"
             onClick={handleSearch}

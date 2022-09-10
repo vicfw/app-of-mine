@@ -1,22 +1,36 @@
-import { useState, useEffect, useReducer, createContext, FC } from "react";
+import {
+  useState,
+  useEffect,
+  useReducer,
+  createContext,
+  FC,
+  Dispatch,
+} from "react";
 import { CategoryType } from "../../types/category";
+import { category } from "./category";
+
+export type InitialState = {
+  categories: CategoryType[];
+};
 
 export type contextType = {
-  categories: CategoryType[];
+  state: InitialState;
+  dispatch: Dispatch<any>;
 };
 
 // initial state
 const initialState: contextType = {
-  categories: [],
+  state: { categories: [] },
+  dispatch: () => {},
 };
 
 // create context
-const Context = createContext<any>(initialState);
+const Context = createContext<contextType>(initialState);
 
 // combine reducer function
 const combineReducers =
-  (...reducers: (((arg0: contextType, arg1: any) => any) | undefined)[]) =>
-  (state: contextType, action: any) => {
+  (...reducers: ((state: InitialState, action: any) => InitialState)[]) =>
+  (state: any, action: any) => {
     for (let i = 0; i < reducers.length; i++)
       state = reducers[i]!(state, action);
     return state;
@@ -24,10 +38,10 @@ const combineReducers =
 
 // context provider
 const Provider: FC<any> = ({ children }) => {
-  const [state, dispatch] = useReducer(combineReducers(), initialState); // pass more reducers combineReducers(user, blogs, products)
+  const [state, dispatch] = useReducer(combineReducers(category), initialState); // pass more reducers combineReducers(user, blogs, products)
   const value = { state, dispatch };
 
-  return <Context.Provider value={value as any}>{children}</Context.Provider>;
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 };
 
 export { Context, Provider };
