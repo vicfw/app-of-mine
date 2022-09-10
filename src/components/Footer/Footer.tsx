@@ -38,7 +38,7 @@ const Footer: FC<any> = ({}) => {
         <Grid container pt={5} color={"#fff"}>
           <Grid
             item
-            lg={2}
+            lg={3}
             xs={12}
             sx={{
               display: { xs: "flex" },
@@ -55,7 +55,7 @@ const Footer: FC<any> = ({}) => {
             <Typography>12850</Typography>
             <Typography mt={3}>www.gettruck.com</Typography>
           </Grid>
-          <Grid item lg={2} xs={4} sx={{ textAlign: { xs: "center" } }}>
+          <Grid item lg={3} xs={6} sx={{ textAlign: { xs: "center" } }}>
             <Typography component={"h3"} fontSize={17}>
               Sitemap
             </Typography>
@@ -71,7 +71,7 @@ const Footer: FC<any> = ({}) => {
               <Typography sx={{ cursor: "pointer" }}>Privacy Policy</Typography>
             </Link>
           </Grid>
-          <Grid item lg={2} xs={4} sx={{ textAlign: { xs: "center" } }}>
+          <Grid item lg={3} xs={6} sx={{ textAlign: { xs: "center" } }}>
             <Typography component={"h3"} fontSize={17}>
               Categories
             </Typography>
@@ -82,10 +82,10 @@ const Footer: FC<any> = ({}) => {
                 })
               : null}
           </Grid>
-          <Grid item lg={2} xs={4} sx={{ textAlign: { xs: "center" } }}></Grid>
+
           <Grid
             item
-            lg={4}
+            lg={3}
             display="flex"
             flexDirection={"column"}
             alignItems="center"
