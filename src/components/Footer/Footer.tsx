@@ -10,8 +10,6 @@ import { Context } from "../../context";
 const Footer: FC<any> = ({}) => {
   const { state, dispatch } = useContext(Context);
 
-  console.log(state, "state");
-
   useEffect(() => {
     fetch("/api/category", {
       method: "GET",

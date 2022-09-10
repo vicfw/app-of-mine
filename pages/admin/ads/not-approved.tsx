@@ -1,11 +1,11 @@
-import { Box, Button, Container } from '@mui/material';
-import { format } from 'date-fns';
-import { FC, useEffect, useState } from 'react';
-import ApprovalModal from '../../../src/components/ApprovalModal/ApprovalModal';
-import AdminLayout from '../../../src/components/Layout/adminLayout';
-import { useNotApprovedPage } from '../../../src/pageHooks/not-approved';
-import style from '../../../src/styles/adminTable.module.css';
-import { AdsType } from '../../../types/ad';
+import { Box, Button, Container } from "@mui/material";
+import { format } from "date-fns";
+import { FC } from "react";
+import ApprovalModal from "../../../src/components/ApprovalModal/ApprovalModal";
+import AdminLayout from "../../../src/components/Layout/adminLayout";
+import { useNotApprovedPage } from "../../../src/pageHooks/not-approved";
+import style from "../../../src/styles/adminTable.module.css";
+import { AdsType } from "../../../types/ad";
 
 interface NotApprovedProps {
   ads?: AdsType[];
@@ -25,10 +25,10 @@ const NotApproved: FC<NotApprovedProps> = () => {
         func={on.updateAds}
       />
       <Container>
-        <Box display="flex" justifyContent={'end'}>
-          {' '}
+        <Box display="flex" justifyContent={"end"}>
+          {" "}
           <Button
-            sx={{ textTransform: 'capitalizes', color: '#fff' }}
+            sx={{ textTransform: "capitalizes", color: "#fff" }}
             variant="contained"
             onClick={() => on.canUpdate() && set.setApproveModalState(true)}
             disabled={!on.canUpdate()}
@@ -68,16 +68,16 @@ const NotApproved: FC<NotApprovedProps> = () => {
                   <td className={style.td}>{index + 1}</td>
                   <td className={style.td}>{dt.title}</td>
                   <td className={style.td}>
-                    {format(dt.createdAt, 'yyy/MM/dd')}
+                    {format(dt.createdAt, "yyy/MM/dd")}
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <Box display={'flex'} justifyContent="center" width="%100" mt={1}>
+        <Box display={"flex"} justifyContent="center" width="%100" mt={1}>
           <Button
-            sx={{ color: '#fff' }}
+            sx={{ color: "#fff" }}
             variant="contained"
             onClick={() =>
               set.setPagination((perv) => ({

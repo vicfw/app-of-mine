@@ -1,13 +1,6 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
-import { Dispatch, FC, SetStateAction } from 'react';
-import { Transition } from './Transition';
+import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { Dispatch, FC, SetStateAction } from "react";
+import { Transition } from "./Transition";
 
 interface ApprovalModalProps {
   openState: { open: boolean; setOpen: Dispatch<SetStateAction<boolean>> };
@@ -41,12 +34,12 @@ const ApprovalModal: FC<ApprovalModalProps> = ({
       >
         <DialogTitle> {bodyText}</DialogTitle>
         {children && children}
-        <DialogActions sx={{ justifyContent: 'center' }}>
-          <Button variant="contained" sx={{ color: '#fff' }} onClick={func}>
-            {approveBtnText || 'Submit'}
+        <DialogActions sx={{ justifyContent: "center" }}>
+          <Button variant="contained" sx={{ color: "#fff" }} onClick={func}>
+            {approveBtnText || "Submit"}
           </Button>
           <Button variant="contained" onClick={handleToggle} color="error">
-            {cancelBtnText || 'Cancel'}
+            {cancelBtnText || "Cancel"}
           </Button>
         </DialogActions>
       </Dialog>

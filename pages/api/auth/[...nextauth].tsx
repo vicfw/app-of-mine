@@ -1,10 +1,10 @@
-import NextAuth, { Awaitable, Session, User } from 'next-auth';
+import NextAuth, { Awaitable, Session, User } from "next-auth";
 import CredentialsProvider, {
   CredentialInput,
-} from 'next-auth/providers/credentials';
-import UserEntity from '../../../models/User';
-import { verifyPassword } from '../../../src/utils/bcryptUtils';
-import dbConnect from '../../../src/utils/dbConnect';
+} from "next-auth/providers/credentials";
+import UserEntity from "../../../models/User";
+import { verifyPassword } from "../../../src/utils/bcryptUtils";
+import dbConnect from "../../../src/utils/dbConnect";
 
 type ExtendedUserType = User & { isAdmin: boolean };
 
@@ -21,7 +21,7 @@ export default NextAuth({
     },
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
 
     maxAge: 30 * 24 * 60 * 60, // 30 days
 
@@ -39,7 +39,7 @@ export default NextAuth({
         const user = await UserEntity.findOne({ email: credentials!.email });
 
         if (!user) {
-          throw new Error('No user found');
+          throw new Error("No user found");
         }
 
         const isValid = await verifyPassword(
@@ -48,23 +48,23 @@ export default NextAuth({
         );
 
         if (!isValid) {
-          throw new Error('Could not log you in');
+          throw new Error("Could not log you in");
         }
 
-        if (credentials.callbackUrl.includes('admin')) {
+        if (credentials.callbackUrl.includes("admin")) {
           if (user.isAdmin) {
             return user;
           } else {
-            throw new Error('You Cant Sign in');
+            throw new Error("You Cant Sign in");
           }
         } else {
           return user;
         }
       },
       credentials: {
-        email: '' as CredentialInput,
-        password: '' as CredentialInput,
-        callbackUrl: '' as CredentialInput,
+        email: "" as CredentialInput,
+        password: "" as CredentialInput,
+        callbackUrl: "" as CredentialInput,
       },
     }),
   ],
