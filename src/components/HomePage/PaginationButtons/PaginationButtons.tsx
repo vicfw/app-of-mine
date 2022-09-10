@@ -1,6 +1,6 @@
-import { Grid, Button, Container } from '@mui/material';
-import router from 'next/router';
-import { Dispatch, FC, SetStateAction } from 'react';
+import { Grid, Button, Container } from "@mui/material";
+import router from "next/router";
+import { Dispatch, FC, SetStateAction } from "react";
 
 interface PropTypes {
   page: string;
@@ -30,21 +30,20 @@ const PaginationButtons: FC<PropTypes> = ({
 }) => {
   return (
     <Container>
-      <Grid container justifyContent={'center'} gap="10px">
+      <Grid container justifyContent={"center"} gap="10px">
         <Grid item>
           <Button
             variant="contained"
             sx={{
-              color: '#fff',
+              color: "#fff",
               borderRadius: 3,
-              backgroundImage:
-                'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
-              textTransform: 'capitalize',
-              boxShadow: 'none',
-              '&:hover': {
-                boxShadow: 'none',
-                backgroundImage:
-                  'linear-gradient(180deg, #619781 0%, #12d685 74%)',
+              backgroundColor: "#01c23d",
+
+              textTransform: "capitalize",
+              boxShadow: "none",
+              "&:hover": {
+                boxShadow: "none",
+                backgroundColor: "#01c23d",
               },
             }}
             onClick={() => {
@@ -73,16 +72,14 @@ const PaginationButtons: FC<PropTypes> = ({
             variant="outlined"
             disabled={searchMode ? searchPagination.get.skip === 0 : +page <= 0}
             sx={{
-              color: '#fff',
+              color: "#fff",
               borderRadius: 3,
-              backgroundImage:
-                'linear-gradient(180deg, rgba(141,206,179,1) 0%, #12d685 74%)',
-              textTransform: 'capitalize',
-              boxShadow: 'none',
-              '&:hover': {
-                boxShadow: 'none',
-                backgroundImage:
-                  'linear-gradient(180deg, #619781 0%, #12d685 74%)',
+              backgroundColor: "#01c23d",
+              textTransform: "capitalize",
+              boxShadow: "none",
+              "&:hover": {
+                boxShadow: "none",
+                backgroundColor: "#01c23d",
               },
             }}
             onClick={() => {

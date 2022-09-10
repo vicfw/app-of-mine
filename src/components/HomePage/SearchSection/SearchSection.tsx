@@ -6,7 +6,7 @@ import {
   Select,
   TextField,
   Typography,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Dispatch,
   FC,
@@ -14,9 +14,9 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { AdsType } from '../../../../types/ad';
-import { CategoryType } from '../../../../types/category';
+} from "react";
+import { AdsType } from "../../../../types/ad";
+import { CategoryType } from "../../../../types/category";
 
 interface SearchSectionPropTypes {
   categories: CategoryType[];
@@ -41,18 +41,18 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
   searchPagination,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [categoryId, setCategoryId] = useState('');
-  const [notFoundMassage, setNotFoundMassage] = useState('');
+  const [categoryId, setCategoryId] = useState("");
+  const [notFoundMassage, setNotFoundMassage] = useState("");
 
   const handleSearch = () => {
     if (!inputRef.current!.value && !categoryId) {
-      setNotFoundMassage('please enter a ad title');
+      setNotFoundMassage("please enter a ad title");
       return;
     }
     fetch(
       `/api/ad/search?limit=${searchPagination.limit}&skip=${searchPagination.skip}`,
       {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           text: inputRef.current!.value,
           category: categoryId,
@@ -62,16 +62,16 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
       res.json().then((data) => {
         if (data?.data?.length) {
           setSearchResult(data.data);
-          const paginationBtn = document.getElementById('first');
+          const paginationBtn = document.getElementById("first");
           if (paginationBtn) {
-            paginationBtn.scrollIntoView({ behavior: 'smooth' });
+            paginationBtn.scrollIntoView({ behavior: "smooth" });
           }
-          setNotFoundMassage('');
+          setNotFoundMassage("");
           searchResultTotal.set(data.total);
         } else {
           setNotFoundMassage("we couldn't find you any ad");
-          setCategoryId('');
-          inputRef.current!.value = '';
+          setCategoryId("");
+          inputRef.current!.value = "";
         }
       })
     );
@@ -85,34 +85,35 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
     <Box
       sx={{
         backgroundImage: "url('/bc-search.jpg')",
-        backgroundPosition: 'center center',
-        minHeight: '75vh',
-        maxHeight: '75vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        backgroundPosition: "center center",
+        minHeight: "75vh",
+        backgroundSize: "cover",
+        maxHeight: "75vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Paper sx={{ padding: '15px' }}>
+      <Paper sx={{ padding: "15px" }}>
         <Box
           sx={{
-            display: 'flex',
-            border: '1px solid #ccc',
-            flexDirection: { xs: 'column', md: 'row' },
+            display: "flex",
+            border: "1px solid #ccc",
+            flexDirection: { xs: "column", md: "row" },
           }}
         >
           <TextField
             placeholder="Search"
-            sx={{ '& .MuiInputBase-root': { borderRadius: 0 } }}
+            sx={{ "& .MuiInputBase-root": { borderRadius: 0 } }}
             ref={inputRef}
             onChange={(e) => (inputRef.current!.value = e.target.value)}
           />
           <Select
-            defaultValue={'select'}
+            defaultValue={"select"}
             sx={{ borderRadius: 0 }}
             onChange={(e) => setCategoryId(e.target.value)}
           >
-            <MenuItem value={'select'} disabled>
+            <MenuItem value={"select"} disabled>
               All Applications
             </MenuItem>
             {categories.length &&
@@ -130,9 +131,9 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
             onClick={handleSearch}
             sx={{
               backgroundColor: (theme) => `${theme.palette.info.light}`,
-              textTransform: 'capitalize',
+              textTransform: "capitalize",
               borderRadius: 0,
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: (theme) => `${theme.palette.info.main}`,
               },
             }}
