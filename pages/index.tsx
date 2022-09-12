@@ -1,18 +1,18 @@
-import { CircularProgress, Container, Grid } from "@mui/material";
-import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import { FC, useContext, useEffect, useState } from "react";
-import Ad from "../models/Ad";
-import AdsSection from "../src/components/HomePage/AdsSection/AdsSection";
-import Categories from "../src/components/HomePage/Categories/Categories.component";
-import PaginationButtons from "../src/components/HomePage/PaginationButtons/PaginationButtons";
-import PopularAd from "../src/components/HomePage/PopularAd/PopularAd";
-import SearchSection from "../src/components/HomePage/SearchSection/SearchSection";
-import Layout from "../src/components/Layout/Layout";
-import { Context } from "../src/context";
-import dbConnect from "../src/utils/dbConnect";
-import { AdsType } from "../types/ad";
-import { CategoryType } from "../types/category";
+import { CircularProgress, Container, Grid } from '@mui/material';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { FC, useContext, useEffect, useState } from 'react';
+import Ad from '../models/Ad';
+import AdsSection from '../src/components/HomePage/AdsSection/AdsSection';
+import Categories from '../src/components/HomePage/Categories/Categories.component';
+import PaginationButtons from '../src/components/HomePage/PaginationButtons/PaginationButtons';
+import PopularAd from '../src/components/HomePage/PopularAd/PopularAd';
+import SearchSection from '../src/components/HomePage/SearchSection/SearchSection';
+import Layout from '../src/components/Layout/Layout';
+import { Context } from '../src/context';
+import dbConnect from '../src/utils/dbConnect';
+import { AdsType } from '../types/ad';
+import { CategoryType } from '../types/category';
 
 interface HomePagePropTypes {
   categories: CategoryType[];
@@ -35,9 +35,9 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const paginationBtn = document.getElementById("first");
+    const paginationBtn = document.getElementById('first');
     if (paginationBtn && router.query.page) {
-      paginationBtn.scrollIntoView({ behavior: "smooth" });
+      paginationBtn.scrollIntoView({ behavior: 'smooth' });
     }
   }, [router.query]);
 
@@ -55,7 +55,7 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
         }}
       />
       {/* categories section */}
-      <Container sx={{ padding: { lg: "20px 0", xs: "20px 11px" } }}>
+      <Container sx={{ padding: { lg: '20px 0', xs: '20px 11px' } }}>
         <Grid component="section" container spacing={2} alignItems="center">
           {state.categories?.length && !categoryLoader ? (
             state.categories?.map((cat) => {
@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     const countOfAllDocs = await Ad.estimatedDocumentCount();
 
     const ads = await Ad.find(
-      {},
+      { isApproved: true },
       {},
       { skip: (page as number) * limit, limit }
     ).sort({ createdAt: -1 });
