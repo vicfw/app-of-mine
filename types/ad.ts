@@ -1,9 +1,11 @@
+import { CategoryType } from "./category";
+
 export interface AdsType {
   isApproved: boolean;
   isPopular: boolean;
   _id: string;
   title: string;
-  category: string;
+  category: string | CategoryType;
   phone: string;
   description: string;
   images: { img: string }[];
