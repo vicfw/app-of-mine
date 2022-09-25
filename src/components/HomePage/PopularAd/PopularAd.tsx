@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { Colors } from '../../../utils/colors';
 import Ad from '../../Ad/Ad.components';
 
-const PopularAd: FC<any> = ({}) => {
+const PopularAd = () => {
   const [popularAds, setPopularAds] = useState<
     | {
         images: { img: string; _id: string }[];
@@ -16,29 +16,27 @@ const PopularAd: FC<any> = ({}) => {
   >([]);
 
   useEffect(() => {
-    fetch('/api/ad/popular', {
+    fetch('/api/popular', {
       method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    }).then((res) =>
-      res.json().then((result) => {
-        if (result.success) {
-          const mappedData = result.data.map((dt: any) => {
-            return {
-              id: dt._id,
-              images: dt.images,
-              description: dt.description,
-              title: dt.title,
-              phone: dt.phone,
-            };
-          });
+    })
+      .then((res) =>
+        res.json().then((result) => {
+          if (result.success) {
+            const mappedData = result.data.map((dt: any) => {
+              return {
+                id: dt._id,
+                images: dt.images,
+                description: dt.description,
+                title: dt.title,
+                phone: dt.phone,
+              };
+            });
 
-          setPopularAds(mappedData);
-        }
-      })
-    );
+            setPopularAds(mappedData);
+          }
+        })
+      )
+      .catch((e) => console.log(e));
   }, []);
 
   return (

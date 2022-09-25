@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import Ad from '../../../models/Ad';
-import dbConnect from '../../../src/utils/dbConnect';
+import Ad from '../../models/Ad';
+import dbConnect from '../../src/utils/dbConnect';
 
 export default async function handler(
   req: NextApiRequest,
