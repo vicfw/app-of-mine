@@ -1,7 +1,10 @@
-import { useRef, useState, ChangeEvent } from 'react';
+import { useS3Upload } from 'next-s3-upload';
 import { useRouter } from 'next/router';
+import { ChangeEvent, useRef, useState } from 'react';
 
 export const useCreateAdvertising = () => {
+  let { uploadToS3 } = useS3Upload();
+
   const createAdInitialState: {
     title: string;
     category: string;
@@ -43,6 +46,95 @@ export const useCreateAdvertising = () => {
   };
 
   const onFileUploadChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const fileInput = e.target;
+
+    if (!fileInput.files) {
+      return;
+    }
+
+    if (
+      !fileInput.files ||
+      fileInput.files.length === 0 ||
+      fileInput.files.length > 1 ||
+      previewUrls.length === 3
+    ) {
+      setErrorString((perv) => ({
+        ...perv,
+        images: 'you cant upload more than 3 pictures for you Ad',
+      }));
+      e.target.type = 'text';
+      e.target.type = 'file';
+      return;
+    }
+
+    const file = fileInput.files[0];
+
+    const fileSizeInMegaBytes = file.size / 1024 ** 2;
+
+    if (fileSizeInMegaBytes > 1) {
+      setErrorString((perv) => ({
+        ...perv,
+        images: 'use images less than 1 megabytes',
+      }));
+      e.target.type = 'text';
+      e.target.type = 'file';
+      return;
+    }
+
+    /** File validation */
+    if (!file.type.startsWith('image')) {
+      setErrorString((perv) => ({
+        ...perv,
+        images: 'please upload files with format of png or jpg',
+      }));
+      e.target.type = 'text';
+      e.target.type = 'file';
+      return;
+    }
+
+    if (previewUrls.length >= loading.length) {
+      setLoading((perv) => {
+        return [...perv, true];
+      });
+    } else {
+      setLoading((perv) => {
+        return perv.map((p, index) => {
+          if (perv.length - 1 === index) {
+            p = true;
+          }
+          return p;
+        });
+      });
+    }
+
+    let { url } = await uploadToS3(file);
+
+    if (url) {
+      setCreateAd((perv) => ({
+        ...perv,
+        images: [...perv.images, { img: url }],
+      }));
+
+      setErrorString((perv) => ({ ...perv, images: '' }));
+
+      setPreviewUrls((perv) => {
+        return [...perv, URL.createObjectURL(file)];
+      });
+      setLoading((perv) => {
+        return perv.map((p) => false);
+      });
+    } else {
+      setLoading((perv) => {
+        return perv.map((p) => false);
+      });
+    }
+
+    /** Reset file input */
+    e.target.type = 'text';
+    e.target.type = 'file';
+  };
+
+  const hh = async (e: ChangeEvent<HTMLInputElement>) => {
     const fileInput = e.target;
 
     if (!fileInput.files) {

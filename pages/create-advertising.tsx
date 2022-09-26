@@ -20,11 +20,11 @@ import Image from 'next/image';
 import { FC, useMemo } from 'react';
 import Category from '../models/Category';
 import Layout from '../src/components/Layout/Layout';
+import { useCreateAdvertising } from '../src/pageHooks/create-advertising';
+import { cities as citiesArray } from '../src/utils/cities';
 import { Colors } from '../src/utils/colors';
 import dbConnect from '../src/utils/dbConnect';
 import { CategoryType } from '../types/category';
-import { useCreateAdvertising } from '../src/pageHooks/create-advertising';
-import { cities as citiesArray } from '../src/utils/cities';
 
 interface createAdvertisingPropTypes {
   categories: CategoryType[];

@@ -57,7 +57,7 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
       return;
     }
     fetch(
-      `/api/ad/search?limit=${searchPagination.limit}&skip=${searchPagination.skip}`,
+      `/api/search?limit=${searchPagination.limit}&skip=${searchPagination.skip}`,
       {
         method: 'POST',
         body: JSON.stringify({

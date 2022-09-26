@@ -28,7 +28,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
   const matches = useMediaQuery('(max-width: 500px)');
 
   return (
-    <Layout title={'Trucks | ' + ad.title}>
+    <Layout title={'Trucks | ' + ad?.title}>
       <Container sx={{ marginTop: '20px' }}>
         {/* breadcrumb */}
         <Paper
@@ -241,6 +241,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (e) {
-    return { props: {} };
+    return { props: {}, redirect: '/404' };
   }
 };
