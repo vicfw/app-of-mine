@@ -1,5 +1,6 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { CategoryType } from "../../types/category";
+import { useS3Upload } from 'next-s3-upload';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { CategoryType } from '../../types/category';
 
 interface tableDataType {
   id: string;
@@ -16,6 +17,8 @@ interface EditStateType {
 }
 
 export const useCategoriesPage = () => {
+  let { uploadToS3 } = useS3Upload();
+
   const [tableData, setTableData] = useState<tableDataType[] | []>([]);
 
   const [pagination, setPagination] = useState({
@@ -25,13 +28,13 @@ export const useCategoriesPage = () => {
   const [totalCategories, setTotalCategories] = useState(0);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [deleteModalState, setDeleteModalState] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("");
-  const [errorState, setErrorState] = useState({ name: "", image: "" });
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [errorState, setErrorState] = useState({ name: '', image: '' });
 
   const [editState, setEditState] = useState<EditStateType>({
-    id: "",
-    name: "",
-    image: "",
+    id: '',
+    name: '',
+    image: '',
   });
 
   const [openCreateModal, setOpenCreateModal] = useState(false);
@@ -52,10 +55,10 @@ export const useCategoriesPage = () => {
     const res = await fetch(
       `/api/admin/categories?skip=${pagination.skip}&limit=${pagination.limit}`,
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
       }
     );
@@ -92,8 +95,8 @@ export const useCategoriesPage = () => {
       fileInput.files.length > 1 ||
       previewUrl
     ) {
-      e.target.type = "text";
-      e.target.type = "file";
+      e.target.type = 'text';
+      e.target.type = 'file';
       return;
     }
 
@@ -105,59 +108,43 @@ export const useCategoriesPage = () => {
       return;
     }
 
-    let formData = new FormData();
-    formData.append("media", file);
-
     /** File validation */
-    if (!file.type.startsWith("image")) {
-      e.target.type = "text";
-      e.target.type = "file";
+    if (!file.type.startsWith('image')) {
+      e.target.type = 'text';
+      e.target.type = 'file';
       return;
     }
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: formData,
-    });
-
-    const {
-      data,
-      error,
-    }: {
-      data: {
-        url: string;
-      } | null;
-      error: string | null;
-    } = await res.json();
-
     /** Setting file state */
 
-    if (data?.url) {
-      setEditState((perv) => ({ ...perv, image: data.url }));
+    let { url } = await uploadToS3(file);
+
+    if (url) {
+      setEditState((perv) => ({ ...perv, image: url }));
       setPreviewUrl(URL.createObjectURL(file));
     } else {
-      alert("something went wrong");
+      alert('something went wrong');
     }
 
     /** Reset file input */
-    e.target.type = "text";
-    e.target.type = "file";
+    e.target.type = 'text';
+    e.target.type = 'file';
   };
 
   const editHandler = async () => {
     if (!editState.name) {
-      setErrorState((perv) => ({ ...perv, name: "please provide a name" }));
+      setErrorState((perv) => ({ ...perv, name: 'please provide a name' }));
 
       return;
     }
 
     if (!editState.image) {
-      setErrorState((perv) => ({ ...perv, image: "please provide an image" }));
+      setErrorState((perv) => ({ ...perv, image: 'please provide an image' }));
       return;
     }
 
     const res = await fetch(`/api/category/${editState.id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       body: JSON.stringify({ image: editState.image, name: editState.name }),
     });
 
@@ -176,24 +163,24 @@ export const useCategoriesPage = () => {
       });
       setOpenEditModal(false);
     } else {
-      alert("something went wrong,try again later");
+      alert('something went wrong,try again later');
     }
   };
 
   const createHandler = async () => {
     if (!editState.name) {
-      setErrorState((perv) => ({ ...perv, name: "please provide a name" }));
+      setErrorState((perv) => ({ ...perv, name: 'please provide a name' }));
 
       return;
     }
 
     if (!editState.image) {
-      setErrorState((perv) => ({ ...perv, image: "please provide an image" }));
+      setErrorState((perv) => ({ ...perv, image: 'please provide an image' }));
       return;
     }
 
     const res = await fetch(`/api/category`, {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({ image: editState.image, name: editState.name }),
     });
 
@@ -204,13 +191,13 @@ export const useCategoriesPage = () => {
       result.data.createdAt = new Date(result.data.createdAt);
       setTableData((perv) => [result.data, ...perv]);
     } else {
-      alert("something went wrong,try again later");
+      alert('something went wrong,try again later');
     }
   };
 
   const deleteHandler = async () => {
     const res = await fetch(`/api/category/${editState.id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
 
     const result = await res.json();
@@ -221,7 +208,7 @@ export const useCategoriesPage = () => {
       });
       setDeleteModalState(false);
     } else {
-      alert("something went wrong,try later");
+      alert('something went wrong,try later');
     }
   };
 

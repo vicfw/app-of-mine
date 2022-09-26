@@ -38,7 +38,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout title="Create Ad">
       <Container>
         <Grid container py={8} spacing={2}>
           {/* form */}
