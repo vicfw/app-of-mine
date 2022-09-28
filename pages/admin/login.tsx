@@ -118,7 +118,7 @@ const Login: FC<any> = ({}) => {
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           open={get.toast}
-          onClose={on.handleToastClose}
+          onClose={() => set.setToast(false)}
           message={get.loginError}
           key={1}
           sx={{
