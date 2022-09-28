@@ -24,6 +24,7 @@
     "next-auth": "^4.10.3",
     "next-images": "^1.8.4",
     "next-s3-upload": "^0.2.3",
+    "nextjs-progressbar": "^0.0.14",
     "react": "latest",
     "react-dom": "latest",
     "sharp": "^0.31.0"

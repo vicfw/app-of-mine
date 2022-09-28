@@ -193,7 +193,9 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                   <MenuItem value={'select'}>Select</MenuItem>
 
                   {cities.map((ct) => (
-                    <MenuItem value={ct}>{ct}</MenuItem>
+                    <MenuItem key={ct} value={ct}>
+                      {ct}
+                    </MenuItem>
                   ))}
                 </Select>
                 <Typography

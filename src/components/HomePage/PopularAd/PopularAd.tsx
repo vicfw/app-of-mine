@@ -51,7 +51,7 @@ const PopularAd = () => {
         <Grid container spacing={2}>
           {popularAds.map((item) => {
             return (
-              <Grid item lg={3} xs={12}>
+              <Grid key={item.id} item lg={3} xs={12}>
                 <Ad
                   image={item.images[0].img}
                   id={item.id}
