@@ -1,4 +1,4 @@
-import { CircularProgress, Container, Grid } from '@mui/material';
+import { CircularProgress, Container, Grid, Snackbar } from '@mui/material';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { FC, useContext, useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import PopularAd from '../src/components/HomePage/PopularAd/PopularAd';
 import SearchSection from '../src/components/HomePage/SearchSection/SearchSection';
 import Layout from '../src/components/Layout/Layout';
 import { Context } from '../src/context';
+import { Colors } from '../src/utils/colors';
 import dbConnect from '../src/utils/dbConnect';
 import { AdsType } from '../types/ad';
 import { CategoryType } from '../types/category';
@@ -29,15 +30,23 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
     limit: 12,
     skip: 0,
   });
+  const [toast, setToast] = useState(false);
 
   const [searchResultTotal, setSearchResultTotal] = useState(0);
 
   const router = useRouter();
 
+  console.log(router.query);
+
   useEffect(() => {
     const paginationBtn = document.getElementById('first');
+    const { created } = router.query;
     if (paginationBtn && router.query.page) {
       paginationBtn.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    if (created) {
+      setToast(true);
     }
   }, [router.query]);
 
@@ -86,6 +95,24 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
         searchPagination={{ get: searchPagination, set: setSearchPagination }}
         searchResultTotal={searchResultTotal}
       />
+      <div>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={toast}
+          autoHideDuration={3000}
+          onClose={() => setToast(false)}
+          message="Advertise successfully created,Please wait for conformation"
+          key={1}
+          sx={{
+            '& .MuiPaper-root': {
+              backgroundColor: Colors.primary.dark,
+            },
+            '& .MuiSnackbarContent-message': {
+              fontSize: 15,
+            },
+          }}
+        />
+      </div>
     </Layout>
   );
 };

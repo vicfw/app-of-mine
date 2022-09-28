@@ -1,29 +1,23 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { authValidation } from "../utils/authValidation";
-import { signIn } from "next-auth/react";
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import { authValidation } from '../utils/authValidation';
+import { signIn } from 'next-auth/react';
 
 export const useAuth = (whichPage: string) => {
   const router = useRouter();
 
-  const [email, setEmail] = useState({ value: "", error: "" });
-  const [password, setPassword] = useState({ value: "", error: "" });
-  const [loginError, setLoginError] = useState("");
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
+  const [loginError, setLoginError] = useState('');
   const [toast, setToast] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      clearTimeout();
-    };
-  }, []);
 
   const createUser = async () => {
     const canPass = authValidation(email, password, setEmail, setPassword);
 
     if (!canPass) return;
 
-    if (whichPage.includes("login")) {
-      const response = await signIn("credentials", {
+    if (whichPage.includes('login')) {
+      const response = await signIn('credentials', {
         redirect: false,
         email: email.value,
         password: password.value,
@@ -33,22 +27,21 @@ export const useAuth = (whichPage: string) => {
       if (response?.error) {
         setLoginError(response.error);
         setToast(true);
-        handleToastClose();
         return;
       }
 
-      if (response && response.url?.includes("admin")) {
-        router.push("/admin");
+      if (response && response.url?.includes('admin')) {
+        router.push('/admin');
       } else {
-        router.push("/");
+        router.push('/');
       }
     } else {
       try {
-        const res = await fetch("/api/auth/signup", {
-          method: "POST",
+        const res = await fetch('/api/auth/signup', {
+          method: 'POST',
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             email: email.value,
@@ -60,24 +53,18 @@ export const useAuth = (whichPage: string) => {
         const data = await res.json();
 
         if (!data.success) {
-          if (data.field.includes("email")) {
+          if (data.field.includes('email')) {
             setEmail((perval) => ({ ...perval, error: data.error }));
           } else {
             setPassword((perval) => ({ ...perval, error: data.error }));
           }
         } else {
-          router.replace("/login");
+          router.replace('/login');
         }
       } catch (error) {
         error;
       }
     }
-  };
-
-  const handleToastClose = () => {
-    setTimeout(() => {
-      setToast(false);
-    }, 3000);
   };
 
   return {
@@ -90,7 +77,8 @@ export const useAuth = (whichPage: string) => {
     set: {
       setPassword,
       setEmail,
+      setToast,
     },
-    on: { createUser, handleToastClose },
+    on: { createUser },
   };
 };

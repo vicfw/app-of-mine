@@ -29,6 +29,7 @@ export const useCreateAdvertising = () => {
 
   const [createAd, setCreateAd] = useState(createAdInitialState);
   const [loading, setLoading] = useState<boolean[]>([]);
+  const [submitLoading, setSubmitLoading] = useState(false);
 
   const [errorString, setErrorString] = useState({
     title: '',
@@ -107,23 +108,25 @@ export const useCreateAdvertising = () => {
       });
     }
 
-    let { url } = await uploadToS3(file);
+    try {
+      let { url } = await uploadToS3(file);
 
-    if (url) {
-      setCreateAd((perv) => ({
-        ...perv,
-        images: [...perv.images, { img: url }],
-      }));
+      if (url) {
+        setCreateAd((perv) => ({
+          ...perv,
+          images: [...perv.images, { img: url }],
+        }));
 
-      setErrorString((perv) => ({ ...perv, images: '' }));
+        setErrorString((perv) => ({ ...perv, images: '' }));
 
-      setPreviewUrls((perv) => {
-        return [...perv, URL.createObjectURL(file)];
-      });
-      setLoading((perv) => {
-        return perv.map((p) => false);
-      });
-    } else {
+        setPreviewUrls((perv) => {
+          return [...perv, URL.createObjectURL(file)];
+        });
+        setLoading((perv) => {
+          return perv.map((p) => false);
+        });
+      }
+    } catch (e) {
       setLoading((perv) => {
         return perv.map((p) => false);
       });
@@ -174,7 +177,7 @@ export const useCreateAdvertising = () => {
     const haveError = values.some((err) => err);
 
     if (haveError) return;
-
+    setSubmitLoading(true);
     const response = await fetch('/api/ad', {
       method: 'POST',
       headers: {
@@ -187,9 +190,11 @@ export const useCreateAdvertising = () => {
     const data = await response.json();
 
     if (data.success) {
-      router.replace('/?created');
+      router.replace('/?created=y');
+      setSubmitLoading(false);
     } else {
       setErrorString((perv) => ({ ...perv, fail: 'Something went wrong' }));
+      setSubmitLoading(false);
     }
   };
 
@@ -213,6 +218,7 @@ export const useCreateAdvertising = () => {
       loading,
       inputRef,
       previewUrls,
+      submitLoading,
     },
     set: {},
     on: {

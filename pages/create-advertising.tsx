@@ -17,6 +17,7 @@ import {
 import { Container } from '@mui/system';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FC, useMemo } from 'react';
 import Category from '../models/Category';
 import Layout from '../src/components/Layout/Layout';
@@ -38,7 +39,7 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
   }, []);
 
   return (
-    <Layout title="Create Ad">
+    <Layout title="Truck | Create Ad">
       <Container>
         <Grid container py={8} spacing={2}>
           {/* form */}
@@ -281,12 +282,15 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
                       alignItems: 'center',
                       border: `1px solid #01c23d`,
                       borderRadius: '8px',
-                      cursor: 'pointer',
+                      cursor: !!get.loading.some((load) => load)
+                        ? 'not-allowed'
+                        : 'pointer',
                     }}
                   >
                     <input
                       hidden
                       ref={get.inputRef}
+                      disabled={get.loading.some((load) => load)}
                       type="file"
                       onChange={on.onFileUploadChange}
                     />
@@ -425,19 +429,37 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
             </Paper>
             <Typography component="p" color={Colors.grey.dark} mt={2}>
               by clicking the ad registration button , you agree to the sites's
-              <Typography component="span" color={'#01c23d'}>
-                terms and conditions
-              </Typography>
+              <Link href={'/privacy-policy'} prefetch={false}>
+                <Typography
+                  component="span"
+                  color={'#01c23d'}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  {' '}
+                  terms and conditions
+                </Typography>
+              </Link>
             </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }} mt={1}>
-              <Button
-                variant="contained"
-                onClick={on.createAdHandler}
-                onMouseDown={on.errorHandler}
-                sx={{ color: '#fff' }}
-              >
-                ADD
-              </Button>
+              {get.submitLoading ? (
+                <Button
+                  variant="contained"
+                  sx={{ color: '#fff' }}
+                  endIcon={<CircularProgress sx={{ color: '#fff' }} />}
+                  size="small"
+                >
+                  Loading...
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={on.createAdHandler}
+                  onMouseDown={on.errorHandler}
+                  sx={{ color: '#fff' }}
+                >
+                  ADD
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>
