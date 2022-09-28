@@ -36,8 +36,6 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
 
   const router = useRouter();
 
-  console.log(router.query);
-
   useEffect(() => {
     const paginationBtn = document.getElementById('first');
     const { created } = router.query;

@@ -92,7 +92,8 @@ const SearchSection: FC<SearchSectionPropTypes> = ({
   return (
     <Box
       sx={{
-        backgroundImage: "url('/bc-search.jpg')",
+        backgroundImage:
+          'linear-gradient(90deg, rgba(109,196,169,1) 0%, rgba(222,213,121,1) 28%, rgba(109,196,169,1) 87%, rgba(222,213,121,1) 100%)',
         backgroundPosition: 'center center',
         minHeight: '75vh',
         backgroundSize: 'cover',
