@@ -16,13 +16,12 @@ import { AdsType } from '../../types/ad';
 import NextLink from 'next/link';
 import useMediaQuery from '../../src/utils/useMediaQuery';
 import { CategoryType } from '../../types/category';
-import { Item } from '@trendyol-js/react-carousel/dist/types/types/carousel';
 
 type withCategory = Omit<AdsType, 'category'> & { category: CategoryType };
 
 interface SingleAdPropsTypes {
   ad: withCategory | undefined;
-  popularAds: AdsType[];
+  popularAds: AdsType[] | [];
 }
 
 const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
@@ -99,7 +98,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                 }
                 className="carousel"
               >
-                {ad?.images.length
+                {ad?.title && ad?.images?.length
                   ? (ad?.images.map((img) => {
                       return (
                         <Box key={img.img}>
@@ -203,7 +202,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
             {popularAds.length
               ? (popularAds.map((ad) => {
                   return (
-                    <Grid mx={1}>
+                    <Grid mx={1} key={ad?._id}>
                       <AdComponent
                         key={ad?._id}
                         bgColor="#fff"
@@ -246,6 +245,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   } catch (e) {
+    console.log(e, 'error');
+
     return { props: {}, redirect: '/404' };
   }
 };
