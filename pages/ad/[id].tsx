@@ -16,6 +16,7 @@ import { AdsType } from '../../types/ad';
 import NextLink from 'next/link';
 import useMediaQuery from '../../src/utils/useMediaQuery';
 import { CategoryType } from '../../types/category';
+import Category from '../../models/Category';
 
 type withCategory = Omit<AdsType, 'category'> & { category: CategoryType };
 
