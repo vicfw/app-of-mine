@@ -111,7 +111,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                           />
                         </Box>
                       );
-                    }) as Item[])
+                    }) as any)
                   : null}
               </Carousel>
 
@@ -216,7 +216,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                       />
                     </Grid>
                   );
-                }) as Item[])
+                }) as any)
               : null}
           </Carousel>
         </Paper>
