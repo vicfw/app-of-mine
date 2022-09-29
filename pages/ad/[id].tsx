@@ -21,7 +21,7 @@ type withCategory = Omit<AdsType, 'category'> & { category: CategoryType };
 
 interface SingleAdPropsTypes {
   ad: withCategory | undefined;
-  popularAds: AdsType[] | [];
+  popularAds: AdsType[] | undefined;
 }
 
 const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
@@ -199,8 +199,8 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
             }
             className="carousel"
           >
-            {popularAds.length
-              ? (popularAds.map((ad) => {
+            {popularAds?.length
+              ? (popularAds?.map((ad) => {
                   return (
                     <Grid mx={1} key={ad?._id}>
                       <AdComponent
@@ -226,12 +226,13 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
 export default SingleAd;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  await dbConnect();
+
   try {
     if (!context.params?.id) {
       throw new Error('Bad Request');
     }
 
-    await dbConnect();
     const ad = await Ad.findById(context.params.id).populate('category');
 
     const justPopularAds = await Ad.find({ isPopular: true })

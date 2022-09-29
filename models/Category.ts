@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CategorySchema = new mongoose.Schema(
   {
@@ -22,12 +22,12 @@ const CategorySchema = new mongoose.Schema(
 );
 
 // Virtual populate
-CategorySchema.virtual("ads", {
-  ref: "Ad",
-  foreignField: "category",
-  localField: "_id",
+CategorySchema.virtual('ads', {
+  ref: 'Ad',
+  foreignField: 'category',
+  localField: '_id',
   count: true,
 });
 
 export default mongoose.models.Category ||
-  mongoose.model("Category", CategorySchema);
+  mongoose.model('Category', CategorySchema);
