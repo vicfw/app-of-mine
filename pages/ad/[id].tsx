@@ -98,7 +98,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                 }
                 className="carousel"
               >
-                {ad?.title && ad?.images?.length
+                {ad?.title
                   ? (ad?.images.map((img) => {
                       return (
                         <Box key={img.img}>
@@ -199,24 +199,24 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
             }
             className="carousel"
           >
-            {popularAds?.length
-              ? (popularAds?.map((ad) => {
-                  return (
-                    <Grid mx={1} key={ad?._id}>
-                      <AdComponent
-                        key={ad?._id}
-                        bgColor="#fff"
-                        description={ad?.description}
-                        id={ad?._id}
-                        isPop
-                        image={ad?.images[0]?.img}
-                        number={ad?.phone}
-                        title={ad?.title}
-                      />
-                    </Grid>
-                  );
-                }) as any)
-              : null}
+            {
+              popularAds?.map((ad) => {
+                return (
+                  <Grid mx={1} key={ad?._id}>
+                    <AdComponent
+                      key={ad?._id}
+                      bgColor="#fff"
+                      description={ad?.description}
+                      id={ad?._id}
+                      isPop
+                      image={ad?.images[0]?.img}
+                      number={ad?.phone}
+                      title={ad?.title}
+                    />
+                  </Grid>
+                );
+              }) as any
+            }
           </Carousel>
         </Paper>
       </Container>
