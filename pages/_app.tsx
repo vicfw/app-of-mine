@@ -9,6 +9,7 @@ import '../src/styles/global.css';
 import { SessionProvider } from 'next-auth/react';
 import { Provider } from '../src/context';
 import NextNProgress from 'nextjs-progressbar';
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 

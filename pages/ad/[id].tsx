@@ -64,7 +64,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                 sx={{ marginTop: '4px', fontSize: '15px' }}
               />
               <Typography sx={{ display: 'flex', alignItems: 'center' }}>
-                {ad.title}
+                {ad?.title}
               </Typography>
             </Box>
           </Box>
@@ -98,7 +98,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                 }
                 className="carousel"
               >
-                {ad.images.map((img) => {
+                {ad?.images.map((img) => {
                   return (
                     <Box key={img.img}>
                       <Image
@@ -113,13 +113,13 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
               </Carousel>
 
               <Typography mt={1} fontSize="1.4rem" component={'h2'}>
-                {ad.title}
+                {ad?.title}
               </Typography>
               <Typography mt={1} fontSize="1.2rem" component={'h2'}>
-                {ad.category.name}
+                {ad?.category.name}
               </Typography>
               <Divider sx={{ marginTop: '10px' }} />
-              <Typography component={'p'}>{ad.description}</Typography>
+              <Typography component={'p'}>{ad?.description}</Typography>
             </Paper>
           </Grid>
           <Grid item lg={4} xs={12}>
@@ -162,7 +162,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                   }}
                   variant="contained"
                 >
-                  {ad.phone}
+                  {ad?.phone}
                 </Button>
                 <Button variant="outlined">site.user@gamil.com</Button>
               </Box>
@@ -201,14 +201,14 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
               return (
                 <Grid mx={1}>
                   <AdComponent
-                    key={ad._id}
+                    key={ad?._id}
                     bgColor="#fff"
-                    description={ad.description}
-                    id={ad._id}
+                    description={ad?.description}
+                    id={ad?._id}
                     isPop
-                    image={ad.images[0]?.img}
-                    number={ad.phone}
-                    title={ad.title}
+                    image={ad?.images[0]?.img}
+                    number={ad?.phone}
+                    title={ad?.title}
                   />
                 </Grid>
               );
