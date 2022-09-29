@@ -226,13 +226,13 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
 export default SingleAd;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  if (!context.params?.id) {
+    throw new Error('Bad Request');
+  }
+
   await dbConnect();
 
   try {
-    if (!context.params?.id) {
-      throw new Error('Bad Request');
-    }
-
     const ad = await Ad.findById(context.params.id).populate('category');
 
     const justPopularAds = await Ad.find({ isPopular: true })
