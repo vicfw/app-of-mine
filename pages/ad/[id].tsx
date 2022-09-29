@@ -98,20 +98,20 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                 }
                 className="carousel"
               >
-                {
-                  ad?.images.map((img) => {
-                    return (
-                      <Box key={img.img}>
-                        <Image
-                          src={img.img}
-                          width={200}
-                          height={150}
-                          layout="responsive"
-                        />
-                      </Box>
-                    );
-                  }) as any
-                }
+                {ad?.images.length
+                  ? (ad?.images.map((img) => {
+                      return (
+                        <Box key={img.img}>
+                          <Image
+                            src={img.img}
+                            width={200}
+                            height={150}
+                            layout="responsive"
+                          />
+                        </Box>
+                      );
+                    }) as any)
+                  : null}
               </Carousel>
 
               <Typography mt={1} fontSize="1.4rem" component={'h2'}>
