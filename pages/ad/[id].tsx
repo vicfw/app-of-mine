@@ -20,7 +20,7 @@ import { CategoryType } from '../../types/category';
 type withCategory = Omit<AdsType, 'category'> & { category: CategoryType };
 
 interface SingleAdPropsTypes {
-  ad: withCategory;
+  ad: withCategory | undefined;
   popularAds: AdsType[];
 }
 
@@ -98,18 +98,20 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                 }
                 className="carousel"
               >
-                {ad?.images.map((img) => {
-                  return (
-                    <Box key={img.img}>
-                      <Image
-                        src={img.img}
-                        width={200}
-                        height={150}
-                        layout="responsive"
-                      />
-                    </Box>
-                  );
-                })}
+                {
+                  ad?.images.map((img) => {
+                    return (
+                      <Box key={img.img}>
+                        <Image
+                          src={img.img}
+                          width={200}
+                          height={150}
+                          layout="responsive"
+                        />
+                      </Box>
+                    );
+                  }) as any
+                }
               </Carousel>
 
               <Typography mt={1} fontSize="1.4rem" component={'h2'}>
