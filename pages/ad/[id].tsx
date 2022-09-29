@@ -16,6 +16,7 @@ import { AdsType } from '../../types/ad';
 import NextLink from 'next/link';
 import useMediaQuery from '../../src/utils/useMediaQuery';
 import { CategoryType } from '../../types/category';
+import { Item } from '@trendyol-js/react-carousel/dist/types/types/carousel';
 
 type withCategory = Omit<AdsType, 'category'> & { category: CategoryType };
 
@@ -110,7 +111,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                           />
                         </Box>
                       );
-                    }) as any)
+                    }) as Item[])
                   : null}
               </Carousel>
 
@@ -200,7 +201,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
             className="carousel"
           >
             {popularAds.length
-              ? popularAds.map((ad) => {
+              ? (popularAds.map((ad) => {
                   return (
                     <Grid mx={1}>
                       <AdComponent
@@ -215,7 +216,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
                       />
                     </Grid>
                   );
-                })
+                }) as Item[])
               : null}
           </Carousel>
         </Paper>
