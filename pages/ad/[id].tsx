@@ -16,7 +16,6 @@ import { AdsType } from '../../types/ad';
 import NextLink from 'next/link';
 import useMediaQuery from '../../src/utils/useMediaQuery';
 import { CategoryType } from '../../types/category';
-import Category from '../../models/Category';
 
 type withCategory = Omit<AdsType, 'category'> & { category: CategoryType };
 
@@ -227,6 +226,7 @@ const SingleAd: FC<SingleAdPropsTypes> = ({ ad, popularAds }) => {
 export default SingleAd;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  require('../../models/Category');
   if (!context.params?.id) {
     throw new Error('Bad Request');
   }
