@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
   Select,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
@@ -465,6 +466,24 @@ const createAdvertising: FC<createAdvertisingPropTypes> = ({ categories }) => {
             </Box>
           </Grid>
         </Grid>
+        <div>
+          <Snackbar
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            open={get.toast}
+            autoHideDuration={3000}
+            onClose={() => set.setToast(false)}
+            message={get.errorString.fail}
+            key={1}
+            sx={{
+              '& .MuiPaper-root': {
+                backgroundColor: 'red',
+              },
+              '& .MuiSnackbarContent-message': {
+                fontSize: 15,
+              },
+            }}
+          />
+        </div>
       </Container>
     </Layout>
   );

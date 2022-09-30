@@ -31,6 +31,7 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
     skip: 0,
   });
   const [toast, setToast] = useState(false);
+  const [toastMsg, setToastMsg] = useState('');
 
   const [searchResultTotal, setSearchResultTotal] = useState(0);
 
@@ -44,9 +45,38 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
     }
 
     if (created) {
+      setToastMsg(
+        'Advertise successfully created,Please wait for conformation'
+      );
       setToast(true);
     }
   }, [router.query]);
+
+  const handleSearch = (categoryId: string) => {
+    fetch(
+      `/api/search?limit=${searchPagination.limit}&skip=${searchPagination.skip}`,
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          category: categoryId,
+        }),
+      }
+    ).then((res) =>
+      res.json().then((data) => {
+        if (data?.data?.length) {
+          setSearchResult(data.data);
+          const paginationBtn = document.getElementById('first');
+          if (paginationBtn) {
+            paginationBtn.scrollIntoView({ behavior: 'smooth' });
+          }
+          setSearchResultTotal(data.total);
+        } else {
+          setToastMsg('There is no add in this category!');
+          setToast(true);
+        }
+      })
+    );
+  };
 
   return (
     <Layout title="Truck App">
@@ -67,7 +97,14 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
           {state.categories?.length && !categoryLoader ? (
             state.categories?.map((cat) => {
               return (
-                <Grid item lg={3} key={cat._id} xs={12}>
+                <Grid
+                  item
+                  lg={3}
+                  key={cat._id}
+                  xs={12}
+                  onClick={() => handleSearch(cat._id)}
+                  sx={{ cursor: 'pointer' }}
+                >
                   <Categories
                     name={cat.name}
                     image={cat.image}
@@ -99,11 +136,13 @@ const index: FC<HomePagePropTypes> = ({ page, count, ads }) => {
           open={toast}
           autoHideDuration={3000}
           onClose={() => setToast(false)}
-          message="Advertise successfully created,Please wait for conformation"
+          message={toastMsg}
           key={1}
           sx={{
             '& .MuiPaper-root': {
-              backgroundColor: Colors.primary.dark,
+              backgroundColor: toastMsg.includes('successfully')
+                ? Colors.primary.dark
+                : 'red',
             },
             '& .MuiSnackbarContent-message': {
               fontSize: 15,

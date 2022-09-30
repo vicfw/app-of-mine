@@ -59,7 +59,9 @@ const Ad: FC<AdPropTypes> = ({
         {title}
       </Typography>
       <Typography component={'p'} sx={{ color: Colors.grey.dark }}>
-        {description}
+        {description.length > 25
+          ? description.slice(0, 25) + '...'
+          : description}
       </Typography>
 
       <Typography

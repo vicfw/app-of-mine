@@ -26,7 +26,7 @@ export const useCreateAdvertising = () => {
   const router = useRouter();
 
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-
+  const [toast, setToast] = useState(false);
   const [createAd, setCreateAd] = useState(createAdInitialState);
   const [loading, setLoading] = useState<boolean[]>([]);
   const [submitLoading, setSubmitLoading] = useState(false);
@@ -127,6 +127,12 @@ export const useCreateAdvertising = () => {
         });
       }
     } catch (e) {
+      setToast(true);
+      setErrorString((perv) => ({
+        ...perv,
+        fail: "Couldn't upload photo,Try again later",
+      }));
+
       setLoading((perv) => {
         return perv.map((p) => false);
       });
@@ -196,6 +202,8 @@ export const useCreateAdvertising = () => {
       setErrorString((perv) => ({ ...perv, fail: 'Something went wrong' }));
       setSubmitLoading(false);
     }
+    inputRef.current!.type = 'text';
+    inputRef.current!.type = 'file';
   };
 
   const clearTheForm = () => {
@@ -219,8 +227,9 @@ export const useCreateAdvertising = () => {
       inputRef,
       previewUrls,
       submitLoading,
+      toast,
     },
-    set: {},
+    set: { setToast },
     on: {
       onChangeInputs,
       clearTheForm,
